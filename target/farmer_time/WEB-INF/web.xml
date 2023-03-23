@@ -8,6 +8,7 @@
 
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
+        <welcome-file>test.jsp</welcome-file>
     </welcome-file-list>
 
     <!-- Định nghĩa servlet có tên helloServlet, gắn với class HelloServlet -->
