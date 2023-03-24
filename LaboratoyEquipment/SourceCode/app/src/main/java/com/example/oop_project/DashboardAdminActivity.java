@@ -24,12 +24,14 @@ import java.util.ArrayList;
 
 public class DashboardAdminActivity extends AppCompatActivity {
     public ActivityDashboardAdminBinding binding;
-
+    private FirebaseAuth firebaseAuth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityDashboardAdminBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        firebaseAuth = FirebaseAuth.getInstance();
+        checkUser();
 
         binding.layoutEquipments.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -38,5 +40,22 @@ public class DashboardAdminActivity extends AppCompatActivity {
                 finish();
             }
         });
+        binding.logoutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                firebaseAuth.signOut();
+                checkUser();
+            }
+        });
+    }
+    private void checkUser() {
+        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+        if (firebaseUser == null) {
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
+        } else {
+            String email = firebaseUser.getEmail();
+            binding.textUserName.setText(email);
+        }
     }
 }

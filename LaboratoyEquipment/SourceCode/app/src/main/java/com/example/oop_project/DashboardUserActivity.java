@@ -40,7 +40,8 @@ public class DashboardUserActivity extends AppCompatActivity {
             finish();
         } else {
             String email = firebaseUser.getEmail();
-            binding.textUserName.setText(email);
+            String name = firebaseUser.getDisplayName();
+            binding.textUserName.setText(name);
         }
     }
 }

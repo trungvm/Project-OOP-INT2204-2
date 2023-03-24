@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".EquipmentAddActivity"
+    tools:context=".EquipmentEditActivity"
     android:background="@drawable/back01"
     >
 
@@ -38,7 +38,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
             android:fontFamily="sans-serif-condensed"
-            android:text="Add new Equipment"
+            android:text="Edit Equipment Information"
             android:textColor="@color/white"
             android:textSize="20sp"/>
 
@@ -52,20 +52,20 @@
         android:layout_marginEnd="30dp"
         android:layout_marginTop="225dp"
         >
-       <EditText
-           android:id="@+id/titleE"
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           android:drawableStart="@drawable/ic_title_gray"
-           android:drawablePadding="10dp"
-           android:background="@drawable/shape_editext01"
-           android:hint="Equipment title"
-           android:inputType="textPersonName|textCapWords"
-           android:padding="10dp"
-           android:textColor="@color/black"
-           android:textColorHint="@color/gray01"
-           android:textSize="16sp"
-           />
+        <EditText
+            android:id="@+id/titleE"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_title_gray"
+            android:drawablePadding="10dp"
+            android:background="@drawable/shape_editext01"
+            android:hint="Equipment title"
+            android:inputType="textPersonName|textCapWords"
+            android:padding="10dp"
+            android:textColor="@color/black"
+            android:textColorHint="@color/gray01"
+            android:textSize="16sp"
+            />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -175,7 +175,7 @@
         android:layout_marginEnd="30dp"
         android:layout_marginTop="20dp"
         android:background="@drawable/shape_button01"
-        android:text="submit"
+        android:text="Change"
         android:layout_below="@id/categoryTv"
         android:textColor="@color/white"
         />

@@ -85,8 +85,6 @@ public class EquipmentListAdminActivity extends AppCompatActivity {
                             ModelEquipment model = ds.getValue(ModelEquipment.class);
                             equipmentArrayList.add(model);
                         }
-
-                        Log.i(TAG, "onDataChange: " + "Testtttttttttttt");
                         adapterEquipmentAdmin = new AdapterEquipmentAdmin(EquipmentListAdminActivity.this, equipmentArrayList);
                         binding.equipmentRv.setAdapter(adapterEquipmentAdmin);
                     }

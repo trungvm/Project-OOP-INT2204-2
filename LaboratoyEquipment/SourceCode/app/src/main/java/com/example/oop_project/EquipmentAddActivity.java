@@ -59,12 +59,6 @@ public class EquipmentAddActivity extends AppCompatActivity {
 
             }
         });
-        binding.attachImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                imagePickIntent();
-            }
-        });
 
         binding.categoryTv.setOnClickListener(new View.OnClickListener() {
             @Override
