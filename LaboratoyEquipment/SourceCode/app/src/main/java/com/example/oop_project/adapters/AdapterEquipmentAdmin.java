@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
+import com.example.oop_project.EquipmentDetailActivity;
 import com.example.oop_project.EquipmentEditActivity;
 import com.example.oop_project.MyApplication;
 import com.example.oop_project.databinding.RowEquipmentsBinding;
@@ -84,6 +85,14 @@ public class AdapterEquipmentAdmin extends RecyclerView.Adapter<AdapterEquipment
             @Override
             public void onClick(View v) {
                 moreOptionsDialog(model, holder);
+            }
+        });
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, EquipmentDetailActivity.class);
+                intent.putExtra("equipmentId", model.getId());
+                context.startActivity(intent);
             }
         });
     }

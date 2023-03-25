@@ -21,6 +21,9 @@
         android:theme="@style/Theme.MaterialComponents.Light.NoActionBar"
         tools:targetApi="30">
         <activity
+            android:name=".EquipmentDetailActivity"
+            android:exported="false" />
+        <activity
             android:name=".EquipmentEditActivity"
             android:exported="false" />
         <activity
