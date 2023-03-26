@@ -1,20 +1,9 @@
-# Project-OOP-INT2204-2
-Năm học 2022-2023 học kỳ II
+Real Estate Searching
+Project-OOP-INT2204-2
+Giảng viên
+TS. Phạm Minh Triển
+ThS. Vũ Minh Trung
+Thành viên nhóm 7
+Cao Việt Hoàng 19020819
+Nguyễn Anh Đức 21020902
 
-Step 1: Fork this responsitory to your computer.
-
-Step 2: Add your project folder to your local github. The folder struct: 
-
-```
-├── ..
-├── Project Name         # It's project name or group name,
-│   ├── Reports          # Reports file per week
-│   ├── Source code      # Project code
-│   └── Readme.md        # Member name, Project description
-└── ..
-```
-
-Step 3: You will develop the project, create pull requests and a report once per week.
-
-
-Testing
