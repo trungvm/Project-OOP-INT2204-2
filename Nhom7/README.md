@@ -1,4 +1,4 @@
-<h1>Real Estate Searching</h1>
+<h1>Real Estate Management</h1>
 <h2>Bài tập lớn OOP lớp INT2204 2</h2>
 <p>Năm học 2022-2023 học kỳ II</p>
 <h3>Giảng viên:</h3>
