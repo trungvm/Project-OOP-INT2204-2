@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/back01"
+    tools:context=".MainActivity">
+
+    <ImageView
+        android:id="@+id/iconLogin"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:src="@drawable/login_logo"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="100dp"
+
+        />
+    <TextView
+        android:id="@+id/textWelcome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/iconLogin"
+        android:layout_marginTop="10dp"
+        android:layout_centerHorizontal="true"
+        android:text="Welcome to Laboratory App"
+        android:textSize="16sp"
+        android:textColor="@color/black"
+        />
+
+    <Button
+        android:id="@+id/loginBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textWelcome"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginBottom="40dp"
+        android:padding="12dp"
+        android:textSize="16sp"
+        android:text="Login"
+        android:textColor="#165F68"
+        android:backgroundTint="#00E2FF"
+        />
+    <Button
+        android:id="@+id/skipBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="Continue without Login"
+        android:textColor="#2196F3"
+        android:background="@drawable/shape_skipbtn"
+        android:layout_marginBottom="8dp"
+        />
+
+</RelativeLayout>
