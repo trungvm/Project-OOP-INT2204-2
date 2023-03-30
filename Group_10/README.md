@@ -1,6 +1,6 @@
 Thành viên:
-Lê Phạm Hải Nam - 22022115 - K67K1
-Nguyễn Huy Toàn - 22022124 - K67K1
+- Lê Phạm Hải Nam - 22022115 - K67K1
+- Nguyễn Huy Toàn - 22022124 - K67K1
 
 Project 9: 
 - App điều khiển thiết bị IoT:
