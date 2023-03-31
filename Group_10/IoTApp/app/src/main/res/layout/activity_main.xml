@@ -198,6 +198,7 @@
 
         <!-- Note: A RecyclerView can also be used -->
         <androidx.core.widget.NestedScrollView
+            android:id="@+id/nestedScrollView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clipToPadding="false"
@@ -213,6 +214,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
+            app:layout_anchor="@+id/nestedScrollView"
+            app:layout_anchorGravity="bottom|center"
             app:menu="@menu/bottom_app_bar"
             app:navigationIcon="@drawable/ic_menu" />
 
