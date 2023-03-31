@@ -1,0 +1,137 @@
+package com.example.oop_project.adapters;
+
+import android.content.Context;
+import android.content.Intent;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.oop_project.MyApplication;
+import com.example.oop_project.activities.EquipmentDetailActivity;
+import com.example.oop_project.databinding.RowEquipmentsUserBinding;
+import com.example.oop_project.filters.FilterEquipmentUser;
+import com.example.oop_project.models.ModelEquipment;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+
+public class AdapterEquipmentUser extends RecyclerView.Adapter<AdapterEquipmentUser.HolderEquipemntUser> implements Filterable {
+    private Context context;
+    public ArrayList<ModelEquipment> equipmentArrayList, filterList;
+    private FilterEquipmentUser filter;
+
+    private RowEquipmentsUserBinding binding;
+
+    public AdapterEquipmentUser(Context context, ArrayList<ModelEquipment> equipmentArrayList) {
+        this.context = context;
+        this.equipmentArrayList = equipmentArrayList;
+        this.filterList = equipmentArrayList;
+
+    }
+
+    @NonNull
+    @Override
+    public HolderEquipemntUser onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
+        binding = RowEquipmentsUserBinding.inflate(LayoutInflater.from(context), parent, false);
+        return new HolderEquipemntUser(binding.getRoot());
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull HolderEquipemntUser holder, int position) {
+
+        ModelEquipment model = equipmentArrayList.get(position);
+        String title = model.getTitle();
+        String description = model.getDescription();
+        String categoryId = model.getCategoryId();
+        int quantity = model.getQuantity();
+        long timestamp = model.getTimestamp();
+        int viewed = model.getViewed();
+
+        String date = MyApplication.formatTimestamp(timestamp);
+
+        // set data
+
+        holder.titleTv.setText(title);
+        holder.descriptionTv.setText(description);
+        holder.quantityTv.setText(""+quantity);
+        holder.dateTv.setText(date);
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Categories");
+        ref.child(categoryId)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        String titleCategory = "" + snapshot.child("title").getValue();
+                        holder.categoryTv.setText(titleCategory);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Equipments");
+                ref.child(model.getId()).child("viewed")
+                        .setValue(viewed + 1)
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+
+                            }
+                        });
+
+                Intent intent = new Intent(context, EquipmentDetailActivity.class);
+                intent.putExtra("equipmentId", model.getId());
+                context.startActivity(intent);
+
+            }
+        });
+    }
+
+    @Override
+    public int getItemCount() {
+        return equipmentArrayList.size();
+    }
+
+    @Override
+    public Filter getFilter() {
+        if(filter == null){
+            filter = new FilterEquipmentUser(filterList, this);
+        }
+        return filter;
+    }
+
+    class HolderEquipemntUser extends RecyclerView.ViewHolder{
+        TextView titleTv;
+        TextView categoryTv;
+        TextView quantityTv;
+        TextView descriptionTv;
+        TextView dateTv;
+        ProgressBar progressBar;
+
+        public HolderEquipemntUser(@NonNull View itemView) {
+            super(itemView);
+            titleTv = binding.titleTv;
+            categoryTv = binding.categoryTv;
+            quantityTv = binding.quantityTv;
+            dateTv = binding.dateTv;
+            descriptionTv = binding.descriptionTv;
+            progressBar = binding.progressBar;
+        }
+    }
+}
