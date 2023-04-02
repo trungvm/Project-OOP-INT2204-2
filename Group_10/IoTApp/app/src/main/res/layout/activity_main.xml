@@ -101,7 +101,7 @@
                     android:layout_below="@+id/imageview_light"
                     android:layout_centerHorizontal="true"
                     android:text="Lights"
-                    android:textColor="@color/icon_desc"
+                    android:textColor="@color/second_light"
                     android:textSize="15sp" />
 
             </RelativeLayout>
@@ -143,7 +143,7 @@
                     android:layout_below="@+id/imageview_heating"
                     android:layout_centerHorizontal="true"
                     android:text="Heating"
-                    android:textColor="@color/icon_desc"
+                    android:textColor="@color/second_light"
                     android:textSize="15sp" />
 
             </RelativeLayout>
@@ -186,7 +186,7 @@
                     android:layout_centerHorizontal="true"
                     android:text="Door"
                     android:textAlignment="center"
-                    android:textColor="@color/icon_desc"
+                    android:textColor="@color/second_light"
                     android:textSize="15sp" />
 
             </RelativeLayout>
@@ -239,7 +239,7 @@
                     android:layout_below="@+id/imageview_temperature"
                     android:layout_centerHorizontal="true"
                     android:text="Temperature"
-                    android:textColor="@color/icon_desc"
+                    android:textColor="@color/second_light"
                     android:textSize="15sp" />
 
             </RelativeLayout>
@@ -281,7 +281,7 @@
                     android:layout_below="@+id/imageview_curtain"
                     android:layout_centerHorizontal="true"
                     android:text="Curtain"
-                    android:textColor="@color/icon_desc"
+                    android:textColor="@color/second_light"
                     android:textSize="15sp" />
 
             </RelativeLayout>
@@ -324,7 +324,7 @@
                     android:layout_below="@+id/imageview_camera"
                     android:layout_centerHorizontal="true"
                     android:text="Camera"
-                    android:textColor="@color/icon_desc"
+                    android:textColor="@color/second_light"
                     android:textSize="15sp" />
 
             </RelativeLayout>
@@ -335,57 +335,21 @@
     </LinearLayout>
     >
 
-    <!--    Bottom bar-->
+    <!--    Bottom Navigation-->
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
 
-        <!-- Note: A RecyclerView can also be used -->
-        <androidx.core.widget.NestedScrollView
-            android:id="@+id/nestedScrollView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:clipToPadding="false"
-            android:paddingBottom="100dp">
-
-            <!-- Scrollable content -->
-
-        </androidx.core.widget.NestedScrollView>
-
-        <com.google.android.material.bottomappbar.BottomAppBar
-            android:id="@+id/bottomAppBar"
-            style="@style/Widget.MaterialComponents.BottomAppBar.Colored"
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottom_navigation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            app:layout_anchor="@+id/nestedScrollView"
-            app:layout_anchorGravity="bottom|center">
+            style="@style/Widget.MaterialComponents.BottomNavigationView.Colored"
+            app:menu="@menu/bottom_navigation_menu"/>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:weightSum="2">
-
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1">
-
-                    <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:src="@drawable/ic_menu"
-                        android:background="@color/black"
-
-                </com.google.android.material.card.MaterialCardView>
-
-            </LinearLayout>
-
-        </com.google.android.material.bottomappbar.BottomAppBar>
-
-
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </LinearLayout>
 
 
 </RelativeLayout>
