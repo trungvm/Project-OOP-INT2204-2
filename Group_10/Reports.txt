@@ -1,3 +1,5 @@
 Báo cáo tiến độ:
 * Tuần 8:
-- Bổ sung kiến thức Android
+  - Bổ sung kiến thức Android
+* Tuần 9:
+  - Hoàn thành giao diện activity_main
