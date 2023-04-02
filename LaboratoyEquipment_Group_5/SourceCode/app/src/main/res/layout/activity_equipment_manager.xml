@@ -43,16 +43,6 @@
             android:text="abc@gmail.com"
             android:textSize="16sp"
             />
-        <ImageButton
-            android:id="@+id/logoutBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_logout_white"
-            android:layout_centerVertical="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="16dp"
-            android:background="@android:color/transparent"
-            />
 
     </RelativeLayout>
     <!--    Search-->

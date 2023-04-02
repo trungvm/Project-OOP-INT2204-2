@@ -35,7 +35,6 @@ public class EquipmentManagerActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         firebaseAuth = FirebaseAuth.getInstance();
-        checkUser();
         loadCategories();
 
         binding.backBtn.setOnClickListener(new View.OnClickListener() {
@@ -57,7 +56,7 @@ public class EquipmentManagerActivity extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 try {
                     adapterCategory.getFilter().filter(s);
-                }catch (Exception e){
+                } catch (Exception e) {
 
                 }
             }
@@ -75,14 +74,6 @@ public class EquipmentManagerActivity extends AppCompatActivity {
             }
         });
         // handle click logout
-        binding.logoutBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                firebaseAuth.signOut();
-                checkUser();
-            }
-        });
-
         // click add category
         binding.addCategoryBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,7 +92,7 @@ public class EquipmentManagerActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 // clear all arraylist before, recall
                 categoryArrayList.clear();
-                for(DataSnapshot ds: snapshot.getChildren()){
+                for (DataSnapshot ds : snapshot.getChildren()) {
                     ModelCategory category = ds.getValue(ModelCategory.class);
 
                     categoryArrayList.add(category);
@@ -115,16 +106,5 @@ public class EquipmentManagerActivity extends AppCompatActivity {
 
             }
         });
-    }
-
-    private void checkUser() {
-        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-        if (firebaseUser == null) {
-            startActivity(new Intent(this, MainActivity.class));
-            finish();
-        } else {
-            String email = firebaseUser.getEmail();
-            binding.subtitleDash.setText(email);
-        }
     }
 }

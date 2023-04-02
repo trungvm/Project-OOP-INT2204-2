@@ -3,18 +3,21 @@ package com.example.oop_project.models;
 public class ModelCategory {
     private String title, uid, id;
     private long timestamp;
-    public ModelCategory(){
+
+    public ModelCategory() {
         this.uid = "";
         this.title = "";
         this.id = "";
         this.timestamp = 0;
     }
-    public ModelCategory(String id, String title, String uid, long timestamp){
+
+    public ModelCategory(String id, String title, String uid, long timestamp) {
         this.id = id;
         this.title = title;
         this.uid = uid;
         this.timestamp = timestamp;
     }
+
     public String getUid() {
         return uid;
     }

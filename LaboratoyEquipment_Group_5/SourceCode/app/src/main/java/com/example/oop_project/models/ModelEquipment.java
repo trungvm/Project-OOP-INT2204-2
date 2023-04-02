@@ -1,10 +1,37 @@
 package com.example.oop_project.models;
 
 public class ModelEquipment {
-    private String uid, id, title, description, categoryId,manual;
+    private String uid, id, title, description, categoryId, manual;
     private long timestamp;
     private int quantity;
     private int viewed, borrowed;
+    private boolean isFavorite;
+    public ModelEquipment() {
+        this.description = "";
+        this.title = "";
+        this.categoryId = "";
+        this.manual = "";
+        this.quantity = 0;
+    }
+    public ModelEquipment(String uid, String id, String title, String description, String categoryId, String manual, long timestamp, int quantity) {
+        this.uid = uid;
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.categoryId = categoryId;
+        this.manual = manual;
+        this.timestamp = timestamp;
+        this.quantity = quantity;
+    }
+
+    public boolean isFavorite() {
+        return isFavorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        isFavorite = favorite;
+    }
+
 
     public int getViewed() {
         return viewed;
@@ -22,20 +49,7 @@ public class ModelEquipment {
         this.borrowed = borrowed;
     }
 
-    public ModelEquipment(){
 
-    }
-
-    public ModelEquipment(String uid, String id, String title, String description, String categoryId, String manual, long timestamp, int quantity) {
-        this.uid = uid;
-        this.id = id;
-        this.title = title;
-        this.description = description;
-        this.categoryId = categoryId;
-        this.manual = manual;
-        this.timestamp = timestamp;
-        this.quantity = quantity;
-    }
 
     public String getUid() {
         return uid;

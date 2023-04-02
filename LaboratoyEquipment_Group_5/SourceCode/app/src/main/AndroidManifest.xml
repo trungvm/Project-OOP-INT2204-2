@@ -21,6 +21,12 @@
         android:theme="@style/Theme.MaterialComponents.Light.NoActionBar"
         tools:targetApi="30">
         <activity
+            android:name=".activities.FavoriteActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.ProfileEditActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.ProfileActivity"
             android:exported="false" />
         <activity

@@ -31,14 +31,13 @@ public class EquipmentDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityEquipmentDetailBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        Intent intent = getIntent();
+        equipmentId = intent.getStringExtra("equipmentId");
 
         firebaseAuth = FirebaseAuth.getInstance();
         if(firebaseAuth.getCurrentUser() != null){
             checkIsFavorite();
         }
-
-        Intent intent = getIntent();
-        equipmentId = intent.getStringExtra("equipmentId");
 
         loadEquipmentDetails();
 
@@ -111,26 +110,29 @@ public class EquipmentDetailActivity extends AppCompatActivity {
         });
     }
     private void checkIsFavorite(){
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
-        ref.child(firebaseAuth.getUid()).child("Favorites")
-                .addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        isInMyFavorite = snapshot.exists();
-                        if(isInMyFavorite){
-                            binding.favoriteBtn.setCompoundDrawablesRelativeWithIntrinsicBounds(0, R.drawable.ic_favorite_white, 0, 0);
-                            binding.favoriteBtn.setText("Remove Favorite");
-                        }else{
-                            binding.favoriteBtn.setCompoundDrawablesRelativeWithIntrinsicBounds(0, R.drawable.ic_favorite_border, 0, 0);
-                            binding.favoriteBtn.setText("Add Favorite");
+        if(firebaseAuth.getUid() != null){
+            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
+            ref.child(firebaseAuth.getUid()).child("Favorites").child(equipmentId)
+                    .addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            isInMyFavorite = snapshot.exists();
+                            if(isInMyFavorite){
+                                binding.favoriteBtn.setCompoundDrawablesRelativeWithIntrinsicBounds(0, R.drawable.ic_favorite_white, 0, 0);
+                                binding.favoriteBtn.setText("Remove Favorite");
+                            }else{
+                                binding.favoriteBtn.setCompoundDrawablesRelativeWithIntrinsicBounds(0, R.drawable.ic_favorite_border, 0, 0);
+                                binding.favoriteBtn.setText("Add Favorite");
+                            }
                         }
-                    }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
 
-                    }
-                });
+                        }
+                    });
+        }
+
 
     }
 }

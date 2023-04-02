@@ -3,6 +3,57 @@ package com.example.oop_project.models;
 public class Person {
     private String email, password, profileImage, uid;
     private long timestamp;
+    private String fullName, mobile, dOB, otherInfor, address;
+    private int gender;
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+
+    public String getdOB() {
+        return dOB;
+    }
+
+    public void setdOB(String dOB) {
+        this.dOB = dOB;
+    }
+
+    public String getOtherInfor() {
+        return otherInfor;
+    }
+
+    public void setOtherInfor(String otherIfor) {
+        this.otherInfor = otherIfor;
+    }
+
+    public int getGender() {
+        return gender;
+    }
+
+    public void setGender(int gender) {
+        this.gender = gender;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
     public Person(String accountType) {
         this.accountType = accountType;
         this.email = "";
@@ -10,8 +61,15 @@ public class Person {
         this.timestamp = 0;
         this.profileImage = "";
         this.uid = "";
+        this.fullName = "";
+        this.mobile = "";
+        this.dOB = "";
+        this.gender = 0;
+        this.otherInfor = "";
+        this.address = "";
     }
-    public Person(String accountType,String email, String password, long timestamp, String profileImage, String uid) {
+
+    public Person(String accountType, String email, String password, long timestamp, String profileImage, String uid) {
         this.timestamp = timestamp;
         this.accountType = accountType;
         this.profileImage = profileImage;
@@ -19,6 +77,7 @@ public class Person {
         this.email = email;
         this.uid = uid;
     }
+
     public String getAccountType() {
         return accountType;
     }

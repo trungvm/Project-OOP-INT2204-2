@@ -11,6 +11,7 @@
         android:layout_height="220dp"
         android:background="@drawable/top_background"/>
     <ImageButton
+        android:id="@+id/profileEditBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_edit_gray"
@@ -290,7 +291,7 @@
         app:itemIconSize="30dp"
         app:labelVisibilityMode="unlabeled"
         android:layout_alignParentBottom="true"
-        app:menu="@menu/navigation_menu"
+        app:menu="@menu/navigation_user_menu"
         android:foreground="?attr/selectableItemBackground"
         ></com.google.android.material.bottomnavigation.BottomNavigationView>
 

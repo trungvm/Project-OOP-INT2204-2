@@ -308,7 +308,7 @@
         app:itemIconSize="30dp"
         app:labelVisibilityMode="unlabeled"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:menu="@menu/navigation_menu"
+        app:menu="@menu/navigation_admin_menu"
         >
 
     </com.google.android.material.bottomnavigation.BottomNavigationView>

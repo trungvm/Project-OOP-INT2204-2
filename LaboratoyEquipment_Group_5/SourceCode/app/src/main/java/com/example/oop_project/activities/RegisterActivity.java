@@ -132,6 +132,12 @@ public class RegisterActivity extends AppCompatActivity {
         hashMap.put("uid", user.getUid());
         hashMap.put("timestamp", user.getTimestamp());
         hashMap.put("profileImage", user.getProfileImage());
+        hashMap.put("mobile", user.getMobile());
+        hashMap.put("address", user.getAddress());
+        hashMap.put("fullName", user.getFullName());
+        hashMap.put("otherInfo", user.getOtherInfor());
+        hashMap.put("birthday", user.getdOB());
+        hashMap.put("gender", user.getGender());
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
         ref.child(uid)
                 .setValue(hashMap)
