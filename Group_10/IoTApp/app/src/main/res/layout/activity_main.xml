@@ -43,7 +43,8 @@
         android:textAlignment="center"
         android:textColor="@color/black"
         android:textSize="35sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:fontFamily="@font/nunito"/>
 
     <TextView
         android:id="@+id/textview_welcome"
@@ -52,7 +53,8 @@
         android:layout_below="@id/textview_appname"
         android:text="Welcome"
         android:textAlignment="center"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        android:fontFamily="@font/nunito"/>
 
     <!--    Cardview-->
 
@@ -103,7 +105,8 @@
                     android:layout_centerHorizontal="true"
                     android:text="Lights"
                     android:textColor="@color/second_light"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"
+                    android:fontFamily="@font/nunito"/>
 
             </RelativeLayout>
 
@@ -146,7 +149,8 @@
                     android:layout_centerHorizontal="true"
                     android:text="Heater"
                     android:textColor="@color/second_light"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"
+                    android:fontFamily="@font/nunito"/>
 
             </RelativeLayout>
 
@@ -190,7 +194,8 @@
                     android:text="Door"
                     android:textAlignment="center"
                     android:textColor="@color/second_light"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"
+                    android:fontFamily="@font/nunito"/>
 
             </RelativeLayout>
 
@@ -244,7 +249,8 @@
                     android:layout_centerHorizontal="true"
                     android:text="Temperature"
                     android:textColor="@color/second_light"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"
+                    android:fontFamily="@font/nunito"/>
 
             </RelativeLayout>
 
@@ -287,7 +293,8 @@
                     android:layout_centerHorizontal="true"
                     android:text="Curtain"
                     android:textColor="@color/second_light"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"
+                    android:fontFamily="@font/nunito"/>
 
             </RelativeLayout>
 
@@ -331,7 +338,8 @@
                     android:layout_centerHorizontal="true"
                     android:text="Camera"
                     android:textColor="@color/second_light"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"
+                    android:fontFamily="@font/nunito"/>
 
             </RelativeLayout>
 
