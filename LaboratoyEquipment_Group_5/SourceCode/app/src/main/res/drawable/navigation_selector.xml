@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Màu sắc icon khi được chọn -->
+    <item android:color="@color/green" android:state_checked="true" />
+    <!-- Màu sắc icon khi được chạm vào -->
+    <item android:color="#28ABBC" android:state_pressed="true" />
+    <!-- Màu sắc icon khi bình thường -->
+    <item android:color="@android:color/darker_gray" android:state_checked="false" />
+</selector>
