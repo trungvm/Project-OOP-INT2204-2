@@ -2,6 +2,7 @@ package com.example.oop_project.models;
 
 public class ModelEquipment {
     private String uid, id, title, description, categoryId, manual;
+    private String equipmentImage;
     private long timestamp;
     private int quantity;
     private int viewed, borrowed;
@@ -22,6 +23,14 @@ public class ModelEquipment {
         this.manual = manual;
         this.timestamp = timestamp;
         this.quantity = quantity;
+    }
+
+    public String getEquipmentImage() {
+        return equipmentImage;
+    }
+
+    public void setEquipmentImage(String equipmentImage) {
+        this.equipmentImage = equipmentImage;
     }
 
     public boolean isFavorite() {

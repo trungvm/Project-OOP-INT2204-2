@@ -16,6 +16,17 @@
         android:layout_alignParentTop="true"
         android:background="@drawable/shape_toolbar">
 
+        <ImageButton
+            android:id="@+id/backBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="8dp"
+            android:padding="10dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_back_white" />
+
         <TextView
             android:id="@+id/texttoplogin"
             android:layout_width="221dp"

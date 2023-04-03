@@ -37,7 +37,7 @@ public class CategoryAddActivity extends AppCompatActivity {
         binding.backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               startActivity(new Intent(CategoryAddActivity.this, DashboardAdminActivity.class));
+               startActivity(new Intent(CategoryAddActivity.this, EquipmentManagerActivity.class));
                finish();
             }
         });

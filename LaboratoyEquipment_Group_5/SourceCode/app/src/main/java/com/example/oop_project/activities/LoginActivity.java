@@ -55,6 +55,12 @@ public class LoginActivity extends AppCompatActivity {
                 validateData(user);
             }
         });
+        binding.backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
     }
     private  void getData(User user){
         String email = "", password = "";
@@ -110,7 +116,7 @@ public class LoginActivity extends AppCompatActivity {
                         String userType = ""+snapshot.child("accountType").getValue();
                         Log.i("test", userType);
                         if(userType.equals("user")){
-                            startActivity(new Intent(LoginActivity.this, DashboardUserActivity.class));
+                            startActivity(new Intent(LoginActivity.this, DashboardUserActivity.class).putExtra("WITHOUT_LOGIN", 0));
                             finish();
                         }else if(userType.equals("admin")){
                             startActivity(new Intent(LoginActivity.this, DashboardAdminActivity.class));

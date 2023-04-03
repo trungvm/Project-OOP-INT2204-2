@@ -3,18 +3,26 @@ package com.example.oop_project.adapters;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.example.oop_project.MyApplication;
 import com.example.oop_project.activities.EquipmentDetailActivity;
 import com.example.oop_project.databinding.RowEquipmentsFavoriteBinding;
@@ -67,6 +75,7 @@ public class AdapterEquipmentFavorite extends RecyclerView.Adapter<AdapterEquipm
             }
         });
 
+
     }
 
     private void loadEquipmentDetails(ModelEquipment model, HolderEquipmentFavorite holder) {
@@ -84,6 +93,7 @@ public class AdapterEquipmentFavorite extends RecyclerView.Adapter<AdapterEquipm
                         String timestamp = "" + snapshot.child("timestamp").getValue();
                         String viewed = "" + snapshot.child("viewed").getValue();
                         String uid = "" + snapshot.child("uid").getValue();
+                        String equipmentImage = "" + snapshot.child("equipmentImage").getValue();
 
 
 
@@ -103,6 +113,24 @@ public class AdapterEquipmentFavorite extends RecyclerView.Adapter<AdapterEquipm
                         holder.descriptionTv.setText(description);
                         holder.dateTv.setText(date);
                         holder.quantityTv.setText(quantity);
+                        Glide.with(context)
+                                .load(equipmentImage)
+                                .centerCrop()
+                                .listener(new RequestListener<Drawable>() {
+                                    @Override
+                                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                                        binding.progressBar.setVisibility(View.VISIBLE);
+                                        return false;
+                                    }
+
+                                    @Override
+                                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+
+                                        binding.imageView.setVisibility(View.VISIBLE);
+                                        return false;
+                                    }
+                                })
+                                .into(binding.imageView);
 
                         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Categories");
                         ref.child(categoryId)
@@ -140,11 +168,13 @@ public class AdapterEquipmentFavorite extends RecyclerView.Adapter<AdapterEquipm
         TextView dateTv;
         TextView categoryTv;
         ImageButton removeFavoriteBtn;
+        ImageView imageView;
 
         public HolderEquipmentFavorite(@NonNull View itemView) {
             super(itemView);
 
             // init ui views of row_equipment_favorite
+            imageView = binding.imageView;
             progressBar = binding.progressBar;
             titleTv = binding.titleTv;
             descriptionTv = binding.descriptionTv;

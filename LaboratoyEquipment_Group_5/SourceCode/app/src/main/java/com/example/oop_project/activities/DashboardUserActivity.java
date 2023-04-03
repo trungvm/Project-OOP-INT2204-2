@@ -19,12 +19,14 @@ public class DashboardUserActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private ActivityDashboardUserBinding binding;
     private boolean isUser = false;
+    private int isLoginWithout = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityDashboardUserBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        isLoginWithout = getIntent().getIntExtra("WITHOUT_LOGIN", 0);
         firebaseAuth = FirebaseAuth.getInstance();
         checkUser();
 
@@ -75,10 +77,13 @@ public class DashboardUserActivity extends AppCompatActivity {
     }
     private void checkUser() {
         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-        if (firebaseUser == null) {
+        if (firebaseUser == null && isLoginWithout == 0) {
             startActivity(new Intent(this, MainActivity.class));
             finish();
-        } else {
+
+        }  else if(isLoginWithout == 1){
+            binding.textUserName.setText("Anonymous");
+        }else {
             isUser = true;
             String email = firebaseUser.getEmail();
             binding.textUserName.setText(email);

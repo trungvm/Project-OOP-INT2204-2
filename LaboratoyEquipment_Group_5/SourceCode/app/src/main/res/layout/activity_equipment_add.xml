@@ -23,15 +23,21 @@
             android:padding="5dp"
             android:src="@drawable/ic_back_white"
             android:contentDescription="TODO" />
+
         <ImageView
             android:id="@+id/iconMain"
             android:layout_width="110dp"
             android:layout_height="110dp"
-            android:layout_centerHorizontal="true"
             android:layout_below="@id/backBtn"
-            android:background="@drawable/login_logo"
-            />
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="138dp"
+            android:layout_marginTop="0dp"
+            android:background="@drawable/login_logo" />
+
         <TextView
+            android:id="@+id/textMain"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/iconMain"
@@ -43,6 +49,16 @@
             android:textSize="20sp"/>
 
     </RelativeLayout>
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/equipmentImage"
+        android:layout_marginTop="160dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_centerHorizontal="true"
+        android:background="@color/white"
+        app:shapeAppearance="@style/styleRoundCornersImage"
+        android:src="@drawable/ic_device_gray"
+        />
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/titleTil"
         android:layout_width="match_parent"
@@ -50,8 +66,8 @@
         app:hintEnabled="false"
         android:layout_marginStart="30dp"
         android:layout_marginEnd="30dp"
-        android:layout_marginTop="225dp"
-        >
+        android:layout_below="@id/equipmentImage"
+        tools:ignore="NotSibling">
        <EditText
            android:id="@+id/titleE"
            android:layout_width="match_parent"
@@ -60,6 +76,7 @@
            android:drawablePadding="10dp"
            android:background="@drawable/shape_editext01"
            android:hint="Equipment title"
+           android:layout_marginTop="10dp"
            android:inputType="textPersonName|textCapWords"
            android:padding="10dp"
            android:textColor="@color/black"

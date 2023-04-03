@@ -2,17 +2,25 @@ package com.example.oop_project.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.example.oop_project.MyApplication;
 import com.example.oop_project.activities.EquipmentDetailActivity;
 import com.example.oop_project.databinding.RowEquipmentsUserBinding;
@@ -59,6 +67,7 @@ public class AdapterEquipmentUser extends RecyclerView.Adapter<AdapterEquipmentU
         int quantity = model.getQuantity();
         long timestamp = model.getTimestamp();
         int viewed = model.getViewed();
+        String equipmentImage = model.getEquipmentImage();
 
         String date = MyApplication.formatTimestamp(timestamp);
 
@@ -101,6 +110,24 @@ public class AdapterEquipmentUser extends RecyclerView.Adapter<AdapterEquipmentU
 
             }
         });
+        Glide.with(context)
+                .load(equipmentImage)
+                .centerCrop()
+                .listener(new RequestListener<Drawable>() {
+                    @Override
+                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                        binding.progressBar.setVisibility(View.VISIBLE);
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+
+                        binding.imageView.setVisibility(View.VISIBLE);
+                        return false;
+                    }
+                })
+                .into(binding.imageView);
     }
 
     @Override
@@ -123,9 +150,11 @@ public class AdapterEquipmentUser extends RecyclerView.Adapter<AdapterEquipmentU
         TextView descriptionTv;
         TextView dateTv;
         ProgressBar progressBar;
+        ImageView imageView;
 
         public HolderEquipemntUser(@NonNull View itemView) {
             super(itemView);
+            imageView = binding.imageView;
             titleTv = binding.titleTv;
             categoryTv = binding.categoryTv;
             quantityTv = binding.quantityTv;
