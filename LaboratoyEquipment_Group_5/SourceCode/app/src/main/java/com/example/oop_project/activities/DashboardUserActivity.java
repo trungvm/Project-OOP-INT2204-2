@@ -14,6 +14,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.Calendar;
+
 
 public class DashboardUserActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
@@ -73,6 +75,13 @@ public class DashboardUserActivity extends AppCompatActivity {
               }
           });
       }
+      binding.layoutCart.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View v) {
+              startActivity(new Intent(DashboardUserActivity.this, CartActivity.class));
+
+          }
+      });
 
     }
     private void checkUser() {

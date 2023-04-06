@@ -33,6 +33,53 @@ public class MyApplication extends Application {
         String date = DateFormat.format("dd/MM/yyyy", cal).toString();
         return date;
     }
+    public static void addToCart(Context context, String equipmentId){
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        long timestamp = System.currentTimeMillis();
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("equipmentId", equipmentId);
+        hashMap.put("timestamp", "" + timestamp);
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
+        ref.child(firebaseAuth.getUid())
+                .child("Carts")
+                .child(equipmentId)
+                .setValue(hashMap)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        Toast.makeText(context, "Thêm vào giỏ hàng thành công", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(context, "Có lỗi xảy ra!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+    public static void removeFromCart(Context context, String equipmentId){
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        if(firebaseAuth.getCurrentUser() == null){
+            Toast.makeText(context, "You're not logged in", Toast.LENGTH_SHORT).show();
+        }else{
+            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
+            ref.child(firebaseAuth.getUid()).child("Carts").child(equipmentId)
+                    .removeValue()
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            Toast.makeText(context, "Removed to your cart", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(context, "Failed to remove cart!", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        }
+    }
+
     public static  void addToFavorite(Context context, String equipmentId){
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         if(firebaseAuth.getCurrentUser() == null){

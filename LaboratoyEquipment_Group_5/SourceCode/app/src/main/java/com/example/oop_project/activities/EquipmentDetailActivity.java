@@ -3,6 +3,7 @@ package com.example.oop_project.activities;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -33,6 +34,7 @@ public class EquipmentDetailActivity extends AppCompatActivity {
     public FirebaseAuth firebaseAuth;
     String equipmentId;
     boolean isInMyFavorite = false;
+    private String quantity = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,9 +56,25 @@ public class EquipmentDetailActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
+        binding.addCartBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                checkEquipmentQuantity();
+            }
+        });
 
 
+    }
 
+    private void checkEquipmentQuantity() {
+        int quantityInStock = Integer.parseInt(quantity);
+        if(quantityInStock == 0){
+            Toast.makeText(this, "Thiết bị đã bị mượn hết", Toast.LENGTH_SHORT).show();
+        }else{
+            // Thêm sản phẩm vào trong cart;
+            MyApplication.addToCart(EquipmentDetailActivity.this, equipmentId);
+
+        }
     }
 
     private void loadEquipmentDetails() {
@@ -68,7 +86,7 @@ public class EquipmentDetailActivity extends AppCompatActivity {
                         String title = ""+snapshot.child("title").getValue();
                         String description = ""+snapshot.child("description").getValue();
                         String timestamp = ""+snapshot.child("timestamp").getValue();
-                        String quantity = ""+snapshot.child("quantity").getValue();
+                        quantity = ""+snapshot.child("quantity").getValue();
                         String manual = ""+snapshot.child("manual").getValue();
                         String categoryId = ""+snapshot.child("categoryId").getValue();
                         String date = MyApplication.formatTimestamp(Long.parseLong(timestamp));

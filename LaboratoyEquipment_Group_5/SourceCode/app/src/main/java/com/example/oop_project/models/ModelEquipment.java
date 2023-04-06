@@ -7,6 +7,7 @@ public class ModelEquipment {
     private int quantity;
     private int viewed, borrowed;
     private boolean isFavorite;
+    private int quantityBorrow;
     public ModelEquipment() {
         this.description = "";
         this.title = "";
@@ -23,6 +24,14 @@ public class ModelEquipment {
         this.manual = manual;
         this.timestamp = timestamp;
         this.quantity = quantity;
+    }
+
+    public int getQuantityBorrow() {
+        return quantityBorrow;
+    }
+
+    public void setQuantityBorrow(int quantityBorrow) {
+        this.quantityBorrow = quantityBorrow;
     }
 
     public String getEquipmentImage() {

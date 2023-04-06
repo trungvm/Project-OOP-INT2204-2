@@ -33,7 +33,6 @@ public class EquipmentManagerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityEquipmentManagerBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
         firebaseAuth = FirebaseAuth.getInstance();
         loadCategories();
 
