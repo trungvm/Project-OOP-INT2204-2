@@ -2,13 +2,79 @@ package com.oop.iotapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.orm.SugarRecord;
+
+import java.util.List;
 
 public class RegisterActivity extends AppCompatActivity {
+    List<User> users;
+    private EditText et_username;
+    private EditText et_email;
+    private EditText et_password;
+    private EditText et_repassword;
+    private Button bt_register;
+    private TextView tv_loginForward;
+
+    private String username;
+    private String email;
+    private String password;
+    private String repassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+
+        users = User.listAll(User.class);
+        initViews();
+    }
+
+    private void initViews() {
+        et_email = findViewById(R.id.edittext_email_register);
+        et_username = findViewById(R.id.edittext_username);
+        et_password = findViewById(R.id.edittext_password_register);
+        et_repassword = findViewById(R.id.edittext_repassword_register);
+        bt_register = findViewById(R.id.button_register);
+        tv_loginForward = findViewById(R.id.textview_login_forward);
+        bt_register.setOnClickListener(e -> {
+            registerClick();
+        });
+
+        tv_loginForward.setOnClickListener(e -> {
+            Intent login = new Intent(RegisterActivity.this, LoginActivity.class);
+            startActivity(login);
+        });
+    }
+
+    private void registerClick() {
+
+        username = et_username.getText().toString();
+        email = et_email.getText().toString();
+        password = et_password.getText().toString();
+        repassword = et_repassword.getText().toString();
+
+        if (username.equals("") || email.equals("") || password.equals("") || repassword.equals("")){
+            Toast.makeText(this, "Không được để trống trường nào!", Toast.LENGTH_SHORT).show();
+        } else if (password.length() < 8){
+            Toast.makeText(this, "Password cần nhiều hơn hoặc bằng 8 ký tự", Toast.LENGTH_SHORT).show();
+        } else if (!password.equals(repassword)) {
+            Toast.makeText(this, "Mật khẩu nhập lại không đúng!", Toast.LENGTH_SHORT).show();
+        } else {
+            String temp = password;
+            for (int i = 0; i< password.length(); i++){
+                if (temp.charAt(i) > 126 && temp.charAt(i) < 32) {
+                    Toast.makeText(this, "Bạn chỉ được nhập các ký tự cho phép", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+        //TODO more condition
+        User newUser = new User(SugarRecord.count(User.class), username, email, password);
     }
 }

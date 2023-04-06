@@ -11,6 +11,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.IoTApp"
         tools:targetApi="31">
+        <meta-data android:name="DATABASE" android:value="ntiot.db" />
+        <meta-data android:name="VERSION" android:value="4" />
+        <meta-data android:name="QUERY_LOG" android:value="true" />
+        <meta-data android:name="DOMAIN_PACKAGE_NAME" android:value="com.ntiot" />
         <activity
             android:name=".RegisterActivity"
             android:exported="true" >
@@ -23,15 +27,10 @@
         <activity
             android:name=".LoginActivity"
             android:exported="true">
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
-
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
         </activity>
         <activity
             android:name=".MainActivity"
-            android:exported="false">
+            android:exported="true">
         </activity>
     </application>
 
