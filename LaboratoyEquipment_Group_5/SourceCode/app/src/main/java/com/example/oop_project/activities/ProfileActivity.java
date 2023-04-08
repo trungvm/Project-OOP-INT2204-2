@@ -34,6 +34,7 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         firebaseAuth = FirebaseAuth.getInstance();
+        loadUserInformation();
         int currentTab = getIntent().getIntExtra("CURRENT_TAB", 0);
         binding.bottomNavigationView.getMenu().getItem(currentTab).setChecked(true);
         binding.bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -68,8 +69,6 @@ public class ProfileActivity extends AppCompatActivity {
                 return false;
             }
         });
-        loadUserInformation();
-
         binding.profileEditBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -112,10 +111,12 @@ public class ProfileActivity extends AppCompatActivity {
                         binding.addressTv.setText(address.equals("null") ? "N/A" :address);
                         binding.otherInfo.setText(otherInfor.equals("null") ? "N/A" : otherInfor);
                         binding.genderTv.setText(sex);
-                        Glide.with(ProfileActivity.this)
-                                .load(profileImage)
-                                .placeholder(R.drawable.ic_person_gray)
-                                .into(binding.profileTv);
+                        if(!profileImage.equals("null") && !isDestroyed()){
+                            Glide.with(ProfileActivity.this)
+                                    .load(profileImage)
+                                    .placeholder(R.drawable.ic_person_gray)
+                                    .into(binding.profileTv);
+                        }
                         binding.birthdayTv.setText(birthday.equals("null") ? "N/A" : birthday);
 
 

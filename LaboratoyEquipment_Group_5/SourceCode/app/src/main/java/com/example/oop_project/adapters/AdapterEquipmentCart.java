@@ -1,5 +1,6 @@
 package com.example.oop_project.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -18,6 +19,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -41,23 +43,29 @@ public class AdapterEquipmentCart extends RecyclerView.Adapter<AdapterEquipmentC
     private Context context;
     private ArrayList<ModelEquipment> equipmentArrayList;
     private RowEquipmentsCartBinding binding;
-    private int quantityBorrow = 0;
-    private boolean isChecked = false;
+    private ArrayList<Integer> quantityBorrow;
+    private ArrayList<Boolean> isChecked;
+
+
 
     public AdapterEquipmentCart(Context context, ArrayList<ModelEquipment> equipmentArrayList) {
         this.context = context;
         this.equipmentArrayList = equipmentArrayList;
+        quantityBorrow = new ArrayList<>();
+        isChecked = new ArrayList<>();
+        for(int i = 0; i < equipmentArrayList.size(); i++){
+            quantityBorrow.add(0);
+            isChecked.add(false);
+        }
     }
-
     @NonNull
     @Override
     public HolderEquipmentCart onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         binding = RowEquipmentsCartBinding.inflate(LayoutInflater.from(context), parent, false);
         return new HolderEquipmentCart(binding.getRoot());
     }
-
     @Override
-    public void onBindViewHolder(@NonNull HolderEquipmentCart holder, int position) {
+    public void onBindViewHolder(@NonNull HolderEquipmentCart holder, @SuppressLint("RecyclerView") int position) {
         ModelEquipment modelEquipment = equipmentArrayList.get(position);
         loadEquipmentDetails(modelEquipment, holder);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -77,37 +85,69 @@ public class AdapterEquipmentCart extends RecyclerView.Adapter<AdapterEquipmentC
         holder.minus_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(quantityBorrow == 0){
-                    quantityBorrow = 0;
+                if(quantityBorrow.get(position) == 0){
+                    quantityBorrow.set(position, 0);
                 }else{
-                    quantityBorrow--;
+                    int x = quantityBorrow.get(position);
+                    x--;
+                    quantityBorrow.set(position, x);
                 }
-                holder.quantity_text_choose.setText(""+quantityBorrow);
-                modelEquipment.setQuantityBorrow(quantityBorrow);
+                holder.quantity_text_choose.setText(""+quantityBorrow.get(position));
+                modelEquipment.setQuantityBorrow(quantityBorrow.get(position));
+                long timestamp = System.currentTimeMillis();
+                Intent intent = new Intent("ACTION_GET_DATA");
+                intent.putExtra("equipmentId", modelEquipment.getId());
+                intent.putExtra("quantityBorrowed", ""+quantityBorrow.get(position));
+                intent.putExtra("equipmentName", modelEquipment.getTitle());
+                intent.putExtra("timestamp", ""+timestamp);
+                intent.putExtra("isChecked", ""+isChecked.get(position));
+                LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
             }
         });
         holder.plus_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(quantityBorrow < modelEquipment.getQuantity()){
-                    quantityBorrow++;
+                if(quantityBorrow.get(position) < modelEquipment.getQuantity()){
+                    int x = quantityBorrow.get(position);
+                    x++;
+                    quantityBorrow.set(position, x);
                 }else{
-                    quantityBorrow = modelEquipment.getQuantity();
+                    quantityBorrow.set(position, modelEquipment.getQuantity());
                 }
-                holder.quantity_text_choose.setText(""+quantityBorrow);
-                modelEquipment.setQuantityBorrow(quantityBorrow);
+                holder.quantity_text_choose.setText(""+quantityBorrow.get(position));
+                modelEquipment.setQuantityBorrow(quantityBorrow.get(position));
+                long timestamp = System.currentTimeMillis();
+                Intent intent = new Intent("ACTION_GET_DATA");
+                intent.putExtra("equipmentId", modelEquipment.getId());
+                intent.putExtra("quantityBorrowed", ""+quantityBorrow.get(position));
+                intent.putExtra("equipmentName", modelEquipment.getTitle());
+                intent.putExtra("timestamp", ""+timestamp);
+                intent.putExtra("isChecked", ""+isChecked.get(position));
+                LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
             }
         });
+
         holder.checkIsBorrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                isChecked = ! isChecked;
-                holder.checkIsBorrow.setChecked(isChecked);
+                boolean flag = isChecked.get(position);
+                flag = !flag;
+                isChecked.set(position, flag);
+                holder.checkIsBorrow.setChecked(flag);
+                equipmentArrayList.set(position, modelEquipment);
+                long timestamp = System.currentTimeMillis();
+                Intent intent = new Intent("ACTION_GET_DATA");
+                intent.putExtra("equipmentId", modelEquipment.getId());
+                intent.putExtra("quantityBorrowed", ""+quantityBorrow.get(position));
+                intent.putExtra("equipmentName", modelEquipment.getTitle());
+                intent.putExtra("timestamp", ""+timestamp);
+                intent.putExtra("isChecked", ""+isChecked.get(position));
+                LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
             }
         });
 
-    }
 
+    }
     private void loadEquipmentDetails(ModelEquipment model, HolderEquipmentCart holder) {
         String equipmentId = model.getId();
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Equipments");
@@ -134,13 +174,12 @@ public class AdapterEquipmentCart extends RecyclerView.Adapter<AdapterEquipmentC
                         model.setCategoryId(categoryId);
                         model.setUid(uid);
                         model.setQuantity(Integer.parseInt(quantity));
-                        model.setQuantityBorrow(quantityBorrow);
 
                         String date = MyApplication.formatTimestamp(Long.parseLong(timestamp));
 
 
                         // set to view
-                        holder.quantity_text_choose.setText(""+quantityBorrow);
+                        holder.quantity_text_choose.setText("0");
                         holder.titleTv.setText(title);
                         holder.descriptionTv.setText(description);
                         holder.dateTv.setText(date);
@@ -186,7 +225,6 @@ public class AdapterEquipmentCart extends RecyclerView.Adapter<AdapterEquipmentC
                     }
                 });
     }
-
     @Override
     public int getItemCount() {
         return equipmentArrayList.size();

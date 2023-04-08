@@ -5,7 +5,8 @@ public class ModelEquipment {
     private String equipmentImage;
     private long timestamp;
     private int quantity;
-    private int viewed, borrowed;
+    private int viewed;
+    private boolean isBorrowed;
     private boolean isFavorite;
     private int quantityBorrow;
     public ModelEquipment() {
@@ -59,15 +60,13 @@ public class ModelEquipment {
         this.viewed = viewed;
     }
 
-    public int getBorrowed() {
-        return borrowed;
+    public boolean isBorrowed() {
+        return isBorrowed;
     }
 
-    public void setBorrowed(int borrowed) {
-        this.borrowed = borrowed;
+    public void setBorrowed(boolean borrowed) {
+        isBorrowed = borrowed;
     }
-
-
 
     public String getUid() {
         return uid;

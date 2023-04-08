@@ -33,7 +33,7 @@
     </RelativeLayout>
     <androidx.recyclerview.widget.RecyclerView
         android:layout_marginTop="5dp"
-        android:id="@+id/favoriteRv"
+        android:id="@+id/cartRv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/toolbarRl"

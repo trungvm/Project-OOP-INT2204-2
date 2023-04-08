@@ -154,16 +154,14 @@
                 android:layout_marginTop="12dp"
                 android:layout_marginLeft="40dp"
                 android:textSize="20sp"
-                android:layout_weight="5"
                 />
             <TextView
                 android:id="@+id/mobileTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="123456"
-                android:layout_weight="1"
                 android:textColor="@color/black"
-                android:layout_marginRight="12dp"
+                android:layout_marginStart="184dp"
                 android:gravity="center"
                 android:layout_marginTop="12dp"
                 android:textSize="20sp"
@@ -183,18 +181,16 @@
                 android:layout_marginTop="12dp"
                 android:layout_marginLeft="40dp"
                 android:textSize="20sp"
-                android:layout_weight="5"
                 />
             <TextView
                 android:id="@+id/addressTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Text Address"
-                android:layout_weight="1"
                 android:textColor="@color/black"
                 android:layout_marginTop="12dp"
                 android:textSize="20sp"
-                android:layout_marginRight="12dp"
+                android:layout_marginStart="170dp"
                 android:gravity="center"
                 />
         </LinearLayout>
@@ -211,18 +207,16 @@
                 android:layout_marginTop="12dp"
                 android:layout_marginLeft="40dp"
                 android:textSize="20sp"
-                android:layout_weight="5"
                 />
             <TextView
                 android:id="@+id/birthdayTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="23/10/2003"
-                android:layout_weight="1"
                 android:textColor="@color/black"
                 android:layout_marginTop="12dp"
                 android:textSize="20sp"
-                android:layout_marginRight="12dp"
+                android:layout_marginStart="141dp"
                 android:gravity="center"
                 />
         </LinearLayout>
@@ -239,18 +233,16 @@
                 android:layout_marginTop="12dp"
                 android:layout_marginLeft="40dp"
                 android:textSize="20sp"
-                android:layout_weight="5"
                 />
             <TextView
                 android:id="@+id/genderTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Male"
-                android:layout_weight="1"
+                android:layout_marginStart="182dp"
                 android:textColor="@color/black"
                 android:layout_marginTop="12dp"
                 android:textSize="20sp"
-                android:layout_marginRight="12dp"
                 android:gravity="center"
                 />
         </LinearLayout>
@@ -267,19 +259,17 @@
                 android:layout_marginTop="12dp"
                 android:layout_marginLeft="40dp"
                 android:textSize="20sp"
-                android:layout_weight="5"
                 />
             <TextView
                 android:id="@+id/otherInfo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="N/A"
-                android:layout_weight="1"
+                android:inputType="textMultiLine"
+                android:layout_marginStart="141dp"
                 android:textColor="@color/black"
                 android:layout_marginTop="12dp"
                 android:textSize="20sp"
-                android:layout_marginRight="12dp"
-                android:gravity="center"
                 />
         </LinearLayout>
     </LinearLayout>

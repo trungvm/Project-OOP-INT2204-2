@@ -19,6 +19,7 @@
             android:layout_height="wrap_content"
             android:src="@drawable/ic_back_white"
             android:layout_centerVertical="true"
+            android:padding="10dp"
             android:layout_marginStart="10dp"
             android:background="@android:color/transparent"
             />

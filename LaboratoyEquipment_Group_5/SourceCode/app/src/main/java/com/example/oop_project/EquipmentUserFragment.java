@@ -139,6 +139,7 @@ public class EquipmentUserFragment extends Fragment {
                 for(DataSnapshot ds: snapshot.getChildren()){
                     ModelEquipment model = ds.getValue(ModelEquipment.class);
 
+
                     equipmentArrayList.add(model);
                 }
 

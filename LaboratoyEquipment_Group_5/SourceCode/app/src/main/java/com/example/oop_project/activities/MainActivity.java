@@ -24,14 +24,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, LoginActivity.class));
             }
         });
-        // handle skipBtn, start contine without login screen
-        binding.skipBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this, DashboardUserActivity.class).putExtra("WITHOUT_LOGIN", 1));
-                finish();
-            }
-        });
 
 
 
