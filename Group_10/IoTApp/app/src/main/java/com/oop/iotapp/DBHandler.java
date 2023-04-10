@@ -2,6 +2,7 @@ package com.oop.iotapp;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -43,6 +44,41 @@ public class DBHandler extends SQLiteOpenHelper {
         db.insert(TABLE_NAME, null, values);
 
         db.close();
+    }
+
+    public boolean checkMatch(String email){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME, null);
+        if (cursor.moveToFirst()){
+            do {
+                String db_email = cursor.getString(2);
+                if (db_email.equals(email)){
+                    return false;
+                }
+            }
+            while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return true;
+    }
+
+    public boolean checkMatch(String email, String password){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME, null);
+        if (cursor.moveToFirst()){
+            do {
+                String db_email = cursor.getString(2);
+                String db_password = cursor.getString(3);
+                if (db_email.equals(email) && db_password.equals(password)){
+                    return true;
+                }
+            }
+            while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return false;
     }
 
     @Override
