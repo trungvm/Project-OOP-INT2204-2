@@ -3,3 +3,6 @@ Báo cáo tiến độ:
   - Bổ sung kiến thức Android
 * Tuần 9:
   - Update MainActivity
+* Tuần 10:
+  - Thêm login - register cho app
+  - Tuy nhiên app đang bị crash, nhóm đang tìm cách khắc phục sớm nhất có thể
