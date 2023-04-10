@@ -54,27 +54,28 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void registerClick() {
-
         username = et_username.getText().toString();
         email = et_email.getText().toString();
         password = et_password.getText().toString();
         repassword = et_repassword.getText().toString();
 
-        if (username.equals("") || email.equals("") || password.equals("") || repassword.equals("")){
+        if (username.equals("") || email.equals("") || password.equals("") || repassword.equals("")) {
             Toast.makeText(this, "Không được để trống trường nào!", Toast.LENGTH_SHORT).show();
-        } else if (password.length() < 8){
+        } else if (password.length() < 8) {
             Toast.makeText(this, "Password cần nhiều hơn hoặc bằng 8 ký tự", Toast.LENGTH_SHORT).show();
         } else if (!password.equals(repassword)) {
             Toast.makeText(this, "Mật khẩu nhập lại không đúng!", Toast.LENGTH_SHORT).show();
         } else {
-            String temp = password;
-            for (int i = 0; i< password.length(); i++){
-                if (temp.charAt(i) > 126 && temp.charAt(i) < 32) {
+            for (int i = 0; i < password.length(); i++) {
+                char c = password.charAt(i);
+                if (!(c >= ' ' && c <= '~')) {
                     Toast.makeText(this, "Bạn chỉ được nhập các ký tự cho phép", Toast.LENGTH_SHORT).show();
+                    return;
                 }
             }
+            User newUser = new User(SugarRecord.count(User.class), username, email, password);
+            newUser.save();
+            Toast.makeText(this, "Đăng ký thành công!", Toast.LENGTH_SHORT).show();
         }
-        //TODO more condition
-        User newUser = new User(SugarRecord.count(User.class), username, email, password);
     }
 }

@@ -6,13 +6,13 @@ public class User extends SugarRecord {
     private String username;
     private String email;
     private String password;
-    private long id;
+    private Long id;
 
     public User(){
 
     }
 
-    public User( long id, String username, String email, String password) {
+    public User( Long id, String username, String email, String password) {
         this.username = username;
         this.email = email;
         this.password = password;
@@ -47,7 +47,7 @@ public class User extends SugarRecord {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 }
