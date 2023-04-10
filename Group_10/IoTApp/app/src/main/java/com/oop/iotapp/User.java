@@ -1,22 +1,20 @@
 package com.oop.iotapp;
 
-import com.orm.SugarRecord;
-
-public class User extends SugarRecord {
+public class User{
     private String username;
     private String email;
     private String password;
-    private Long id;
 
     public User(){
-
+        this.username = "null";
+        this.email = "null";
+        this.password = "null";
     }
 
-    public User( Long id, String username, String email, String password) {
+    public User(String username, String email, String password) {
         this.username = username;
         this.email = email;
         this.password = password;
-        this.id = id;
     }
 
     public String getUsername() {
@@ -41,13 +39,5 @@ public class User extends SugarRecord {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 }

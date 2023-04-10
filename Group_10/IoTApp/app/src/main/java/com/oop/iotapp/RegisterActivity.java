@@ -27,13 +27,24 @@ public class RegisterActivity extends AppCompatActivity {
     private String password;
     private String repassword;
 
+    private DBHandler dbHandler;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-
-        users = User.listAll(User.class);
         initViews();
+
+        dbHandler = new DBHandler(RegisterActivity.this);
+
+        bt_register.setOnClickListener(e -> {
+            registerClick();
+        });
+
+        tv_loginForward.setOnClickListener(e -> {
+            Intent login = new Intent(RegisterActivity.this, LoginActivity.class);
+            startActivity(login);
+        });
     }
 
     private void initViews() {
@@ -43,14 +54,6 @@ public class RegisterActivity extends AppCompatActivity {
         et_repassword = findViewById(R.id.edittext_repassword_register);
         bt_register = findViewById(R.id.button_register);
         tv_loginForward = findViewById(R.id.textview_login_forward);
-        bt_register.setOnClickListener(e -> {
-            registerClick();
-        });
-
-        tv_loginForward.setOnClickListener(e -> {
-            Intent login = new Intent(RegisterActivity.this, LoginActivity.class);
-            startActivity(login);
-        });
     }
 
     private void registerClick() {
@@ -73,9 +76,13 @@ public class RegisterActivity extends AppCompatActivity {
                     return;
                 }
             }
-            User newUser = new User(SugarRecord.count(User.class), username, email, password);
-            newUser.save();
+            User newUser = new User(username, email, password);
+            dbHandler.addUser(newUser);
             Toast.makeText(this, "Đăng ký thành công!", Toast.LENGTH_SHORT).show();
+            et_username.setText("");
+            et_email.setText("");
+            et_password.setText("");
+            et_repassword.setText("");
         }
     }
 }

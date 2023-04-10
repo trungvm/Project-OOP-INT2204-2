@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -11,10 +12,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.IoTApp"
         tools:targetApi="31">
-        <meta-data android:name="DATABASE" android:value="ntiot.db" />
-        <meta-data android:name="VERSION" android:value="4" />
-        <meta-data android:name="QUERY_LOG" android:value="true" />
-        <meta-data android:name="DOMAIN_PACKAGE_NAME" android:value="com.ntiot" />
+<!--        android:name="com.orm.SugarApp" >-->
+<!--        <meta-data android:name="DATABASE" android:value="user.db" />-->
+<!--        <meta-data android:name="VERSION" android:value="4" />-->
+<!--        <meta-data android:name="QUERY_LOG" android:value="true" />-->
+<!--        <meta-data android:name="DOMAIN_PACKAGE_NAME" android:value="com.ntiot" />-->
         <activity
             android:name=".RegisterActivity"
             android:exported="true" >
