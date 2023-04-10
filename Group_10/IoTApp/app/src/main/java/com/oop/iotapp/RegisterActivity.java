@@ -42,8 +42,7 @@ public class RegisterActivity extends AppCompatActivity {
         });
 
         tv_loginForward.setOnClickListener(e -> {
-            Intent login = new Intent(RegisterActivity.this, LoginActivity.class);
-            startActivity(login);
+            loginIntent();
         });
     }
 
@@ -56,6 +55,10 @@ public class RegisterActivity extends AppCompatActivity {
         tv_loginForward = findViewById(R.id.textview_login_forward);
     }
 
+    private void loginIntent(){
+        Intent login = new Intent(RegisterActivity.this, LoginActivity.class);
+        startActivity(login);
+    }
     private void registerClick() {
         username = et_username.getText().toString();
         email = et_email.getText().toString();
@@ -85,6 +88,7 @@ public class RegisterActivity extends AppCompatActivity {
             et_email.setText("");
             et_password.setText("");
             et_repassword.setText("");
+            loginIntent();
         }
     }
 }
