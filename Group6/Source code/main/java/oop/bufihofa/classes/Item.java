@@ -7,7 +7,6 @@ public class Item {
     private double quantity = 1;
     private int id = 1000000000;
     private String unit = "?";
-    private BasicDate date = new BasicDate(1,1,2000);
 
     //constructor
     public Item(){}
@@ -65,7 +64,4 @@ public class Item {
         this.unit = unit;
     }
 
-    public String toData() {
-        return "Item{" + "name=" + name + ", price=" + price + ", quantity=" + quantity + ", id=" + id + ", unit=" + unit + ", date=" + date.toData() + '}';
-    }
 }
