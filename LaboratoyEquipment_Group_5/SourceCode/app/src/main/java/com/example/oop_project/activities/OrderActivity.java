@@ -258,28 +258,29 @@ public class OrderActivity extends AppCompatActivity {
         hashMap.put("otherInfor", otherInfor);
         hashMap.put("report", report);
         hashMap.put("timestamp", timestamp);
-        hashMap.put("items", listOfKey);
         hashMap.put("uid", firebaseAuth.getUid());
+        for(int i = 0; i < listOfKey.size(); i++){
+            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("EquipmentsBorrowed");
+            ref.child(listOfKey.get(i))
+                    .setValue(hashMap)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            progressDialog.dismiss();
+                            Toast.makeText(OrderActivity.this, "Mượn thành công!", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(OrderActivity.this, CartActivity.class));
+                            finish();
 
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("EquipmentsBorrowed");
-        ref.child(""+timestamp)
-                .setValue(hashMap)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                        progressDialog.dismiss();
-                        Toast.makeText(OrderActivity.this, "Mượn thành công!", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(OrderActivity.this, CartActivity.class));
-                        finish();
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            progressDialog.dismiss();
+                            Toast.makeText(OrderActivity.this, "Có lỗi xảy ra!", Toast.LENGTH_SHORT).show();
+                        }
+                    });
 
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        progressDialog.dismiss();
-                        Toast.makeText(OrderActivity.this, "Có lỗi xảy ra!", Toast.LENGTH_SHORT).show();
-                    }
-                });
+        }
 
 
 

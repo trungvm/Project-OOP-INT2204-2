@@ -72,7 +72,7 @@ public class CartActivity extends AppCompatActivity  {
                         }
                     }
                    if(flag == true){
-                       startActivity(new Intent(CartActivity.this, OrderActivity.class).putStringArrayListExtra("listOfKey",listOfKey));
+                       startActivity(new Intent(CartActivity.this, OrderActivity.class).putStringArrayListExtra("listOfKey", listOfKey));
                        finish();
                    }
                 }
@@ -82,6 +82,7 @@ public class CartActivity extends AppCompatActivity  {
     }
 
     private void insertDataToFirebase() {
+        long timestamp = System.currentTimeMillis();
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
         for(int i = 0; i < listIdChecked.size(); i++){
             String key = ref.push().getKey();
@@ -90,6 +91,7 @@ public class CartActivity extends AppCompatActivity  {
             hashMap.put("equipmentId", listIdChecked.get(i).first);
             hashMap.put("quantityBorrowed", listIdChecked.get(i).second);
             hashMap.put("status", "new");
+            hashMap.put("timestamp", ""+timestamp);
             ref.child(firebaseAuth.getUid())
                     .child("Borrowed")
                     .child("HH"+key)

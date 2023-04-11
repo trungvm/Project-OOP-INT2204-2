@@ -1,6 +1,7 @@
 package com.example.oop_project.models;
 
 public class ModelEquipment {
+    private String key;
     private String uid, id, title, description, categoryId, manual;
     private String equipmentImage;
     private long timestamp;
@@ -25,6 +26,14 @@ public class ModelEquipment {
         this.manual = manual;
         this.timestamp = timestamp;
         this.quantity = quantity;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 
     public int getQuantityBorrow() {

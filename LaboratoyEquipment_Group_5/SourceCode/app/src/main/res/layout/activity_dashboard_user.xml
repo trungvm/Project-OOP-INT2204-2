@@ -177,7 +177,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/layoutRules"
+                android:id="@+id/layoutEquipmentBorrowed"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="22dp"
@@ -203,7 +203,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="Rules"
+                    android:text="Thiết bị mượn"
                     android:textColor="@color/colorAccent"
                     android:textSize="20dp"
                     android:textStyle="bold" />
@@ -252,7 +252,7 @@
                 android:padding="20dp"
                 app:layout_constraintEnd_toEndOf="@id/layoutQA"
                 app:layout_constraintStart_toStartOf="@id/layoutEquipments"
-                app:layout_constraintTop_toBottomOf="@id/layoutRules">
+                app:layout_constraintTop_toBottomOf="@id/layoutEquipmentBorrowed">
 
                 <TextView
                     android:id="@+id/textTrending"

@@ -46,6 +46,12 @@ public class DashboardUserActivity extends AppCompatActivity {
                 startActivity(new Intent(DashboardUserActivity.this, EquipmentUserShowActivity.class));
             }
         });
+        binding.layoutEquipmentBorrowed.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(DashboardUserActivity.this, EquipmentsBorrowedActivity.class));
+            }
+        });
       if(isUser == true){
           binding.bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
               @Override

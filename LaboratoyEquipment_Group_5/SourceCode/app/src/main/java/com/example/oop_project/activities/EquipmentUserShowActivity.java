@@ -13,6 +13,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 
+import com.example.oop_project.EquipmentBorrowedFragment;
 import com.example.oop_project.EquipmentUserFragment;
 import com.example.oop_project.databinding.ActivityEquipmentUserShowBinding;
 import com.example.oop_project.models.ModelCategory;
@@ -109,7 +110,7 @@ public class EquipmentUserShowActivity extends AppCompatActivity {
         viewPager.setAdapter(viewPagerAdapter);
 
     }
-    public class ViewPagerAdapter extends FragmentPagerAdapter {
+    public static class ViewPagerAdapter extends FragmentPagerAdapter {
         private ArrayList<EquipmentUserFragment> fragmentList = new ArrayList<>();
         private ArrayList<String> fragmentTitleList = new ArrayList<>();
         private Context context;
@@ -146,5 +147,7 @@ public class EquipmentUserShowActivity extends AppCompatActivity {
         public CharSequence getPageTitle(int position) {
             return fragmentTitleList.get(position);
         }
+
+
     }
 }
