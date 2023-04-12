@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.viewpager.widget.ViewPager;
 
@@ -16,35 +15,28 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
-import android.util.Pair;
+import android.util.TypedValue;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.oop_project.EquipmentBorrowedFragment;
-import com.example.oop_project.EquipmentUserFragment;
-import com.example.oop_project.OnButtonClickListener;
-import com.example.oop_project.R;
 import com.example.oop_project.databinding.ActivityEquipmentsBorrowedBinding;
 import com.example.oop_project.models.ModelCategory;
-import com.example.oop_project.models.ModelEquipment;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.lang.ref.Reference;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class EquipmentsBorrowedActivity extends AppCompatActivity implements OnButtonClickListener {
+public class EquipmentsBorrowedActivity extends AppCompatActivity{
     public ArrayList<ModelCategory> categoryArrayList;
     public EquipmentsBorrowedActivity.ViewPagerAdapter viewPagerAdapter;
     private ActivityEquipmentsBorrowedBinding binding;
@@ -65,7 +57,9 @@ public class EquipmentsBorrowedActivity extends AppCompatActivity implements OnB
         binding.backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onBackPressed();
+                startActivity(new Intent(EquipmentsBorrowedActivity.this, DashboardUserActivity.class));
+                finish();
+
             }
         });
         binding.tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -76,10 +70,16 @@ public class EquipmentsBorrowedActivity extends AppCompatActivity implements OnB
                     case 0:
                         binding.reportLayout.setVisibility(View.VISIBLE);
                         binding.submitBtn.setVisibility(View.VISIBLE);
+                        int heightInPx = (int) TypedValue.applyDimension(
+                                TypedValue.COMPLEX_UNIT_DIP, 450, getResources().getDisplayMetrics());
+                        binding.viewPagerBorrowed.getLayoutParams().height = heightInPx;
+                        binding.viewPagerBorrowed.requestLayout();
                         break;
                     case 1:
                         binding.reportLayout.setVisibility(View.GONE);
                         binding.submitBtn.setVisibility(View.GONE);
+                        binding.viewPagerBorrowed.getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;
+                        binding.viewPagerBorrowed.requestLayout();
                         break;
                     default:
                         break;
@@ -134,7 +134,7 @@ public class EquipmentsBorrowedActivity extends AppCompatActivity implements OnB
                                     int quantityBorrowed = Integer.parseInt(""+snapshot.child("quantityBorrowed").getValue());
                                     DatabaseReference refE = FirebaseDatabase.getInstance().getReference("Equipments");
                                     refE.child(equipmentId)
-                                            .addValueEventListener(new ValueEventListener() {
+                                            .addListenerForSingleValueEvent(new ValueEventListener() {
                                                 @Override
                                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                                                     int quantity = Integer.parseInt("" + snapshot.child("quantity").getValue());
@@ -154,10 +154,11 @@ public class EquipmentsBorrowedActivity extends AppCompatActivity implements OnB
 
                             }
                         });
-                HashMap<String, Object> hashMap = new HashMap<>();
-                hashMap.put("reportHistory", reportHistory);
-                hashMap.put("timestampReturn", timestamp);
-                hashMap.put("status", "History");
+                    HashMap<String, Object> hashMap = new HashMap<>();
+                    hashMap.put("reportHistory", reportHistory);
+                    hashMap.put("timestampReturn", timestamp);
+                    hashMap.put("status", "History");
+                    Log.d("Keyyy", key);
                     DatabaseReference refEquipmentBorrowed = FirebaseDatabase.getInstance().getReference("EquipmentsBorrowed");
                     refEquipmentBorrowed.child(key)
                             .updateChildren(hashMap)
@@ -228,11 +229,6 @@ public class EquipmentsBorrowedActivity extends AppCompatActivity implements OnB
 
     }
 
-    @Override
-    public void onButtonClick() {
-        Toast.makeText(this, "test", Toast.LENGTH_SHORT).show();
-        Log.d("TAGG", "Test");
-    }
 
     public class ViewPagerAdapter extends FragmentPagerAdapter {
         private ArrayList<EquipmentBorrowedFragment> fragmentList = new ArrayList<>();

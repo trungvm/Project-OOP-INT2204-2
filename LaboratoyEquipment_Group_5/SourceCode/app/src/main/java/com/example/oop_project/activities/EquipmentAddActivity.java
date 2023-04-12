@@ -236,6 +236,7 @@ public class EquipmentAddActivity extends AppCompatActivity {
         hashMap.put("manual", "" + manual);
         hashMap.put("quantity", quantity);
         hashMap.put("viewed", viewed);
+        hashMap.put("numberOfBorrowings", 0);
         if(imageUri != null){
             hashMap.put("equipmentImage", ""+imageUrl);
         }

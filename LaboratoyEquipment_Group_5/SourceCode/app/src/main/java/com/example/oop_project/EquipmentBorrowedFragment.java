@@ -44,7 +44,6 @@ public class EquipmentBorrowedFragment extends Fragment  implements ViewPager.On
 
     private FragmentEquipmentBorrowedBinding binding;
     private FirebaseAuth  firebaseAuth;
-    private OnButtonClickListener buttonListener;
 
     //
     public EquipmentBorrowedFragment() {
@@ -72,9 +71,6 @@ public class EquipmentBorrowedFragment extends Fragment  implements ViewPager.On
             uid = getArguments().getString("uid");
         }
 
-    }
-    public void setOnButtonClickListener(OnButtonClickListener listener) {
-        buttonListener = listener;
     }
 
     @Override
@@ -152,11 +148,12 @@ public class EquipmentBorrowedFragment extends Fragment  implements ViewPager.On
                                 String key = ds.getKey();
                                 equipmentId = "" + ds.child("equipmentId").getValue();
                                 DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Equipments");
-                                reference.child(equipmentId).addValueEventListener(new ValueEventListener() {
+                                reference.child(equipmentId).addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                                         ModelEquipment model = snapshot.getValue(ModelEquipment.class);
                                         model.setKey(key);
+                                        model.setStatus("Borrowed");
                                         equipmentArrayListBorrowing.add(model);
                                         adapterEquipmentBorrowed.notifyDataSetChanged();
                                         binding.equipmentRv.setAdapter(adapterEquipmentBorrowed);
@@ -202,12 +199,15 @@ public class EquipmentBorrowedFragment extends Fragment  implements ViewPager.On
                         equipmentArrayListBorrowed.clear();
                         for(DataSnapshot ds : snapshot.getChildren()){
                             if((""+ds.child("status").getValue()).equals("History")){
+                                String key = ds.getKey();
                                 equipmentId = "" + ds.child("equipmentId").getValue();
                                 DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Equipments");
-                                reference.child(equipmentId).addValueEventListener(new ValueEventListener() {
+                                reference.child(equipmentId).addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                                         ModelEquipment model = snapshot.getValue(ModelEquipment.class);
+                                        model.setStatus("History");
+                                        model.setKey(key);
                                         equipmentArrayListBorrowed.add(model);
                                         adapterEquipmentBorrowed.notifyDataSetChanged();
                                         binding.equipmentRv.setAdapter(adapterEquipmentBorrowed);

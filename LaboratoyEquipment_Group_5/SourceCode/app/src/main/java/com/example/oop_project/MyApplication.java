@@ -14,7 +14,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 
@@ -30,6 +34,19 @@ public class MyApplication extends Application {
 
         String date = DateFormat.format("dd/MM/yyyy", cal).toString();
         return date;
+    }
+    public static final  String formatTimestampToDetailTime(long timestamp){
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+        Date date = new Date(timestamp);
+        String formattedTime = sdf.format(date);
+
+        Calendar cal = Calendar.getInstance(Locale.ENGLISH);
+        cal.setTimeInMillis(timestamp);
+
+        String dateD = DateFormat.format("dd/MM/yyyy", cal).toString();;
+        String res = formattedTime + " " + dateD;
+
+        return res;
     }
     public static void addToCart(Context context, String equipmentId){
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();

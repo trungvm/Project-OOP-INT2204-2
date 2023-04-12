@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Pair;
 import android.view.View;
 import android.widget.Toast;
@@ -50,7 +51,8 @@ public class CartActivity extends AppCompatActivity  {
         binding.backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onBackPressed();
+                startActivity(new Intent(CartActivity.this, DashboardUserActivity.class));
+                finish();
             }
         });
         LoadCartEquipments();
@@ -170,9 +172,21 @@ public class CartActivity extends AppCompatActivity  {
                         equipmentArrayList.clear();
                         for(DataSnapshot ds: snapshot.getChildren()){
                             String equipmentId = ""+ds.child("equipmentId").getValue();
-                            ModelEquipment model = new ModelEquipment();
-                            model.setId(equipmentId);
-                            equipmentArrayList.add(model);
+                            DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Equipments");
+                            reference.child(equipmentId)
+                                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                            ModelEquipment model = snapshot.getValue(ModelEquipment.class);
+                                            equipmentArrayList.add(model);
+                                            adapterEquipmentCart.notifyDataSetChanged();
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
+
+                                        }
+                                    });
                         }
                         adapterEquipmentCart = new AdapterEquipmentCart(CartActivity.this, equipmentArrayList);
                         binding.cartRv.setAdapter(adapterEquipmentCart);

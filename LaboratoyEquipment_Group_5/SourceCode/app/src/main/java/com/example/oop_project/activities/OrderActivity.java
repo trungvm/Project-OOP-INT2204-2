@@ -10,6 +10,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -231,6 +232,17 @@ public class OrderActivity extends AppCompatActivity {
                                                int x = quantity-quantityBorrowed;
                                                DatabaseReference ref2 = snapshot.child("quantity").getRef();
                                                ref2.setValue(x);
+                                               int numberOfBorrowings;
+                                               if (snapshot.hasChild("numberOfBorrowings")) {
+                                                   // Nếu tồn tại, lấy giá trị của child "numberOfBorrowings"
+                                                   numberOfBorrowings = Integer.parseInt(snapshot.child("numberOfBorrowings").getValue().toString());
+                                               } else {
+                                                   // Nếu không tồn tại, thêm mới thuộc tính "numberOfBorrowings" và set giá trị là 0
+                                                   snapshot.getRef().child("numberOfBorrowings").setValue(0);
+                                                   numberOfBorrowings = 0;
+                                               }
+                                               numberOfBorrowings++;
+                                               snapshot.getRef().child("numberOfBorrowings").setValue(numberOfBorrowings);
                                            }
 
                                            @Override

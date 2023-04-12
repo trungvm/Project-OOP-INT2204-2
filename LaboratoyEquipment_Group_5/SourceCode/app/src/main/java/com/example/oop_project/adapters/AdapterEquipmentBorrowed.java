@@ -82,28 +82,29 @@ public class AdapterEquipmentBorrowed extends  RecyclerView.Adapter<AdapterEquip
         ModelEquipment model = equipmentArrayList.get(position);
         String title = model.getTitle();
         String description = model.getDescription();
-        String categoryId = model.getCategoryId();
-        int viewed = model.getViewed();
         String equipmentImage = model.getEquipmentImage();
-
+        String key = model.getKey();
+        if(model.getStatus().equals("Borrowed")){
+            binding.checkBox.setVisibility(View.VISIBLE);
+            binding.categoryTv.setVisibility(View.GONE);
+        }else if(model.getStatus().equals("History")){
+            binding.checkBox.setVisibility(View.GONE);
+            binding.categoryTv.setVisibility(View.GONE);
+        }
+        binding.textDate.setText("Thời gian mượn: ");
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
         reference.child(firebaseAuth.getUid())
-                .child("Borrowed")
-                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    .child("Borrowed")
+                            .child(key).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        for(DataSnapshot ds : snapshot.getChildren()){
-                            if((""+ds.child("equipmentId").getValue()).equals(model.getId())){
-                                String time = "" + ds.child("timestamp").getValue();
-                                String quantityBorrowed  = "" + ds.child("quantityBorrowed").getValue();
-                                String date = MyApplication.formatTimestamp(Long.parseLong(time));
+                        String time = "" + snapshot.child("timestamp").getValue();
+                        String quantityBorrowed  = "" + snapshot.child("quantityBorrowed").getValue();
+                        String date = MyApplication.formatTimestampToDetailTime(Long.parseLong(time));
 
-                                holder.quantityTv.setText(quantityBorrowed);
-                                holder.dateTv.setText(date);
+                        holder.quantityTv.setText(quantityBorrowed);
+                        holder.dateTv.setText(date);
 
-
-                            }
-                        }
                     }
 
                     @Override
@@ -115,19 +116,16 @@ public class AdapterEquipmentBorrowed extends  RecyclerView.Adapter<AdapterEquip
         holder.titleTv.setText(title);
         holder.descriptionTv.setText(description);
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Categories");
-        ref.child(categoryId)
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        String titleCategory = "" + snapshot.child("title").getValue();
-                        holder.categoryTv.setText(titleCategory);
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, EquipmentDetailActivity.class);
+                intent.putExtra("equipmentId", model.getId());
+                intent.putExtra("status", model.getStatus());
+                intent.putExtra("key", model.getKey());
+                context.startActivity(intent);
+            }
+        });
         Glide.with(context)
                 .load(equipmentImage)
                 .centerCrop()

@@ -23,16 +23,16 @@
             android:layout_marginStart="10dp"
             android:background="@android:color/transparent"
             />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="List of Equipments"
             android:layout_centerInParent="true"
-            android:textColor="@color/white"
             android:layout_marginTop="8dp"
+            android:text="Danh sách thiết bị"
+            android:textColor="@color/white"
             android:textSize="20sp"
-            android:textStyle="bold"
-            />
+            android:textStyle="bold" />
     </RelativeLayout>
     <!--Tab-->
     <com.google.android.material.tabs.TabLayout

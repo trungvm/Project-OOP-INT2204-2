@@ -7,7 +7,7 @@ public class ModelEquipment {
     private long timestamp;
     private int quantity;
     private int viewed;
-    private boolean isBorrowed;
+    private String status;
     private boolean isFavorite;
     private int quantityBorrow;
     public ModelEquipment() {
@@ -26,6 +26,14 @@ public class ModelEquipment {
         this.manual = manual;
         this.timestamp = timestamp;
         this.quantity = quantity;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getKey() {
@@ -69,13 +77,6 @@ public class ModelEquipment {
         this.viewed = viewed;
     }
 
-    public boolean isBorrowed() {
-        return isBorrowed;
-    }
-
-    public void setBorrowed(boolean borrowed) {
-        isBorrowed = borrowed;
-    }
 
     public String getUid() {
         return uid;

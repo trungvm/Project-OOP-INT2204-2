@@ -14,15 +14,15 @@
         android:layout_height="?actionBarSize"
         android:background="@drawable/shape_toolbar"
         >
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Favorite Equipments"
             android:layout_centerInParent="true"
-            android:textStyle="bold"
+            android:text="Thiết bị yêu thích"
             android:textColor="@color/white"
             android:textSize="20sp"
-            />
+            android:textStyle="bold" />
     </RelativeLayout>
     <androidx.recyclerview.widget.RecyclerView
         android:layout_marginTop="5dp"

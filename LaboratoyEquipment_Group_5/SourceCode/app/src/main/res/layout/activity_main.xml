@@ -23,7 +23,7 @@
         android:layout_below="@id/iconLogin"
         android:layout_marginTop="10dp"
         android:layout_centerHorizontal="true"
-        android:text="Welcome to Laboratory App"
+        android:text="Welcome to Laboratory Equipments App"
         android:textSize="16sp"
         android:textColor="@color/black"
         />

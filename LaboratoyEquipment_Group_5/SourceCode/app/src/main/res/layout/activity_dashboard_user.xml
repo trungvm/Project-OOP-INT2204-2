@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
             android:layout_marginEnd="15dp"
-            android:text="@string/hello"
+            android:text="Xin chào"
             android:textColor="@color/white"
             android:textSize="25sp"
             app:layout_constraintTop_toTopOf="parent"
@@ -135,7 +135,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="Equipments"
+                    android:text="Thiết bị"
                     android:textColor="@color/colorAccent"
                     android:textSize="20dp"
                     android:textStyle="bold" />

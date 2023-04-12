@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.OrderActivity">
+    tools:context=".activities.OrderActivity"
+    >
     <RelativeLayout
         android:id="@+id/toolbarRl"
         android:layout_width="match_parent"
@@ -55,9 +56,10 @@
                     android:orientation="horizontal"
                     >
                     <TextView
+                        android:focusableInTouchMode="true"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Full Name:"
+                        android:text="Họ và tên:"
                         android:textColor="#0F7B88"
                         android:layout_marginTop="12dp"
                         android:layout_marginLeft="20dp"
@@ -116,7 +118,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Mobile:"
+                        android:text="Số điện thoại:"
                         android:textColor="#0F7B88"
                         android:layout_marginTop="12dp"
                         android:layout_marginLeft="20dp"
@@ -145,7 +147,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Address:"
+                        android:text="Địa chỉ:"
                         android:textColor="#0F7B88"
                         android:layout_marginTop="12dp"
                         android:layout_marginLeft="20dp"
@@ -174,7 +176,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Day of Birth:"
+                        android:text="Ngày sinh:"
                         android:textColor="#0F7B88"
                         android:layout_marginTop="12dp"
                         android:layout_marginLeft="20dp"
@@ -202,7 +204,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Gender:"
+                        android:text="Giới tính:"
                         android:textColor="#0F7B88"
                         android:layout_marginTop="12dp"
                         android:layout_marginLeft="20dp"
@@ -230,7 +232,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Others Infor:"
+                        android:text="Thông tin khác:"
                         android:textColor="#0F7B88"
                         android:layout_marginTop="12dp"
                         android:layout_marginLeft="20dp"
@@ -292,7 +294,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Report"
+                    android:text="Báo cáo"
                     android:textColor="@color/black"
                     android:textSize="20sp"
                     android:layout_marginStart="20dp"
