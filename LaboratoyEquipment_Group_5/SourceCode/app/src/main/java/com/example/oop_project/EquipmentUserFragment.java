@@ -125,6 +125,29 @@ public class EquipmentUserFragment extends Fragment {
     }
 
     private void loadMostBorrowedEquipments() {
+        equipmentArrayList = new ArrayList<>();
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Equipments");
+        ref.orderByChild("numberOfBorrowings").limitToLast(10)
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        equipmentArrayList.clear();
+                        for(DataSnapshot ds: snapshot.getChildren()){
+                            ModelEquipment model = ds.getValue(ModelEquipment.class);
+
+
+                            equipmentArrayList.add(model);
+                        }
+
+                        adapterEquipmentUser = new AdapterEquipmentUser(getContext(), equipmentArrayList);
+                        binding.equipmentRv.setAdapter(adapterEquipmentUser);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
     
     }
 
@@ -138,6 +161,7 @@ public class EquipmentUserFragment extends Fragment {
                 equipmentArrayList.clear();
                 for(DataSnapshot ds: snapshot.getChildren()){
                     ModelEquipment model = ds.getValue(ModelEquipment.class);
+
 
                     equipmentArrayList.add(model);
                 }

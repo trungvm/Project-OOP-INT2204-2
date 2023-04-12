@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
             android:layout_marginEnd="15dp"
-            android:text="@string/hello"
+            android:text="Xin chào"
             android:textColor="@color/white"
             android:textSize="25sp"
             app:layout_constraintTop_toTopOf="parent"
@@ -135,7 +135,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="Equipments"
+                    android:text="Thiết bị"
                     android:textColor="@color/colorAccent"
                     android:textSize="20dp"
                     android:textStyle="bold" />
@@ -169,7 +169,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="Cart"
+                    android:text="Giỏ đồ mượn"
                     android:textColor="@color/colorAccent"
                     android:textSize="20dp"
                     android:textStyle="bold" />
@@ -177,7 +177,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/layoutRules"
+                android:id="@+id/layoutEquipmentBorrowed"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="22dp"
@@ -203,7 +203,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="Rules"
+                    android:text="Thiết bị mượn"
                     android:textColor="@color/colorAccent"
                     android:textSize="20dp"
                     android:textStyle="bold" />
@@ -252,7 +252,7 @@
                 android:padding="20dp"
                 app:layout_constraintEnd_toEndOf="@id/layoutQA"
                 app:layout_constraintStart_toStartOf="@id/layoutEquipments"
-                app:layout_constraintTop_toBottomOf="@id/layoutRules">
+                app:layout_constraintTop_toBottomOf="@id/layoutEquipmentBorrowed">
 
                 <TextView
                     android:id="@+id/textTrending"

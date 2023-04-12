@@ -167,7 +167,7 @@ public class EquipmentAddActivity extends AppCompatActivity {
 
     String title = "", description = "",manual = "";
     int quantity = 0;
-    int viewed = 0, borrowed = 0;
+    int viewed = 0;
     private void validateData() {
         title = binding.titleE.getText().toString().trim();
         description = binding.descriptionE.getText().toString().trim();
@@ -236,7 +236,7 @@ public class EquipmentAddActivity extends AppCompatActivity {
         hashMap.put("manual", "" + manual);
         hashMap.put("quantity", quantity);
         hashMap.put("viewed", viewed);
-        hashMap.put("borrowed", borrowed);
+        hashMap.put("numberOfBorrowings", 0);
         if(imageUri != null){
             hashMap.put("equipmentImage", ""+imageUrl);
         }

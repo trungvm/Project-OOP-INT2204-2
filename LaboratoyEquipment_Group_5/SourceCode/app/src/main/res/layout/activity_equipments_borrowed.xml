@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.EquipmentUserShowActivity"
+    tools:context=".activities.EquipmentsBorrowedActivity"
     android:background="@drawable/back01"
     >
     <RelativeLayout
@@ -17,25 +17,25 @@
             android:id="@+id/backBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_back_white"
-            android:layout_centerVertical="true"
-            android:padding="10dp"
+            android:layout_alignParentTop="true"
             android:layout_marginStart="10dp"
+            android:layout_marginTop="8dp"
+            android:padding="10dp"
             android:background="@android:color/transparent"
-            />
+            android:src="@drawable/ic_back_white" />
 
         <TextView
+            android:focusableInTouchMode="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:layout_marginTop="8dp"
-            android:text="Danh sách thiết bị"
+            android:text="Thiết bị mượn"
             android:textColor="@color/white"
             android:textSize="20sp"
             android:textStyle="bold" />
     </RelativeLayout>
-    <!--Tab-->
     <com.google.android.material.tabs.TabLayout
+        android:layout_marginTop="4dp"
         android:id="@+id/tabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -52,10 +52,48 @@
 
     <!--ViewPager: Swipe/Show/Change fragments-->
     <androidx.viewpager.widget.ViewPager
-        android:id="@+id/viewPager"
+        android:id="@+id/viewPagerBorrowed"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="450dp"
         android:layout_below="@id/tabLayout"
         />
-</RelativeLayout>
+    <LinearLayout
+        android:id="@+id/reportLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@id/viewPagerBorrowed"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Báo cáo"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:layout_marginStart="20dp"
+            />
+        <EditText
+            android:id="@+id/reportEt"
+            android:layout_marginStart="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:inputType="textMultiLine"
+            android:layout_marginEnd="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/edittext_report"
+            />
+    </LinearLayout>
+    <Button
+        android:id="@+id/submitBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/shape_button01"
+        android:text="Xác nhận trả thiết bị"
+        android:layout_below="@id/reportLayout"
+        android:textColor="@color/white"
+        />
 
+</RelativeLayout>

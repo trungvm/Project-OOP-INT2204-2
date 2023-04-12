@@ -22,15 +22,15 @@
             android:padding="5dp"
             android:src="@drawable/ic_back_white"
             android:contentDescription="TODO" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Equipment Detail"
             android:layout_centerInParent="true"
-            android:textStyle="bold"
+            android:text="Chi tiết thiết bị"
             android:textColor="@color/white"
             android:textSize="20sp"
-            />
+            android:textStyle="bold" />
     </RelativeLayout>
 
     <ScrollView
@@ -91,7 +91,7 @@
                             android:layout_height="wrap_content"
                             android:layout_width="wrap_content"
                             android:layout_marginEnd="5dp"
-                            android:text="Category: "
+                            android:text="Thể loại: "
                             android:textSize="16sp"
                             android:textStyle="italic"
                             />
@@ -112,7 +112,7 @@
                             android:layout_height="wrap_content"
                             android:layout_width="wrap_content"
                             android:layout_marginEnd="5dp"
-                            android:text="Date: "
+                            android:text="Ngày nhập: "
                             android:textSize="16sp"
                             android:textStyle="italic"
                             />
@@ -133,7 +133,7 @@
                             android:layout_height="wrap_content"
                             android:layout_width="wrap_content"
                             android:layout_marginEnd="5dp"
-                            android:text="Quanity: "
+                            android:text="Số lượng trong kho: "
                             android:textSize="16sp"
                             android:textStyle="italic"
                             />
@@ -154,12 +154,33 @@
                             android:layout_height="wrap_content"
                             android:layout_width="wrap_content"
                             android:layout_marginEnd="5dp"
-                            android:text="Viewed: "
+                            android:text="Số lượng đã xem: "
                             android:textSize="16sp"
                             android:textStyle="italic"
                             />
                         <TextView
                             android:id="@+id/viewedTv"
+                            style="@style/TextAppearance.MaterialComponents.Caption"
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:layout_marginEnd="5dp"
+                            android:text="N/A"
+                            android:textSize="16sp"
+                            />
+                    </TableRow>
+                    <TableRow>
+                        <TextView
+                            android:id="@+id/numberOfBorrowingsText"
+                            style="@style/TextAppearance.MaterialComponents.Caption"
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:layout_marginEnd="5dp"
+                            android:text="Số lượng đã mượn: "
+                            android:textSize="16sp"
+                            android:textStyle="italic"
+                            />
+                        <TextView
+                            android:id="@+id/numberOfBorrowings"
                             style="@style/TextAppearance.MaterialComponents.Caption"
                             android:layout_height="wrap_content"
                             android:layout_width="wrap_content"
@@ -210,6 +231,16 @@
            android:background="@color/design_default_color_on_primary"
            android:layout_alignParentBottom="true"
            android:drawableTop="@drawable/ic_favorite_border"
+           />
+       <Button
+           android:id="@+id/addCartBtn"
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"
+           android:layout_weight="1"
+           android:text="Thêm vào giỏ hàng"
+           android:background="@color/design_default_color_on_primary"
+           android:layout_alignParentBottom="true"
+           android:drawableTop="@drawable/ic_borrow_gray"
            />
 
    </LinearLayout>

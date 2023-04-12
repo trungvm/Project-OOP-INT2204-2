@@ -21,6 +21,18 @@
         android:theme="@style/Theme.MaterialComponents.Light.NoActionBar"
         tools:targetApi="30">
         <activity
+            android:name=".activities.SuccessActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.EquipmentsBorrowedActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.OrderActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.CartActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.FavoriteActivity"
             android:exported="false" />
         <activity

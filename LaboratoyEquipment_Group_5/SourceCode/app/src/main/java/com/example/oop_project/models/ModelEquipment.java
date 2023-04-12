@@ -1,12 +1,15 @@
 package com.example.oop_project.models;
 
 public class ModelEquipment {
+    private String key;
     private String uid, id, title, description, categoryId, manual;
     private String equipmentImage;
     private long timestamp;
     private int quantity;
-    private int viewed, borrowed;
+    private int viewed;
+    private String status;
     private boolean isFavorite;
+    private int quantityBorrow;
     public ModelEquipment() {
         this.description = "";
         this.title = "";
@@ -23,6 +26,30 @@ public class ModelEquipment {
         this.manual = manual;
         this.timestamp = timestamp;
         this.quantity = quantity;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public int getQuantityBorrow() {
+        return quantityBorrow;
+    }
+
+    public void setQuantityBorrow(int quantityBorrow) {
+        this.quantityBorrow = quantityBorrow;
     }
 
     public String getEquipmentImage() {
@@ -49,15 +76,6 @@ public class ModelEquipment {
     public void setViewed(int viewed) {
         this.viewed = viewed;
     }
-
-    public int getBorrowed() {
-        return borrowed;
-    }
-
-    public void setBorrowed(int borrowed) {
-        this.borrowed = borrowed;
-    }
-
 
 
     public String getUid() {

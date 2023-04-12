@@ -78,74 +78,25 @@ public class AdapterEquipmentFavorite extends RecyclerView.Adapter<AdapterEquipm
 
     }
 
-    private void loadEquipmentDetails(ModelEquipment model, HolderEquipmentFavorite holder) {
-        String equipmentId = model.getId();
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Equipments");
-        ref.child(equipmentId)
+    private void loadEquipmentDetails(ModelEquipment model, AdapterEquipmentFavorite.HolderEquipmentFavorite holder) {
+        String title = model.getTitle();
+        String description = model.getDescription();
+        String equipmentImage = model.getEquipmentImage();
+        long timestamp = model.getTimestamp();
+        String date = MyApplication.formatTimestamp(timestamp);
+        int quantity = model.getQuantity();
+        holder.dateTv.setText(date);
+        holder.titleTv.setText(title);
+        holder.descriptionTv.setText(description);
+        holder.quantityTv.setText(""+quantity);
+        String categoryId = model.getCategoryId();
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Categories");
+        ref.child(categoryId)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        // get equipment information
-                        String title = "" + snapshot.child("title").getValue();
-                        String description = "" + snapshot.child("description").getValue();
-                        String quantity = "" + snapshot.child("quantity").getValue();
-                        String categoryId = "" + snapshot.child("categoryId").getValue();
-                        String timestamp = "" + snapshot.child("timestamp").getValue();
-                        String viewed = "" + snapshot.child("viewed").getValue();
-                        String uid = "" + snapshot.child("uid").getValue();
-                        String equipmentImage = "" + snapshot.child("equipmentImage").getValue();
-
-
-
-                        // set to model
-                        model.setFavorite(true);
-                        model.setTitle(title);
-                        model.setDescription(description);
-                        model.setTimestamp(Long.parseLong(timestamp));
-                        model.setCategoryId(categoryId);
-                        model.setUid(uid);
-
-                        String date = MyApplication.formatTimestamp(Long.parseLong(timestamp));
-
-
-                        // set to view
-                        holder.titleTv.setText(title);
-                        holder.descriptionTv.setText(description);
-                        holder.dateTv.setText(date);
-                        holder.quantityTv.setText(quantity);
-                        Glide.with(context)
-                                .load(equipmentImage)
-                                .centerCrop()
-                                .listener(new RequestListener<Drawable>() {
-                                    @Override
-                                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                                        binding.progressBar.setVisibility(View.VISIBLE);
-                                        return false;
-                                    }
-
-                                    @Override
-                                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-
-                                        binding.imageView.setVisibility(View.VISIBLE);
-                                        return false;
-                                    }
-                                })
-                                .into(binding.imageView);
-
-                        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Categories");
-                        ref.child(categoryId)
-                                .addListenerForSingleValueEvent(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                        String titleCategory = "" + snapshot.child("title").getValue();
-                                        holder.categoryTv.setText(titleCategory);
-                                    }
-
-                                    @Override
-                                    public void onCancelled(@NonNull DatabaseError error) {
-
-                                    }
-                                });
+                        String titleCategory = "" + snapshot.child("title").getValue();
+                        holder.categoryTv.setText(titleCategory);
                     }
 
                     @Override
@@ -153,6 +104,25 @@ public class AdapterEquipmentFavorite extends RecyclerView.Adapter<AdapterEquipm
 
                     }
                 });
+
+        Glide.with(context)
+                .load(equipmentImage)
+                .centerCrop()
+                .listener(new RequestListener<Drawable>() {
+                    @Override
+                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                        binding.progressBar.setVisibility(View.VISIBLE);
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+
+                        binding.imageView.setVisibility(View.VISIBLE);
+                        return false;
+                    }
+                })
+                .into(binding.imageView);
     }
 
     @Override

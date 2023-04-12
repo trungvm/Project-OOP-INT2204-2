@@ -3,11 +3,13 @@ package com.example.oop_project.activities;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -33,6 +35,9 @@ public class EquipmentDetailActivity extends AppCompatActivity {
     public FirebaseAuth firebaseAuth;
     String equipmentId;
     boolean isInMyFavorite = false;
+    private String quantity = "";
+    String status = "";
+    String key = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,7 +45,12 @@ public class EquipmentDetailActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         Intent intent = getIntent();
         equipmentId = intent.getStringExtra("equipmentId");
-
+        if(intent.getStringExtra("status") != null){
+            status = intent.getStringExtra("status");
+        }
+        if(intent.getStringExtra("key") != null){
+            key = intent.getStringExtra("key");
+        }
         firebaseAuth = FirebaseAuth.getInstance();
         if(firebaseAuth.getCurrentUser() != null){
             checkIsFavorite();
@@ -54,9 +64,25 @@ public class EquipmentDetailActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
+        binding.addCartBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                checkEquipmentQuantity();
+            }
+        });
 
 
+    }
 
+    private void checkEquipmentQuantity() {
+        int quantityInStock = Integer.parseInt(quantity);
+        if(quantityInStock == 0){
+            Toast.makeText(this, "Thiết bị đã bị mượn hết", Toast.LENGTH_SHORT).show();
+        }else{
+            // Thêm sản phẩm vào trong cart;
+            MyApplication.addToCart(EquipmentDetailActivity.this, equipmentId);
+
+        }
     }
 
     private void loadEquipmentDetails() {
@@ -68,12 +94,16 @@ public class EquipmentDetailActivity extends AppCompatActivity {
                         String title = ""+snapshot.child("title").getValue();
                         String description = ""+snapshot.child("description").getValue();
                         String timestamp = ""+snapshot.child("timestamp").getValue();
-                        String quantity = ""+snapshot.child("quantity").getValue();
+                        quantity = ""+snapshot.child("quantity").getValue();
                         String manual = ""+snapshot.child("manual").getValue();
                         String categoryId = ""+snapshot.child("categoryId").getValue();
                         String date = MyApplication.formatTimestamp(Long.parseLong(timestamp));
                         String viewed = ""+snapshot.child("viewed").getValue();
                         String equipmentImage = "" + snapshot.child("equipmentImage").getValue();
+                        String numberOfBorrowings = "0";
+                        if(snapshot.hasChild("numberOfBorrowings")){
+                            numberOfBorrowings = "" + snapshot.child("numberOfBorrowings").getValue();
+                        }
                         DatabaseReference refCategory = FirebaseDatabase.getInstance().getReference("Categories");
                         refCategory.child(categoryId)
                                         .addListenerForSingleValueEvent(new ValueEventListener() {
@@ -91,9 +121,58 @@ public class EquipmentDetailActivity extends AppCompatActivity {
 
                         binding.titleTv.setText(title);
                         binding.dateTv.setText(date);
+                        binding.numberOfBorrowings.setText(numberOfBorrowings);
                         binding.quantityTv.setText(quantity);
-                        binding.descriptionTv.setText(description);
-                        binding.manualTv.setText(manual);
+                        if(status.equals("Borrowed")){
+                            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("EquipmentsBorrowed");
+                            ref.child(key)
+                                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                            String timestamp = "" + snapshot.child("timestamp").getValue();
+                                            String report = "" + snapshot.child("report").getValue();
+
+                                            String date = MyApplication.formatTimestampToDetailTime(Long.parseLong(timestamp));
+                                            binding.descriptionTv.setText("Thời gian mượn : " +  date);
+                                            binding.manualTv.setText("Báo cáo về thiết bị lúc mượn: " + (report.equals("null") ? "" : report));
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
+
+                                        }
+                                    });
+                        }else if(status.equals("History")){
+                            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("EquipmentsBorrowed");
+                            ref.child(key)
+                                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                            String timestamp = "" + snapshot.child("timestamp").getValue();
+                                            String timestampReturn = ""+ snapshot.child("timestampReturn").getValue();
+
+                                            String report = "" + snapshot.child("reportHistory").getValue();
+                                            String date = "";
+                                            String dateReturn = "";
+                                            if(!timestamp.equals("null") && !timestampReturn.equals("null")){
+                                                date = MyApplication.formatTimestampToDetailTime(Long.parseLong(timestamp));
+                                                dateReturn = MyApplication.formatTimestampToDetailTime(Long.parseLong(timestampReturn));
+                                            }
+                                            binding.descriptionTv.setText("Thời gian mượn: " +  date + " - Thời gian trả : " + dateReturn);
+                                            binding.manualTv.setText("Báo cáo về thiết bị lúc trả: " + (report.equals("null") ? "" : report));
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
+
+                                        }
+                                    });
+                        }
+
+                        else{
+                            binding.descriptionTv.setText(description);
+                            binding.manualTv.setText(manual);
+                        }
                         binding.viewedTv.setText(viewed);
                         Glide.with(EquipmentDetailActivity.this)
                                 .load(equipmentImage)

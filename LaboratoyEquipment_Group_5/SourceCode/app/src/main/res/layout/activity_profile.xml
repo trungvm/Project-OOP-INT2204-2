@@ -149,21 +149,19 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Mobile:"
+                android:text="Số điện thoại:"
                 android:textColor="#0F7B88"
                 android:layout_marginTop="12dp"
                 android:layout_marginLeft="40dp"
                 android:textSize="20sp"
-                android:layout_weight="5"
                 />
             <TextView
                 android:id="@+id/mobileTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="123456"
-                android:layout_weight="1"
                 android:textColor="@color/black"
-                android:layout_marginRight="12dp"
+                android:layout_marginStart="110dp"
                 android:gravity="center"
                 android:layout_marginTop="12dp"
                 android:textSize="20sp"
@@ -178,23 +176,21 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Address:"
+                android:text="Địa chỉ:"
                 android:textColor="#0F7B88"
                 android:layout_marginTop="12dp"
                 android:layout_marginLeft="40dp"
                 android:textSize="20sp"
-                android:layout_weight="5"
                 />
             <TextView
                 android:id="@+id/addressTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Text Address"
-                android:layout_weight="1"
                 android:textColor="@color/black"
                 android:layout_marginTop="12dp"
                 android:textSize="20sp"
-                android:layout_marginRight="12dp"
+                android:layout_marginStart="165dp"
                 android:gravity="center"
                 />
         </LinearLayout>
@@ -206,23 +202,21 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Day of Birth:"
+                android:text="Ngày sinh:"
                 android:textColor="#0F7B88"
                 android:layout_marginTop="12dp"
                 android:layout_marginLeft="40dp"
                 android:textSize="20sp"
-                android:layout_weight="5"
                 />
             <TextView
                 android:id="@+id/birthdayTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="23/10/2003"
-                android:layout_weight="1"
                 android:textColor="@color/black"
                 android:layout_marginTop="12dp"
                 android:textSize="20sp"
-                android:layout_marginRight="12dp"
+                android:layout_marginStart="137dp"
                 android:gravity="center"
                 />
         </LinearLayout>
@@ -234,23 +228,21 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Gender:"
+                android:text="Giới tính:"
                 android:textColor="#0F7B88"
                 android:layout_marginTop="12dp"
                 android:layout_marginLeft="40dp"
                 android:textSize="20sp"
-                android:layout_weight="5"
                 />
             <TextView
                 android:id="@+id/genderTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Male"
-                android:layout_weight="1"
+                android:layout_marginStart="155dp"
                 android:textColor="@color/black"
                 android:layout_marginTop="12dp"
                 android:textSize="20sp"
-                android:layout_marginRight="12dp"
                 android:gravity="center"
                 />
         </LinearLayout>
@@ -262,24 +254,22 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Others Infor:"
+                android:text="Thông tin khác:"
                 android:textColor="#0F7B88"
                 android:layout_marginTop="12dp"
                 android:layout_marginLeft="40dp"
                 android:textSize="20sp"
-                android:layout_weight="5"
                 />
             <TextView
                 android:id="@+id/otherInfo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="N/A"
-                android:layout_weight="1"
+                android:inputType="textMultiLine"
+                android:layout_marginStart="96dp"
                 android:textColor="@color/black"
                 android:layout_marginTop="12dp"
                 android:textSize="20sp"
-                android:layout_marginRight="12dp"
-                android:gravity="center"
                 />
         </LinearLayout>
     </LinearLayout>

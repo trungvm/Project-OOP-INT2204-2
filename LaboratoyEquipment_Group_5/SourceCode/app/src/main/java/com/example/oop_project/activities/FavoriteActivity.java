@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -79,9 +80,21 @@ public class FavoriteActivity extends AppCompatActivity {
                         equipmentArrayList.clear();
                         for(DataSnapshot ds: snapshot.getChildren()){
                             String equipmentId = ""+ds.child("equipmentId").getValue();
-                            ModelEquipment model = new ModelEquipment();
-                            model.setId(equipmentId);
-                            equipmentArrayList.add(model);
+                            DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Equipments");
+                            reference.child(equipmentId)
+                                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                            ModelEquipment model = snapshot.getValue(ModelEquipment.class);
+                                            equipmentArrayList.add(model);
+                                            adapterEquipmentFavorite.notifyDataSetChanged();
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
+
+                                        }
+                                    });
                         }
                         adapterEquipmentFavorite = new AdapterEquipmentFavorite(FavoriteActivity.this, equipmentArrayList);
                         binding.favoriteRv.setAdapter(adapterEquipmentFavorite);
