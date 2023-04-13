@@ -22,8 +22,11 @@ import com.example.oop_project.filters.FilterCategory;
 import com.example.oop_project.databinding.RowCategoryBinding;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -109,6 +112,22 @@ public class AdapterCategory extends RecyclerView.Adapter<AdapterCategory.Holder
                     @Override
                     public void onSuccess(Void unused) {
                         Toast.makeText(context, "Delete successfully!", Toast.LENGTH_SHORT).show();
+                        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Equipments");
+                        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                for(DataSnapshot ds : snapshot.getChildren()){
+                                    if((""+ds.child("categoryId").getValue()).equals(id)){
+                                        ds.getRef().child("status").setValue("deleted");
+                                    }
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {

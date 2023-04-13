@@ -109,9 +109,16 @@ public class EquipmentUserFragment extends Fragment {
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         equipmentArrayList.clear();
                         for (DataSnapshot ds : snapshot.getChildren()) {
-                            ModelEquipment model = ds.getValue(ModelEquipment.class);
+                            if(ds.hasChild("status")){
+                                if((""+ds.child("status").getValue()).equals("use")){
+                                    ModelEquipment model = ds.getValue(ModelEquipment.class);
 
-                            equipmentArrayList.add(model);
+                                    equipmentArrayList.add(model);
+                                }
+                            }else{
+                                ds.getRef().child("status").setValue("use");
+                            }
+
                         }
                         adapterEquipmentUser = new AdapterEquipmentUser(getContext(), equipmentArrayList);
                         binding.equipmentRv.setAdapter(adapterEquipmentUser);
@@ -133,10 +140,15 @@ public class EquipmentUserFragment extends Fragment {
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         equipmentArrayList.clear();
                         for(DataSnapshot ds: snapshot.getChildren()){
-                            ModelEquipment model = ds.getValue(ModelEquipment.class);
+                            if(ds.hasChild("status")){
+                                if((""+ds.child("status").getValue()).equals("use")){
+                                    ModelEquipment model = ds.getValue(ModelEquipment.class);
 
-
-                            equipmentArrayList.add(model);
+                                    equipmentArrayList.add(model);
+                                }
+                            }else{
+                                ds.getRef().child("status").setValue("use");
+                            }
                         }
 
                         adapterEquipmentUser = new AdapterEquipmentUser(getContext(), equipmentArrayList);
@@ -160,10 +172,15 @@ public class EquipmentUserFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 equipmentArrayList.clear();
                 for(DataSnapshot ds: snapshot.getChildren()){
-                    ModelEquipment model = ds.getValue(ModelEquipment.class);
+                    if(ds.hasChild("status")){
+                        if((""+ds.child("status").getValue()).equals("use")){
+                            ModelEquipment model = ds.getValue(ModelEquipment.class);
 
-
-                    equipmentArrayList.add(model);
+                            equipmentArrayList.add(model);
+                        }
+                    }else{
+                        ds.getRef().child("status").setValue("use");
+                    }
                 }
 
                 adapterEquipmentUser = new AdapterEquipmentUser(getContext(), equipmentArrayList);
@@ -186,9 +203,15 @@ public class EquipmentUserFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 equipmentArrayList.clear();
                 for(DataSnapshot ds: snapshot.getChildren()){
-                    ModelEquipment model = ds.getValue(ModelEquipment.class);
+                    if(ds.hasChild("status")){
+                        if((""+ds.child("status").getValue()).equals("use")){
+                            ModelEquipment model = ds.getValue(ModelEquipment.class);
 
-                    equipmentArrayList.add(model);
+                            equipmentArrayList.add(model);
+                        }
+                    }else{
+                        ds.getRef().child("status").setValue("use");
+                    }
                 }
 
                 adapterEquipmentUser = new AdapterEquipmentUser(getContext(), equipmentArrayList);

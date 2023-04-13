@@ -135,9 +135,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="Equipments"
+                    android:text="Quản lý thiết bị"
                     android:textColor="@color/colorAccent"
-                    android:textSize="20dp"
+                    android:textSize="16sp"
                     android:textStyle="bold" />
 
             </LinearLayout>
@@ -169,9 +169,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="Cart"
+                    android:text="Quản lý mượn/trả"
                     android:textColor="@color/colorAccent"
-                    android:textSize="20dp"
+                    android:textSize="16sp"
                     android:textStyle="bold" />
 
             </LinearLayout>

@@ -3,6 +3,7 @@ package com.example.oop_project.models;
 public class ModelEquipment {
     private String key;
     private String uid, id, title, description, categoryId, manual;
+    private String isUsedBy;
     private String equipmentImage;
     private long timestamp;
     private int quantity;
@@ -15,6 +16,7 @@ public class ModelEquipment {
         this.title = "";
         this.categoryId = "";
         this.manual = "";
+        isUsedBy = "user";
         this.quantity = 0;
     }
     public ModelEquipment(String uid, String id, String title, String description, String categoryId, String manual, long timestamp, int quantity) {
@@ -28,12 +30,22 @@ public class ModelEquipment {
         this.quantity = quantity;
     }
 
+
+
     public String getStatus() {
         return status;
     }
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getIsUsedBy() {
+        return isUsedBy;
+    }
+
+    public void setIsUsedBy(String isUsedBy) {
+        this.isUsedBy = isUsedBy;
     }
 
     public String getKey() {

@@ -22,18 +22,17 @@
             android:layout_marginStart="10dp"
             android:background="@android:color/transparent"
             />
+
         <TextView
             android:id="@+id/titleDash"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Manage Equipments"
-            android:textColor="@color/black"
             android:layout_centerInParent="true"
-            android:layout_centerHorizontal="true"
-            android:textSize="18sp"
             android:layout_marginTop="8dp"
-            android:textStyle="bold"
-            />
+            android:text="Quản lý thiết bị"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
 
     </RelativeLayout>

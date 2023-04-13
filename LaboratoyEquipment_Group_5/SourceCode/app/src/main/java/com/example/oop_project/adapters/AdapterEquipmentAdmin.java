@@ -81,13 +81,11 @@ public class AdapterEquipmentAdmin extends RecyclerView.Adapter<AdapterEquipment
         String formattedDate = MyApplication.formatTimestamp(timestamp);
         int quantity = model.getQuantity();
         String equipmentImage = model.getEquipmentImage();
-
         holder.titleTv.setText(title);
         holder.descriptionTv.setText(description);
         holder.dateTv.setText(formattedDate);
         holder.quantityTv.setText(""+quantity);
         loadCategory(model, holder);
-
         // handle Click, show option 1: Edit, 2 Delete
         holder.moreBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,6 +98,9 @@ public class AdapterEquipmentAdmin extends RecyclerView.Adapter<AdapterEquipment
             public void onClick(View v) {
                 Intent intent = new Intent(context, EquipmentDetailActivity.class);
                 intent.putExtra("equipmentId", model.getId());
+                if(model.getIsUsedBy().equals("admin")){
+                    intent.putExtra("role", model.getIsUsedBy());
+                }
                 context.startActivity(intent);
             }
         });
@@ -126,7 +127,7 @@ public class AdapterEquipmentAdmin extends RecyclerView.Adapter<AdapterEquipment
     private void moreOptionsDialog(ModelEquipment model, HolderEquipmentAdmin holder) {
         // options to show in dialog
         String equipmentId = model.getId();
-        String[] options = {"Edit", "Delete"};
+        String[] options = {"Sửa", "Xóa"};
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Choose Options")
@@ -152,21 +153,19 @@ public class AdapterEquipmentAdmin extends RecyclerView.Adapter<AdapterEquipment
         String equipmentTitle = model.getTitle();
         progressDialog.setMessage("Deleting...");
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Equipments");
-        ref.child(equipmentId)
-                .removeValue()
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                        Toast.makeText(context, "Delete Successfully!", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        progressDialog.dismiss();
-                        Toast.makeText(context, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
+        ref.child(equipmentId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                progressDialog.dismiss();
+                Toast.makeText(context, "Xóa thiết bị thành công!", Toast.LENGTH_SHORT).show();
+                snapshot.getRef().child("status").setValue("deleted");
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
 
     }

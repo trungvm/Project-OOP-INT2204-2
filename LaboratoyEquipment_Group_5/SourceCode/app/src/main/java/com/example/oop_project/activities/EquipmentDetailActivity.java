@@ -38,6 +38,7 @@ public class EquipmentDetailActivity extends AppCompatActivity {
     private String quantity = "";
     String status = "";
     String key = "";
+    String role = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +51,9 @@ public class EquipmentDetailActivity extends AppCompatActivity {
         }
         if(intent.getStringExtra("key") != null){
             key = intent.getStringExtra("key");
+        }
+        if(intent.getStringExtra("role") != null){
+            role = intent.getStringExtra("role");
         }
         firebaseAuth = FirebaseAuth.getInstance();
         if(firebaseAuth.getCurrentUser() != null){
@@ -71,7 +75,10 @@ public class EquipmentDetailActivity extends AppCompatActivity {
             }
         });
 
-
+        if(role.equals("admin")){
+            binding.favoriteBtn.setVisibility(View.GONE);
+            binding.addCartBtn.setVisibility(View.GONE);
+        }
     }
 
     private void checkEquipmentQuantity() {

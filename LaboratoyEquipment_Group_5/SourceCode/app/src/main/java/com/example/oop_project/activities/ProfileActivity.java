@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -27,6 +29,7 @@ public class ProfileActivity extends AppCompatActivity {
     private ActivityProfileBinding binding;
     private FirebaseAuth firebaseAuth;
     private int favoriteCount = 0;
+    private String role = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,18 +45,33 @@ public class ProfileActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()){
                     case R.id.menuHome:
-                        Intent intent = new Intent(ProfileActivity.this, DashboardUserActivity.class);
-                        intent.putExtra("CURRENT_TAB", 0);
-                        startActivity(intent);
-                        item.setChecked(true);
-                        finish(); // optional, để đóng MainActivity khi chuyển sang HomeActivity
-                        return true;
-                    case R.id.menuFavorite:
-                        Intent intent1 = new Intent(ProfileActivity.this, FavoriteActivity.class);
-                        intent1.putExtra("CURRENT_TAB", 1);
-                        startActivity(intent1);
-                        finish();
-                        return true;
+                        if(role.equals("user")){
+                            Intent intent = new Intent(ProfileActivity.this, DashboardUserActivity.class);
+                            intent.putExtra("CURRENT_TAB", 0);
+                            startActivity(intent);
+                            item.setChecked(true);
+                            finish(); // optional, để đóng MainActivity khi chuyển sang HomeActivity
+                            return true;
+                        }else if(role.equals("admin")){
+                            Intent intent = new Intent(ProfileActivity.this, DashboardAdminActivity.class);
+                            intent.putExtra("CURRENT_TAB", 0);
+                            startActivity(intent);
+                            item.setChecked(true);
+                            finish(); // optional, để đóng MainActivity khi chuyển sang HomeActivity
+                            return true;
+                        }
+                  if(role.equals("admin")){
+
+                  }else{
+                      switch (item.getItemId()) {
+                          case R.id.menuFavorite:
+                              Intent intent1 = new Intent(ProfileActivity.this, FavoriteActivity.class);
+                              intent1.putExtra("CURRENT_TAB", 1);
+                              startActivity(intent1);
+                              finish();
+                              return true;
+                      }
+                  }
                     case R.id.menuAccount:
                         Intent intent2 = new Intent(ProfileActivity.this, ProfileActivity.class);
                         intent2.putExtra("CURRENT_TAB", 2);
@@ -95,6 +113,7 @@ public class ProfileActivity extends AppCompatActivity {
                         String otherInfor = "" + snapshot.child("otherInfor").getValue();
                         String birthday = "" + snapshot.child("birthday").getValue();
                         String gender = "" + snapshot.child("gender").getValue();
+                        role = "" + snapshot.child("accountType").getValue();
                         String sex = "N/A";
                         if(gender.equals("1")){
                             sex = "Nam";
@@ -118,7 +137,9 @@ public class ProfileActivity extends AppCompatActivity {
                                     .into(binding.profileTv);
                         }
                         binding.birthdayTv.setText(birthday.equals("null") ? "N/A" : birthday);
-
+                        if(accountType.equals("admin")) {
+                            binding.bottomNavigationView.getMenu().findItem(R.id.menuFavorite).setVisible(false);
+                        }
 
 
                         DatabaseReference refFavorte = FirebaseDatabase.getInstance().getReference("Users");

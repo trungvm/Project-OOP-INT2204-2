@@ -82,8 +82,11 @@ public class EquipmentListAdminActivity extends AppCompatActivity {
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         equipmentArrayList.clear();
                         for(DataSnapshot ds : snapshot.getChildren()){
-                            ModelEquipment model = ds.getValue(ModelEquipment.class);
-                            equipmentArrayList.add(model);
+                            if((""+ds.child("status").getValue()).equals("use")){
+                                ModelEquipment model = ds.getValue(ModelEquipment.class);
+                                model.setIsUsedBy("admin");
+                                equipmentArrayList.add(model);
+                            }
                         }
                         adapterEquipmentAdmin = new AdapterEquipmentAdmin(EquipmentListAdminActivity.this, equipmentArrayList);
                         binding.equipmentRv.setAdapter(adapterEquipmentAdmin);

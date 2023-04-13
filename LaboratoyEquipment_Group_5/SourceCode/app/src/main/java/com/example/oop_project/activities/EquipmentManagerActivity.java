@@ -92,9 +92,14 @@ public class EquipmentManagerActivity extends AppCompatActivity {
                 // clear all arraylist before, recall
                 categoryArrayList.clear();
                 for (DataSnapshot ds : snapshot.getChildren()) {
-                    ModelCategory category = ds.getValue(ModelCategory.class);
-
-                    categoryArrayList.add(category);
+                    if(ds.hasChild("status")){
+                       if((""+ds.child("status").getValue()).equals("use")){
+                           ModelCategory category = ds.getValue(ModelCategory.class);
+                           categoryArrayList.add(category);
+                       }
+                    }else{
+                        ds.getRef().child("status").setValue("use");
+                    }
                 }
                 adapterCategory = new AdapterCategory(EquipmentManagerActivity.this, categoryArrayList);
                 binding.categories.setAdapter(adapterCategory);
