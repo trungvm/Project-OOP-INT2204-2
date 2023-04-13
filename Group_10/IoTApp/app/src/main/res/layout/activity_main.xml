@@ -41,7 +41,7 @@
         android:layout_marginTop="150dp"
         android:text="@string/app_name"
         android:textAlignment="center"
-        android:textColor="@color/black"
+        android:textColor="@color/primary_light"
         android:textSize="35sp"
         android:textStyle="bold"
         android:fontFamily="@font/nunito"/>
@@ -52,6 +52,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/textview_appname"
         android:text="Welcome"
+        android:textColor="@color/second_light"
         android:textAlignment="center"
         android:textSize="20sp"
         android:fontFamily="@font/nunito"/>
