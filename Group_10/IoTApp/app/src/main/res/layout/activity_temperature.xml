@@ -72,28 +72,112 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:weightSum="4"
+        android:weightSum="3"
         android:layout_marginTop="30dp"
         android:layout_marginHorizontal="20dp"
         android:orientation="horizontal"
         android:layout_below="@+id/textview_temperature">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_weight="1">
+            android:layout_weight="1.1">
 
             <TextView
+                android:id="@+id/textview_mode_temp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAlignment="viewStart"
                 android:textColor="@color/third_light"
                 android:textSize="20sp"
-                android:text="Mode"/>
+                android:layout_marginVertical="15dp"
+                android:text="Chế độ"/>
+
+            <TextView
+                android:layout_below="@id/textview_mode_temp"
+                android:id="@+id/textview_temperature_temp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="viewStart"
+                android:textColor="@color/third_light"
+                android:textSize="20sp"
+                android:layout_marginVertical="15dp"
+                android:text="Nhiệt độ"/>
+
+            <TextView
+                android:layout_below="@id/textview_temperature_temp"
+                android:id="@+id/textview_fanSpeed_temp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="viewStart"
+                android:textColor="@color/third_light"
+                android:textSize="20sp"
+                android:layout_marginVertical="15dp"
+                android:text="Tốc độ gió"/>
+
+            <TextView
+                android:layout_below="@id/textview_fanSpeed_temp"
+                android:id="@+id/textview_eco_temp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="viewStart"
+                android:textColor="@color/third_light"
+                android:textSize="20sp"
+                android:layout_marginVertical="15dp"
+                android:text="Tiết kiệm điện"/>
+
+            <TextView
+                android:layout_below="@id/textview_eco_temp"
+                android:id="@+id/textview_timer_temp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="viewStart"
+                android:textColor="@color/third_light"
+                android:textSize="20sp"
+                android:layout_marginVertical="15dp"
+                android:text="Hẹn giờ"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.9"
+            android:orientation="vertical">
 
 
-        </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="2"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginVertical="5dp">
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/nunito"
+                    android:text="Bật"
+                    android:textColor="@color/second_light"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/nunito"
+                    android:text="Tắt"
+                    android:textColor="@color/second_light"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+
+        </RelativeLayout>
 
     </LinearLayout>
 
