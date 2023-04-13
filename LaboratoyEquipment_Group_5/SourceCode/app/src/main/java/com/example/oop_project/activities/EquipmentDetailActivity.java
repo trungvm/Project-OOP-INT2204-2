@@ -39,6 +39,7 @@ public class EquipmentDetailActivity extends AppCompatActivity {
     String status = "";
     String key = "";
     String role = "";
+    String personI4 = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,8 +56,11 @@ public class EquipmentDetailActivity extends AppCompatActivity {
         if(intent.getStringExtra("role") != null){
             role = intent.getStringExtra("role");
         }
+        if(intent.getStringExtra("personI4") != null){
+            personI4 = intent.getStringExtra("personI4");
+        }
         firebaseAuth = FirebaseAuth.getInstance();
-        if(firebaseAuth.getCurrentUser() != null){
+        if(!role.equals("admin") && firebaseAuth.getCurrentUser() != null){
             checkIsFavorite();
         }
 
@@ -130,7 +134,86 @@ public class EquipmentDetailActivity extends AppCompatActivity {
                         binding.dateTv.setText(date);
                         binding.numberOfBorrowings.setText(numberOfBorrowings);
                         binding.quantityTv.setText(quantity);
-                        if(status.equals("Borrowed")){
+                        if(status.equals("Borrowed") && personI4.equals("admin")){
+                            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("EquipmentsBorrowed");
+                            ref.child(key)
+                                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                            String timestamp = "" + snapshot.child("timestamp").getValue();
+                                            String report = "" + snapshot.child("report").getValue();
+                                            String fullName = "" + snapshot.child("fullName").getValue();
+                                            String email = "" + snapshot.child("email").getValue();
+                                            String address = "" + snapshot.child("address").getValue();
+                                            String birthday = "" + snapshot.child("birthday").getValue();
+                                            String mobile = "" + snapshot.child("mobile").getValue();
+                                            String gender = "" + snapshot.child("gender").getValue();
+                                            String otherInfor = "" + snapshot.child("otherInfor").getValue();
+
+                                            String date = MyApplication.formatTimestampToDetailTime(Long.parseLong(timestamp));
+                                            binding.descriptionTv.setText("Thời gian mượn : " +  date);
+                                            binding.manualTv.setText("Báo cáo về thiết bị lúc mượn: " + (report.equals("null") ? "" : report)
+                                                    + "\n" + "Họ và tên: " + fullName
+                                                    + "\n" + "Email: " +email
+                                                    + "\n" + "Địa chỉ: " + address
+                                                    + "\n" + "Ngày sinh: " + birthday
+                                                    + "\n" + "Số điện thoại: " + mobile
+                                                    + "\n" + "Giới tính: " + gender
+                                                    + "\n" + "Thông tin khác: " + otherInfor
+                                            );
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
+
+                                        }
+                                    });
+                        }else if(status.equals("History") && personI4.equals("admin")){
+                            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("EquipmentsBorrowed");
+                            ref.child(key)
+                                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                            String timestamp = "" + snapshot.child("timestamp").getValue();
+                                            String timestampReturn = ""+ snapshot.child("timestampReturn").getValue();
+                                            String report = "" + snapshot.child("report").getValue();
+                                            String reportHistory = "" + snapshot.child("reportHistory").getValue();
+                                            String date = "";
+                                            String dateReturn = "";
+
+                                            String fullName = "" + snapshot.child("fullName").getValue();
+                                            String email = "" + snapshot.child("email").getValue();
+                                            String address = "" + snapshot.child("address").getValue();
+                                            String birthday = "" + snapshot.child("birthday").getValue();
+                                            String mobile = "" + snapshot.child("mobile").getValue();
+                                            String gender = "" + snapshot.child("gender").getValue();
+                                            String otherInfor = "" + snapshot.child("otherInfor").getValue();
+                                            if(!timestamp.equals("null") && !timestampReturn.equals("null")){
+                                                date = MyApplication.formatTimestampToDetailTime(Long.parseLong(timestamp));
+                                                dateReturn = MyApplication.formatTimestampToDetailTime(Long.parseLong(timestampReturn));
+                                            }
+                                            binding.descriptionTv.setText("Thời gian mượn: " +  date + " - Thời gian trả : " + dateReturn);
+                                            binding.manualTv.setText("Báo cáo về thiết bị lúc mượn: " + (report.equals("null") ? "" : report)
+                                                    + "\n" + "Báo cáo về thiết bị lúc trả: " + (reportHistory.equals("null") ? "" : reportHistory)
+                                                    + "\n" + "Họ và tên: " + fullName
+                                                    + "\n" + "Email: " +email
+                                                    + "\n" + "Địa chỉ: " + address
+                                                    + "\n" + "Ngày sinh: " + birthday
+                                                    + "\n" + "Số điện thoại: " + mobile
+                                                    + "\n" + "Giới tính: " + gender
+                                                    + "\n" + "Thông tin khác: " + otherInfor
+
+                                            );
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
+
+                                        }
+                                    });
+
+                        }
+                        else if(status.equals("Borrowed")){
                             DatabaseReference ref = FirebaseDatabase.getInstance().getReference("EquipmentsBorrowed");
                             ref.child(key)
                                     .addListenerForSingleValueEvent(new ValueEventListener() {
@@ -141,7 +224,8 @@ public class EquipmentDetailActivity extends AppCompatActivity {
 
                                             String date = MyApplication.formatTimestampToDetailTime(Long.parseLong(timestamp));
                                             binding.descriptionTv.setText("Thời gian mượn : " +  date);
-                                            binding.manualTv.setText("Báo cáo về thiết bị lúc mượn: " + (report.equals("null") ? "" : report));
+                                            binding.manualTv.setText("Báo cáo về thiết bị lúc mượn: " + (report.equals("null") ? "" : report)
+                                            );
                                         }
 
                                         @Override

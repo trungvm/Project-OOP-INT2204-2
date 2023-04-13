@@ -270,6 +270,7 @@ public class OrderActivity extends AppCompatActivity {
         hashMap.put("otherInfor", otherInfor);
         hashMap.put("report", report);
         hashMap.put("timestamp", timestamp);
+        hashMap.put("status", "Borrowed");
         hashMap.put("uid", firebaseAuth.getUid());
         for(int i = 0; i < listOfKey.size(); i++){
             DatabaseReference ref = FirebaseDatabase.getInstance().getReference("EquipmentsBorrowed");

@@ -65,6 +65,13 @@ public class DashboardAdminActivity extends AppCompatActivity {
                 return false;
             }
         });
+        binding.layoutCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(DashboardAdminActivity.this, BorrowsAdminActivity.class));
+                finish();
+            }
+        });
     }
     String name = "";
     private void checkUser() {

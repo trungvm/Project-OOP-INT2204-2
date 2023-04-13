@@ -158,7 +158,6 @@ public class EquipmentsBorrowedActivity extends AppCompatActivity{
                     hashMap.put("reportHistory", reportHistory);
                     hashMap.put("timestampReturn", timestamp);
                     hashMap.put("status", "History");
-                    Log.d("Keyyy", key);
                     DatabaseReference refEquipmentBorrowed = FirebaseDatabase.getInstance().getReference("EquipmentsBorrowed");
                     refEquipmentBorrowed.child(key)
                             .updateChildren(hashMap)
