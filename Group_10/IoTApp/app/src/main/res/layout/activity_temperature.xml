@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-<!--        User-->
+        <!--        User-->
 
         <com.google.android.material.circularreveal.cardview.CircularRevealCardView
             android:id="@+id/cardview_user"
@@ -23,120 +23,121 @@
             android:layout_marginTop="15dp"
             android:layout_marginEnd="15dp"
             android:clickable="true"
-            app:cardCornerRadius="160dp"
-            android:focusable="true">
+            android:focusable="true"
+            app:cardCornerRadius="160dp">
 
             <ImageView
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:src="@drawable/ic_user"
-                android:contentDescription="TODO" />
+                android:contentDescription="TODO"
+                android:src="@drawable/ic_user" />
 
         </com.google.android.material.circularreveal.cardview.CircularRevealCardView>
 
-<!--        Back-->
+        <!--        Back-->
 
         <com.google.android.material.card.MaterialCardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:layout_marginTop="15dp"
             android:layout_marginStart="15dp"
+            android:layout_marginTop="15dp"
             android:clickable="true"
             android:focusable="true">
 
             <ImageView
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:src="@drawable/ic_back_main"
-                android:contentDescription="TODO" />
+                android:contentDescription="TODO"
+                android:src="@drawable/ic_back_main" />
 
         </com.google.android.material.card.MaterialCardView>
 
     </RelativeLayout>
 
-<!--    Header-->
+    <!--    Header-->
 
     <TextView
         android:id="@+id/textview_temperature"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="120dp"
+        android:fontFamily="@font/nunito"
         android:text="Temperature"
         android:textAlignment="center"
-        android:layout_marginTop="120dp"
         android:textColor="@color/primary_light"
         android:textSize="35sp"
-        android:textStyle="bold"
-        android:fontFamily="@font/nunito"/>
+        android:textStyle="bold" />
 
     <LinearLayout
+        android:id="@+id/layout_setting_temperature"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:weightSum="3"
-        android:layout_marginTop="30dp"
+        android:layout_below="@+id/textview_temperature"
         android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="30dp"
         android:orientation="horizontal"
-        android:layout_below="@+id/textview_temperature">
+        android:weightSum="3">
 
         <RelativeLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_weight="1.1">
+            android:layout_weight="1.1"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/textview_mode_temp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginVertical="15dp"
+                android:text="Chế độ"
                 android:textAlignment="viewStart"
                 android:textColor="@color/third_light"
-                android:textSize="20sp"
-                android:layout_marginVertical="15dp"
-                android:text="Chế độ"/>
+                android:textSize="20sp" />
 
             <TextView
-                android:layout_below="@id/textview_mode_temp"
                 android:id="@+id/textview_temperature_temp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/textview_mode_temp"
+                android:layout_marginVertical="15dp"
+                android:text="Nhiệt độ"
                 android:textAlignment="viewStart"
                 android:textColor="@color/third_light"
-                android:textSize="20sp"
-                android:layout_marginVertical="15dp"
-                android:text="Nhiệt độ"/>
+                android:textSize="20sp" />
 
             <TextView
-                android:layout_below="@id/textview_temperature_temp"
                 android:id="@+id/textview_fanSpeed_temp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/textview_temperature_temp"
+                android:layout_marginVertical="15dp"
+                android:text="Tốc độ gió"
                 android:textAlignment="viewStart"
                 android:textColor="@color/third_light"
-                android:textSize="20sp"
-                android:layout_marginVertical="15dp"
-                android:text="Tốc độ gió"/>
+                android:textSize="20sp" />
 
             <TextView
-                android:layout_below="@id/textview_fanSpeed_temp"
                 android:id="@+id/textview_eco_temp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/textview_fanSpeed_temp"
+                android:layout_marginVertical="15dp"
+                android:text="Tiết kiệm điện"
                 android:textAlignment="viewStart"
                 android:textColor="@color/third_light"
-                android:textSize="20sp"
-                android:layout_marginVertical="15dp"
-                android:text="Tiết kiệm điện"/>
+                android:textSize="20sp" />
 
             <TextView
-                android:layout_below="@id/textview_eco_temp"
                 android:id="@+id/textview_timer_temp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/textview_eco_temp"
+                android:layout_marginVertical="15dp"
+                android:text="Hẹn giờ"
                 android:textAlignment="viewStart"
                 android:textColor="@color/third_light"
-                android:textSize="20sp"
-                android:layout_marginVertical="15dp"
-                android:text="Hẹn giờ"/>
+                android:textSize="20sp" />
 
         </RelativeLayout>
 
@@ -148,38 +149,194 @@
 
 
             <LinearLayout
+                android:id="@+id/layout_mode"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:weightSum="2"
+                android:layout_centerHorizontal="true"
                 android:layout_marginHorizontal="10dp"
-                android:layout_marginVertical="5dp">
+                android:layout_marginVertical="5dp"
+                android:weightSum="2">
 
-                <com.google.android.material.radiobutton.MaterialRadioButton
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
+                <RadioGroup
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/nunito"
-                    android:text="Bật"
-                    android:textColor="@color/second_light"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
+                    android:orientation="horizontal"
+                    android:checkedButton="@id/radioButton_mode_off">
 
-                <com.google.android.material.radiobutton.MaterialRadioButton
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/nunito"
-                    android:text="Tắt"
-                    android:textColor="@color/second_light"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
+                    <com.google.android.material.radiobutton.MaterialRadioButton
+                        android:id="@+id/radioButton_mode_on"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/nunito"
+                        android:text="Bật"
+                        android:layout_marginHorizontal="20dp"
+                        android:textColor="@color/second_light"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <com.google.android.material.radiobutton.MaterialRadioButton
+                        android:id="@+id/radioButton_mode_off"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/nunito"
+                        android:text="Tắt"
+                        android:textColor="@color/second_light"
+                        android:layout_marginHorizontal="20dp"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                </RadioGroup>
 
             </LinearLayout>
 
+            <com.google.android.material.slider.Slider
+                android:id="@+id/slider_temperature"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/layout_mode"
+                android:layout_centerHorizontal="true"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginVertical="5dp"
+                android:stepSize="1.0"
+                android:valueFrom="16.0"
+                android:valueTo="30.0" />
+
+            <com.google.android.material.slider.Slider
+                android:id="@+id/slider_fanSpeed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/slider_temperature"
+                android:layout_centerHorizontal="true"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginVertical="5dp"
+                android:stepSize="1.0"
+                android:valueFrom="0.0"
+                android:valueTo="4.0" />
+
+            <LinearLayout
+                android:id="@+id/layout_eco"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/slider_fanSpeed"
+                android:layout_centerHorizontal="true"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginVertical="5dp"
+                android:weightSum="2">
+
+                <RadioGroup
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:checkedButton="@id/radioButton_eco_off">
+
+                    <com.google.android.material.radiobutton.MaterialRadioButton
+                        android:id="@+id/radioButton_eco_on"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/nunito"
+                        android:text="Bật"
+                        android:layout_marginHorizontal="20dp"
+                        android:textColor="@color/second_light"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <com.google.android.material.radiobutton.MaterialRadioButton
+                        android:id="@+id/radioButton_eco_off"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/nunito"
+                        android:text="Tắt"
+                        android:textColor="@color/second_light"
+                        android:layout_marginHorizontal="20dp"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                </RadioGroup>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_timer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/layout_eco"
+                android:layout_centerHorizontal="true"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginVertical="5dp"
+                android:weightSum="2">
+
+                <RadioGroup
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:checkedButton="@id/radioButton_timer_off">
+
+                    <com.google.android.material.radiobutton.MaterialRadioButton
+                        android:id="@+id/radioButton_timer_on"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/nunito"
+                        android:text="Bật"
+                        android:layout_marginHorizontal="20dp"
+                        android:textColor="@color/second_light"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <com.google.android.material.radiobutton.MaterialRadioButton
+                        android:id="@+id/radioButton_timer_off"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/nunito"
+                        android:text="Tắt"
+                        android:textColor="@color/second_light"
+                        android:layout_marginHorizontal="20dp"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                </RadioGroup>
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/layout_timer"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginVertical="5dp"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/edittext_timer_start"
+                    android:layout_width="70dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentStart="true"
+                    android:background="@color/third_light"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textSize="15sp" />
+
+                <EditText
+                    android:id="@+id/edittext_timer_"
+                    android:layout_width="70dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="10dp"
+                    android:background="@color/third_light"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textSize="15sp" />
+
+            </RelativeLayout>
 
         </RelativeLayout>
 
     </LinearLayout>
 
-
+    <com.google.android.material.button.MaterialButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/layout_setting_temperature"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="25dp"
+        android:fontFamily="@font/nunito"
+        android:text="Start"
+        android:textStyle="bold" />
 </RelativeLayout>
