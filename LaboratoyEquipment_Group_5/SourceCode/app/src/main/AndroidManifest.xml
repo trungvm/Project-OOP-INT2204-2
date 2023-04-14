@@ -21,6 +21,9 @@
         android:theme="@style/Theme.MaterialComponents.Light.NoActionBar"
         tools:targetApi="30">
         <activity
+            android:name=".activities.ScheduleActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.BorrowsAdminActivity"
             android:exported="false" />
         <activity
@@ -28,8 +31,8 @@
             android:exported="false" />
         <activity
             android:name=".activities.EquipmentsBorrowedActivity"
-            android:windowSoftInputMode="adjustResize"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".activities.OrderActivity"
             android:exported="false" />

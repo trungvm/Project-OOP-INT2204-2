@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.bumptech.glide.Glide;
 import com.example.oop_project.R;
 import com.example.oop_project.databinding.ActivityDashboardAdminBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -87,6 +88,13 @@ public class DashboardAdminActivity extends AppCompatActivity {
                     .addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            String profileImage = "" + snapshot.child("profileImage").getValue();
+                            if(!profileImage.equals("null") && !isDestroyed()){
+                                Glide.with(DashboardAdminActivity.this)
+                                        .load(profileImage)
+                                        .placeholder(R.drawable.ic_person_gray)
+                                        .into(binding.profileTv);
+                            }
                             name = ""+snapshot.child("fullName").getValue();
                             if(name.equals("null")){
                                 binding.textUserName.setText(email);

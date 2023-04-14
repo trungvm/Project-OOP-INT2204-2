@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.bumptech.glide.Glide;
 import com.example.oop_project.R;
 import com.example.oop_project.databinding.ActivityDashboardUserBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -95,6 +96,13 @@ public class DashboardUserActivity extends AppCompatActivity {
               finish();
           }
       });
+      binding.layoutSchedule.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View v) {
+              startActivity(new Intent(DashboardUserActivity.this, ScheduleActivity.class));
+              finish();
+          }
+      });
 
     }
     String name = "";
@@ -114,6 +122,13 @@ public class DashboardUserActivity extends AppCompatActivity {
                                     .addListenerForSingleValueEvent(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                            String profileImage = "" + snapshot.child("profileImage").getValue();
+                                            if(!profileImage.equals("null") && !isDestroyed()){
+                                                Glide.with(DashboardUserActivity.this)
+                                                        .load(profileImage)
+                                                        .placeholder(R.drawable.ic_person_gray)
+                                                        .into(binding.profileTv);
+                                            }
                                             name = ""+snapshot.child("fullName").getValue();
                                             if(name.equals("null")){
                                                 binding.textUserName.setText(email);
