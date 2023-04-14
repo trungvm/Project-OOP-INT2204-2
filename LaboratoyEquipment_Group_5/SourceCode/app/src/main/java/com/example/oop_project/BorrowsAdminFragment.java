@@ -1,11 +1,14 @@
 package com.example.oop_project;
 
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +27,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+
 
 
 public class BorrowsAdminFragment extends Fragment {
@@ -40,6 +49,25 @@ public class BorrowsAdminFragment extends Fragment {
     private AdapterBorrowsAdmin adapterBorrowsAdmin;
     public BorrowsAdminFragment() {
         // Required empty public constructor
+    }
+    interface MyCallback {
+        void onSuccess(String title);
+        void onError(DatabaseError error);
+    }
+    void fetchDataFromFirebase(String equipmentId, MyCallback callback) {
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Equipments");
+        ref.child(equipmentId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String title = "" + snapshot.child("title").getValue();
+                callback.onSuccess(title);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                callback.onError(error);
+            }
+        });
     }
 
     public static BorrowsAdminFragment newInstance(String categoryId, String title, String uid) {
@@ -75,6 +103,26 @@ public class BorrowsAdminFragment extends Fragment {
             loadBorrowedEquipments();
 
         }
+        binding.searchEt.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                try{
+                    adapterBorrowsAdmin.getFilter().filter(s);
+                }catch (Exception e){
+
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
         return binding.getRoot();
     }
     private String equipmentId;
@@ -93,10 +141,16 @@ public class BorrowsAdminFragment extends Fragment {
                         String key = ds.getKey();
                         String uid = "" + ds.child("uid").getValue();
                         ModelEquipment model = snapshot.getValue(ModelEquipment.class);
+                        String equipmentId = "" + ds.child("equipmentId").getValue();
+                        String title = "" + ds.child("title").getValue();
+                        model.setTitle(title);
+
+                        model.setId(equipmentId);
                         model.setKey(key);
                         model.setUid(uid);
                         model.setStatus("Borrowed");
                         equipmentArrayListBorrowing.add(model);
+
 
 
                     }
@@ -132,6 +186,10 @@ public class BorrowsAdminFragment extends Fragment {
                         String key = ds.getKey();
                         String uid = "" + ds.child("uid").getValue();
                         ModelEquipment model = snapshot.getValue(ModelEquipment.class);
+                        String equipmentId = "" + ds.child("equipmentId").getValue();
+                        String title = "" + ds.child("title").getValue();
+                        model.setTitle(title);
+                        model.setId(equipmentId);
                         model.setKey(key);
                         model.setUid(uid);
                         model.setStatus("History");

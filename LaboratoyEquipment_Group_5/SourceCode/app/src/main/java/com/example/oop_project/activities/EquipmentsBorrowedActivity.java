@@ -78,7 +78,9 @@ public class EquipmentsBorrowedActivity extends AppCompatActivity{
                     case 1:
                         binding.reportLayout.setVisibility(View.GONE);
                         binding.submitBtn.setVisibility(View.GONE);
-                        binding.viewPagerBorrowed.getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;
+                        int heightInPxt = (int) TypedValue.applyDimension(
+                                TypedValue.COMPLEX_UNIT_DIP, 1000, getResources().getDisplayMetrics());
+                        binding.viewPagerBorrowed.getLayoutParams().height = heightInPxt;
                         binding.viewPagerBorrowed.requestLayout();
                         break;
                     default:

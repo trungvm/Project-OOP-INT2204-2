@@ -39,6 +39,8 @@ public class CartActivity extends AppCompatActivity  {
     private String quantityBorrow;
     private ArrayList<Pair<String, String>> listIdChecked;
     private ArrayList<String> listOfKey;
+    private ArrayList<String> listOfEquipmentId;
+    private ArrayList<String> listOfTitleEquipment;
     private boolean flag = true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +49,8 @@ public class CartActivity extends AppCompatActivity  {
         setContentView(binding.getRoot());
         listIdChecked = new ArrayList<>();
         listOfKey = new ArrayList<>();
+        listOfEquipmentId = new ArrayList<>();
+        listOfTitleEquipment =  new ArrayList<>();
         firebaseAuth = FirebaseAuth.getInstance();
         binding.backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,7 +78,11 @@ public class CartActivity extends AppCompatActivity  {
                         }
                     }
                    if(flag == true){
-                       startActivity(new Intent(CartActivity.this, OrderActivity.class).putStringArrayListExtra("listOfKey", listOfKey));
+                       Intent intent = new Intent(CartActivity.this, OrderActivity.class);
+                       intent.putStringArrayListExtra("listOfKey", listOfKey);
+                       intent.putStringArrayListExtra("listOfEquipmentId", listOfEquipmentId);
+                       intent.putStringArrayListExtra("listOfTitleEquipment", listOfTitleEquipment);
+                       startActivity(intent);
                        finish();
                    }
                 }
@@ -89,6 +97,7 @@ public class CartActivity extends AppCompatActivity  {
         for(int i = 0; i < listIdChecked.size(); i++){
             String key = ref.push().getKey();
             listOfKey.add("HH"+key);
+            listOfEquipmentId.add(listIdChecked.get(i).first);
             HashMap<String, Object> hashMap = new HashMap<>();
             hashMap.put("equipmentId", listIdChecked.get(i).first);
             hashMap.put("quantityBorrowed", listIdChecked.get(i).second);
@@ -141,9 +150,11 @@ public class CartActivity extends AppCompatActivity  {
                 if(flag == false){
                     Pair<String, String> p = new Pair<>(equipmentId, quantityBorrow);
                     listIdChecked.set(index, p);
+                    listOfTitleEquipment.set(index, title);
                 }else{
                     Pair<String, String> p = new Pair<>(equipmentId, quantityBorrow);
                     listIdChecked.add(p);
+                    listOfTitleEquipment.add(title);
                 }
 
             }else{
@@ -156,6 +167,7 @@ public class CartActivity extends AppCompatActivity  {
                 }
                 if(flag == false){
                     listIdChecked.remove(index);
+                    listOfTitleEquipment.remove(index);
                 }
             }
 

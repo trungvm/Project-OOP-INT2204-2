@@ -7,6 +7,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
@@ -24,6 +26,8 @@ import com.bumptech.glide.request.target.Target;
 import com.example.oop_project.MyApplication;
 import com.example.oop_project.activities.EquipmentDetailActivity;
 import com.example.oop_project.databinding.RowBorrowsAdminBinding;
+import com.example.oop_project.filters.FilterBorrowsAdmin;
+import com.example.oop_project.filters.FilterEquipmentBorrowed;
 import com.example.oop_project.models.ModelEquipment;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -33,14 +37,18 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class AdapterBorrowsAdmin extends RecyclerView.Adapter<AdapterBorrowsAdmin.HolderBorrowsAdmin>{
+public class AdapterBorrowsAdmin extends RecyclerView.Adapter<AdapterBorrowsAdmin.HolderBorrowsAdmin> implements Filterable {
     private Context context;
-    private ArrayList<ModelEquipment> equipmentArrayList;
+    public ArrayList<ModelEquipment> equipmentArrayList, filterList;
+    private FilterBorrowsAdmin filter;
     private RowBorrowsAdminBinding binding;
+
 
     public AdapterBorrowsAdmin(Context context, ArrayList<ModelEquipment> equipmentArrayList) {
         this.context = context;
         this.equipmentArrayList = equipmentArrayList;
+        filterList = equipmentArrayList;
+
     }
 
     @NonNull
@@ -53,8 +61,7 @@ public class AdapterBorrowsAdmin extends RecyclerView.Adapter<AdapterBorrowsAdmi
     @Override
     public void onBindViewHolder(@NonNull HolderBorrowsAdmin holder, int position) {
         ModelEquipment model = equipmentArrayList.get(position);
-        String description = model.getDescription();
-        String equipmentImage = model.getEquipmentImage();
+        String equipmentId = model.getId();
         String key = model.getKey();
         binding.textDate.setText("Thời gian mượn: ");
         binding.categoryTv.setVisibility(View.GONE);
@@ -118,30 +125,51 @@ public class AdapterBorrowsAdmin extends RecyclerView.Adapter<AdapterBorrowsAdmi
                 context.startActivity(intent);
             }
         });
-        Glide.with(context)
-                .load(equipmentImage)
-                .centerCrop()
-                .listener(new RequestListener<Drawable>() {
-                    @Override
-                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                        binding.progressBar.setVisibility(View.VISIBLE);
-                        return false;
-                    }
+        DatabaseReference refImage = FirebaseDatabase.getInstance().getReference("Equipments");
+        refImage.child(equipmentId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String equipmentImage = "" + snapshot.child("equipmentImage").getValue();
+                Log.d("equipmentImage", equipmentImage);
+                Glide.with(context)
+                            .load(equipmentImage)
+                            .centerCrop()
+                            .listener(new RequestListener<Drawable>() {
+                                @Override
+                                public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
 
-                    @Override
-                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                    binding.imageView.setVisibility(View.VISIBLE);
+                                    return false;
+                                }
+                                @Override
+                                public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                                    binding.progressBar.setVisibility(View.VISIBLE);
+                                    return false;
+                                }
 
-                        binding.imageView.setVisibility(View.VISIBLE);
-                        return false;
-                    }
-                })
-                .into(binding.imageView);
+                            })
+                            .into(binding.imageView);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
     }
 
     @Override
     public int getItemCount() {
         return equipmentArrayList.size();
+    }
+
+    @Override
+    public Filter getFilter() {
+        if(filter == null){
+            filter = new FilterBorrowsAdmin(filterList, this);
+        }
+        return filter;
     }
 
     class HolderBorrowsAdmin extends RecyclerView.ViewHolder{

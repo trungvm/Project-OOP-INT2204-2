@@ -37,6 +37,8 @@ public class OrderActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private ArrayList<String> listOfKey;
     private ProgressDialog progressDialog;
+    private ArrayList<String> listOfEquipmentId;
+    private ArrayList<String> listOfTitleEquipment;
     @Override
     protected void onDestroy(){
         super.onDestroy();
@@ -115,6 +117,8 @@ public class OrderActivity extends AppCompatActivity {
         progressDialog.setTitle("Please wait!");
         progressDialog.setCanceledOnTouchOutside(false);
         listOfKey = getIntent().getStringArrayListExtra("listOfKey");
+        listOfEquipmentId = getIntent().getStringArrayListExtra("listOfEquipmentId");
+        listOfTitleEquipment = getIntent().getStringArrayListExtra("listOfTitleEquipment");
         loadInformation();
         binding.backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -260,19 +264,22 @@ public class OrderActivity extends AppCompatActivity {
                     }
                 });
         long timestamp = System.currentTimeMillis();
-        HashMap <String, Object> hashMap = new HashMap<>();
-        hashMap.put("fullName", fullName);
-        hashMap.put("email", email);
-        hashMap.put("mobile", mobile);
-        hashMap.put("address", address);
-        hashMap.put("birthday", birthday);
-        hashMap.put("gender", gender);
-        hashMap.put("otherInfor", otherInfor);
-        hashMap.put("report", report);
-        hashMap.put("timestamp", timestamp);
-        hashMap.put("status", "Borrowed");
-        hashMap.put("uid", firebaseAuth.getUid());
         for(int i = 0; i < listOfKey.size(); i++){
+            HashMap <String, Object> hashMap = new HashMap<>();
+            hashMap.put("fullName", fullName);
+            hashMap.put("email", email);
+            hashMap.put("mobile", mobile);
+            hashMap.put("address", address);
+            hashMap.put("birthday", birthday);
+            hashMap.put("gender", gender);
+            hashMap.put("otherInfor", otherInfor);
+            hashMap.put("report", report);
+            hashMap.put("timestamp", timestamp);
+            hashMap.put("status", "Borrowed");
+            hashMap.put("uid", firebaseAuth.getUid());
+            hashMap.put("equipmentId", listOfEquipmentId.get(i));
+            hashMap.put("title", listOfTitleEquipment.get(i));
+
             DatabaseReference ref = FirebaseDatabase.getInstance().getReference("EquipmentsBorrowed");
             ref.child(listOfKey.get(i))
                     .setValue(hashMap)

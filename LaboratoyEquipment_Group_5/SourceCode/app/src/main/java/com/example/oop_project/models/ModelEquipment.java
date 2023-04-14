@@ -13,10 +13,11 @@ public class ModelEquipment {
     private int quantityBorrow;
     public ModelEquipment() {
         this.description = "";
-        this.title = "";
         this.categoryId = "";
         this.manual = "";
         isUsedBy = "user";
+        title = "";
+        equipmentImage = "";
         this.quantity = 0;
     }
     public ModelEquipment(String uid, String id, String title, String description, String categoryId, String manual, long timestamp, int quantity) {
