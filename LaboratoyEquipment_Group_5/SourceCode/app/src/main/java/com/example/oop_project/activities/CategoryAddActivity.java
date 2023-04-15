@@ -7,6 +7,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -15,8 +16,11 @@ import com.example.oop_project.models.ModelCategory;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class CategoryAddActivity extends AppCompatActivity {
     private ActivityCategoryAddBinding binding;
@@ -52,15 +56,49 @@ public class CategoryAddActivity extends AppCompatActivity {
     }
     private void getData(ModelCategory category){
         String title = binding.category.getText().toString().trim();
+        String position = binding.position.getText().toString().trim();
         category.setTitle(title);
+        category.setPosition(position);
     }
     private void validateData(ModelCategory category) {
         getData(category);
         if(TextUtils.isEmpty(category.getTitle())){
-            Toast.makeText(this, "Please enter category!", Toast.LENGTH_SHORT).show();
-        }else{
-            addCategoryFirebase(category);
+            Toast.makeText(this, "Vui lòng nhập tên thể loại", Toast.LENGTH_SHORT).show();
+        }else if(TextUtils.isEmpty(category.getPosition())){
+            Toast.makeText(this, "Vui lòng nhập vị trí", Toast.LENGTH_SHORT).show();
+        }else {
+            validateCategoryTitle(category);
         }
+    }
+
+    String title;
+    boolean  flag = false;
+    public interface OnCheckTitleListener {
+        void onTitleChecked(boolean flag);
+    }
+    private void validateCategoryTitle(ModelCategory category) {
+        title = category.getTitle();
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Categories");
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot ds : snapshot.getChildren()){
+                    String oldTitle = "" + ds.child("title").getValue();
+                    String status = "" + ds.child("status").getValue();
+                    if(title.equals(oldTitle) && status.equals("use")){
+                        Toast.makeText(CategoryAddActivity.this, "Thể loại đã trùng tên", Toast.LENGTH_SHORT).show();
+                        return;
+                    };
+                }
+                addCategoryFirebase(category);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     private void addCategoryFirebase(ModelCategory category) {
@@ -81,6 +119,7 @@ public class CategoryAddActivity extends AppCompatActivity {
                         progressDialog.dismiss();
                         Toast.makeText(CategoryAddActivity.this, "Category added success!", Toast.LENGTH_SHORT).show();
                         binding.category.setText("");
+                        binding.position.setText("");
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {

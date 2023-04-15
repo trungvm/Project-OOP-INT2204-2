@@ -189,9 +189,15 @@ public class CartActivity extends AppCompatActivity  {
                                     .addListenerForSingleValueEvent(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                            ModelEquipment model = snapshot.getValue(ModelEquipment.class);
-                                            equipmentArrayList.add(model);
-                                            adapterEquipmentCart.notifyDataSetChanged();
+                                            String status = "" + snapshot.child("status").getValue();
+                                            Log.d("status", status);
+                                            if(status.equals("deleted")){
+
+                                            }else{
+                                                ModelEquipment model = snapshot.getValue(ModelEquipment.class);
+                                                equipmentArrayList.add(model);
+                                                adapterEquipmentCart.notifyDataSetChanged();
+                                            }
                                         }
 
                                         @Override

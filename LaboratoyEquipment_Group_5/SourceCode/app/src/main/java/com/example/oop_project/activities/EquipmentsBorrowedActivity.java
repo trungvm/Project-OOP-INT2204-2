@@ -142,6 +142,7 @@ public class EquipmentsBorrowedActivity extends AppCompatActivity{
                                                     int quantity = Integer.parseInt("" + snapshot.child("quantity").getValue());
                                                     DatabaseReference refQ = snapshot.child("quantity").getRef();
                                                     refQ.setValue(quantity + quantityBorrowed);
+
                                                 }
 
                                                 @Override
@@ -149,7 +150,7 @@ public class EquipmentsBorrowedActivity extends AppCompatActivity{
 
                                                 }
                                             });
-                            }
+                                }
 
                             @Override
                             public void onCancelled(@NonNull DatabaseError error) {

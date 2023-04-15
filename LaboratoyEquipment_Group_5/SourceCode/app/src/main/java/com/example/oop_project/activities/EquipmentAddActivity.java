@@ -275,11 +275,13 @@ public class EquipmentAddActivity extends AppCompatActivity {
                 categoryTitleArrayList.clear();
                 categoryIdArraylist.clear();
                 for(DataSnapshot ds: snapshot.getChildren()){
-                   String categoryId = (String) ds.child("id").getValue();
-                   String categoryTitle = (String) ds.child("title").getValue();
+                  if(!(""+ ds.child("status").getValue()).equals("deleted")){
+                      String categoryId = (String) ds.child("id").getValue();
+                      String categoryTitle = (String) ds.child("title").getValue();
 
-                   categoryTitleArrayList.add(categoryTitle);
-                   categoryIdArraylist.add(categoryId);
+                      categoryTitleArrayList.add(categoryTitle);
+                      categoryIdArraylist.add(categoryId);
+                  }
 
                 }
             }

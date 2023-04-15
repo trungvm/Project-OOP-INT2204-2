@@ -160,6 +160,7 @@ public class BorrowsAdminFragment extends Fragment {
                     adapterBorrowsAdmin.notifyDataSetChanged();
                     binding.equipmentRv.setAdapter(adapterBorrowsAdmin);
 
+
             }
 
             @Override

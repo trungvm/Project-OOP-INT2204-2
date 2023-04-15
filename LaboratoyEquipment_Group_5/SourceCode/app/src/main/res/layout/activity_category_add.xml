@@ -36,7 +36,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
             android:fontFamily="sans-serif-condensed"
-            android:text="Add a new Category!"
+            android:text="Thêm mới thể loại"
             android:textColor="@color/white"
             android:textSize="28sp"
             />
@@ -58,7 +58,31 @@
             android:drawableStart="@drawable/ic_category_gray"
             android:drawablePadding="18dp"
             android:hint="Category Title"
-            android:inputType="textPersonName|textCapWords"
+            android:inputType="textPersonName|textCapWords|textMultiLine"
+            android:padding="18dp"
+            android:textColorHint="@color/gray02"
+            android:textColor="@color/black"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/positionTil"
+        android:layout_below="@id/categoryTil"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:hintEnabled="false"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginTop="5dp"
+        >
+        <EditText
+            android:id="@+id/position"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_editext01"
+            android:drawableStart="@drawable/ic_position_gray"
+            android:drawablePadding="18dp"
+            android:hint="Postion"
+            android:inputType="textPersonName|textCapWords|textMultiLine"
             android:padding="18dp"
             android:textColorHint="@color/gray02"
             android:textColor="@color/black"
@@ -73,8 +97,8 @@
         android:layout_marginEnd="30dp"
         android:layout_marginTop="20dp"
         android:background="@drawable/shape_button01"
-        android:text="submit"
-        android:layout_below="@id/categoryTil"
+        android:text="Xác nhận"
+        android:layout_below="@id/positionTil"
         android:textColor="@color/white"
         />
 </RelativeLayout>

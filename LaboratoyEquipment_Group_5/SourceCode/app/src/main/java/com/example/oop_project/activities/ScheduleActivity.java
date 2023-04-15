@@ -90,6 +90,7 @@ public class ScheduleActivity extends AppCompatActivity {
                 }
                 adapterSchedule = new AdapterSchedule(ScheduleActivity.this, equipmentArrayList);
                 binding.equipmentRv.setAdapter(adapterSchedule);
+
             }
 
             @Override

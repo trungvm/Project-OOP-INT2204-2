@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -107,11 +108,11 @@ public class AdapterCategory extends RecyclerView.Adapter<AdapterCategory.Holder
         String id = category.getId();
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Categories");
         ref.child(id)
-                .removeValue()
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
-                    public void onSuccess(Void unused) {
-                        Toast.makeText(context, "Delete successfully!", Toast.LENGTH_SHORT).show();
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        snapshot.getRef().child("status").setValue("deleted");
+                        Toast.makeText(context, "Xóa thành công", Toast.LENGTH_SHORT).show();
                         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Equipments");
                         reference.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
@@ -119,21 +120,44 @@ public class AdapterCategory extends RecyclerView.Adapter<AdapterCategory.Holder
                                 for(DataSnapshot ds : snapshot.getChildren()){
                                     if((""+ds.child("categoryId").getValue()).equals(id)){
                                         ds.getRef().child("status").setValue("deleted");
+                                        String equipmentId = "" + ds.child("timestamp").getValue();
+                                        DatabaseReference ref1 = FirebaseDatabase.getInstance().getReference("Users");
+                                        ref1.addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                for(DataSnapshot ds : snapshot.getChildren()){
+                                                    if(ds.hasChild("Carts")){
+                                                        DatabaseReference ref2 = ds.child("Carts").getRef();
+                                                        ref2.child(equipmentId).removeValue();
+                                                    }
+                                                    if(ds.hasChild("Favorites")){
+                                                        DatabaseReference ref2 = ds.child("Favorites").getRef();
+                                                        ref2.child(equipmentId).removeValue();
+                                                    }
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError error) {
+
+                                            }
+                                        });
                                     }
+
                                 }
                             }
 
                             @Override
                             public void onCancelled(@NonNull DatabaseError error) {
-
+                                Toast.makeText(context, "Xóa thất bại", Toast.LENGTH_SHORT).show();
                             }
                         });
+
                     }
-                })
-                .addOnFailureListener(new OnFailureListener() {
+
                     @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(context, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                    public void onCancelled(@NonNull DatabaseError error) {
+
                     }
                 });
     }

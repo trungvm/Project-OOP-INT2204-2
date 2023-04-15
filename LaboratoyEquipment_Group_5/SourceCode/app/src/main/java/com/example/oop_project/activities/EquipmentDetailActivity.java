@@ -121,6 +121,12 @@ public class EquipmentDetailActivity extends AppCompatActivity {
                                             @Override
                                             public void onDataChange(@NonNull DataSnapshot snapshot) {
                                                 String title = ""+snapshot.child("title").getValue();
+                                                String position = "" + snapshot.child("position").getValue();
+                                                if(position.equals("null")){
+
+                                                }else{
+                                                    binding.position.setText(title);
+                                                }
                                                 binding.categoryTv.setText(title);
                                             }
 

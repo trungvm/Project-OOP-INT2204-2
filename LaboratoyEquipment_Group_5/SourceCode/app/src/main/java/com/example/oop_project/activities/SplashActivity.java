@@ -57,6 +57,7 @@ public class SplashActivity extends AppCompatActivity {
                                 startActivity(new Intent(SplashActivity.this, DashboardAdminActivity.class));
                                 finish();
                             }
+
                         }
 
                         @Override

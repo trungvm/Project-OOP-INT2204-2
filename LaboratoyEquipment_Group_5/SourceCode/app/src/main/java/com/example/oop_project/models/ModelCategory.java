@@ -2,9 +2,13 @@ package com.example.oop_project.models;
 
 public class ModelCategory {
     private String title, uid, id;
+    private String position;
     private long timestamp;
+    private String status;
 
     public ModelCategory() {
+        status = "use";
+        position = "";
         this.uid = "";
         this.title = "";
         this.id = "";
@@ -16,6 +20,22 @@ public class ModelCategory {
         this.title = title;
         this.uid = uid;
         this.timestamp = timestamp;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getPosition() {
+        return position;
+    }
+
+    public void setPosition(String position) {
+        this.position = position;
     }
 
     public String getUid() {

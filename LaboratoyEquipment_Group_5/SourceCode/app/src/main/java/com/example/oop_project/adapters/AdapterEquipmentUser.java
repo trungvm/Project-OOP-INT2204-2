@@ -84,6 +84,7 @@ public class AdapterEquipmentUser extends RecyclerView.Adapter<AdapterEquipmentU
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         String titleCategory = "" + snapshot.child("title").getValue();
                         holder.categoryTv.setText(titleCategory);
+
                     }
 
                     @Override

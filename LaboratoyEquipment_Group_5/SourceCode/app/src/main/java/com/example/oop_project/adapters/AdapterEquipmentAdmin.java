@@ -141,7 +141,24 @@ public class AdapterEquipmentAdmin extends RecyclerView.Adapter<AdapterEquipment
                             context.startActivity(intent);
                         } else if (which == 1) {
                             // Delete clicked
-                            deleteEquipment(model, holder);
+                            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                            builder.setTitle("Delete").
+                                    setMessage("Are you sure want to delete this equipment?")
+                                    .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            // begin delete;
+                                            Toast.makeText(context, "Deleting...", Toast.LENGTH_SHORT).show();
+                                            deleteEquipment(model, holder);
+                                        }
+                                    })
+                                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    })
+                                    .show();
                         }
                     }
                 })
@@ -159,6 +176,28 @@ public class AdapterEquipmentAdmin extends RecyclerView.Adapter<AdapterEquipment
                 progressDialog.dismiss();
                 Toast.makeText(context, "Xóa thiết bị thành công!", Toast.LENGTH_SHORT).show();
                 snapshot.getRef().child("status").setValue("deleted");
+                String equipmentId = "" + snapshot.child("timestamp").getValue();
+                DatabaseReference ref1 = FirebaseDatabase.getInstance().getReference("Users");
+                ref1.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        for(DataSnapshot ds : snapshot.getChildren()){
+                            if(ds.hasChild("Carts")){
+                                DatabaseReference ref2 = ds.child("Carts").getRef();
+                                ref2.child(equipmentId).removeValue();
+                            }
+                            if(ds.hasChild("Favorites")){
+                                DatabaseReference ref2 = ds.child("Favorites").getRef();
+                                ref2.child(equipmentId).removeValue();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
             }
 
             @Override

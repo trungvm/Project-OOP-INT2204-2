@@ -60,18 +60,12 @@ public class ProfileActivity extends AppCompatActivity {
                             finish(); // optional, để đóng MainActivity khi chuyển sang HomeActivity
                             return true;
                         }
-                  if(role.equals("admin")){
-
-                  }else{
-                      switch (item.getItemId()) {
-                          case R.id.menuFavorite:
-                              Intent intent1 = new Intent(ProfileActivity.this, FavoriteActivity.class);
-                              intent1.putExtra("CURRENT_TAB", 1);
-                              startActivity(intent1);
-                              finish();
-                              return true;
-                      }
-                  }
+                    case R.id.menuFavorite:
+                        Intent intent1 = new Intent(ProfileActivity.this, FavoriteActivity.class);
+                        intent1.putExtra("CURRENT_TAB", 1);
+                        startActivity(intent1);
+                        finish();
+                        return true;
                     case R.id.menuAccount:
                         Intent intent2 = new Intent(ProfileActivity.this, ProfileActivity.class);
                         intent2.putExtra("CURRENT_TAB", 2);
@@ -151,6 +145,7 @@ public class ProfileActivity extends AppCompatActivity {
                                            favoriteCount++;
                                        }
                                         binding.favoriteTv.setText("" + favoriteCount);
+
                                     }
 
                                     @Override

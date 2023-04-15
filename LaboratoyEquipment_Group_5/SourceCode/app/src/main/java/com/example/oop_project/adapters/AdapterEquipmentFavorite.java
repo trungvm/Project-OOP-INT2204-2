@@ -97,6 +97,7 @@ public class AdapterEquipmentFavorite extends RecyclerView.Adapter<AdapterEquipm
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         String titleCategory = "" + snapshot.child("title").getValue();
                         holder.categoryTv.setText(titleCategory);
+
                     }
 
                     @Override

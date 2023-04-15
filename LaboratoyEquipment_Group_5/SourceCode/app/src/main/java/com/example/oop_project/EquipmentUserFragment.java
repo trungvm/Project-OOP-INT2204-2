@@ -216,6 +216,7 @@ public class EquipmentUserFragment extends Fragment {
 
                 adapterEquipmentUser = new AdapterEquipmentUser(getContext(), equipmentArrayList);
                 binding.equipmentRv.setAdapter(adapterEquipmentUser);
+
             }
 
             @Override

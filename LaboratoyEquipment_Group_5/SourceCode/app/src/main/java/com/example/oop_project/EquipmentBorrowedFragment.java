@@ -160,7 +160,6 @@ public class EquipmentBorrowedFragment extends Fragment  implements ViewPager.On
                                         binding.equipmentRv.setAdapter(adapterEquipmentBorrowed);
 
 
-
                                     }
 
                                     @Override
@@ -212,7 +211,6 @@ public class EquipmentBorrowedFragment extends Fragment  implements ViewPager.On
                                         equipmentArrayListBorrowed.add(model);
                                         adapterEquipmentBorrowed.notifyDataSetChanged();
                                         binding.equipmentRv.setAdapter(adapterEquipmentBorrowed);
-
 
 
                                     }

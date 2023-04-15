@@ -88,6 +88,7 @@ public class FavoriteActivity extends AppCompatActivity {
                                             ModelEquipment model = snapshot.getValue(ModelEquipment.class);
                                             equipmentArrayList.add(model);
                                             adapterEquipmentFavorite.notifyDataSetChanged();
+
                                         }
 
                                         @Override
@@ -98,6 +99,7 @@ public class FavoriteActivity extends AppCompatActivity {
                         }
                         adapterEquipmentFavorite = new AdapterEquipmentFavorite(FavoriteActivity.this, equipmentArrayList);
                         binding.favoriteRv.setAdapter(adapterEquipmentFavorite);
+
                     }
 
                     @Override

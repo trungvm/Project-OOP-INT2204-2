@@ -74,6 +74,7 @@ public class AdapterBorrowsAdmin extends RecyclerView.Adapter<AdapterBorrowsAdmi
                         String timestamp = "" + snapshot.child("timestamp").getValue();
                         String date = MyApplication.formatTimestampToDetailTime(Long.parseLong(timestamp));
                         holder.dateTv.setText(date);
+
                     }
 
                     @Override
@@ -99,6 +100,7 @@ public class AdapterBorrowsAdmin extends RecyclerView.Adapter<AdapterBorrowsAdmi
                                                         holder.descriptionTv.setText(description);
                                                         String equipmentId = "" + snapshots.child("id").getValue();
                                                         model.setId(equipmentId);
+
                                                     }
 
                                                     @Override
@@ -106,6 +108,7 @@ public class AdapterBorrowsAdmin extends RecyclerView.Adapter<AdapterBorrowsAdmi
 
                                                     }
                                                 });
+
                                     }
 
                                     @Override

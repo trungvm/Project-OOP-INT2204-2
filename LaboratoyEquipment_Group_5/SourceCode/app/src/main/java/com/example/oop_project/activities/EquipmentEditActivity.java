@@ -146,6 +146,7 @@ public class EquipmentEditActivity extends AppCompatActivity {
                                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                                         String category =""+snapshot.child("title").getValue();
                                         binding.categoryTv.setText(category);
+
                                     }
 
                                     @Override

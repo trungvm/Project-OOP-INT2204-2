@@ -75,6 +75,7 @@ public class OrderActivity extends AppCompatActivity {
                                 ds.getRef().removeValue();
                             }
                         }
+
                     }
 
                     @Override
@@ -98,6 +99,7 @@ public class OrderActivity extends AppCompatActivity {
                                 ds.getRef().removeValue();
                             }
                         }
+
                     }
 
                     @Override
@@ -134,6 +136,7 @@ public class OrderActivity extends AppCompatActivity {
                                                 ds.getRef().removeValue();
                                             }
                                         }
+
                                     }
 
                                     @Override
@@ -247,6 +250,7 @@ public class OrderActivity extends AppCompatActivity {
                                                }
                                                numberOfBorrowings++;
                                                snapshot.getRef().child("numberOfBorrowings").setValue(numberOfBorrowings);
+
                                            }
 
                                            @Override
@@ -256,6 +260,7 @@ public class OrderActivity extends AppCompatActivity {
                                        });
                            }
                         }
+
                     }
 
                     @Override
@@ -355,6 +360,7 @@ public class OrderActivity extends AppCompatActivity {
                             binding.genderTv.setText("Nữ");
                         }
 
+
                     }
 
                     @Override
@@ -380,6 +386,7 @@ public class OrderActivity extends AppCompatActivity {
                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
                                                String name = "" + snapshot.child("title").getValue();
                                                binding.textBorrowed.append(name + "\n");
+
                                            }
 
                                            @Override
@@ -390,6 +397,7 @@ public class OrderActivity extends AppCompatActivity {
                            }
                         }
                         binding.quantityBorrowed.setText(quantityBorrowed);
+
                     }
 
                     @Override

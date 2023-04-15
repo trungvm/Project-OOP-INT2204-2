@@ -1,7 +1,9 @@
 package com.example.oop_project.adapters;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
@@ -12,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -76,7 +79,24 @@ public class AdapterEquipmentCart extends RecyclerView.Adapter<AdapterEquipmentC
         holder.removeCartBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MyApplication.removeFromCart(context, modelEquipment.getId());
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle("Delete").
+                        setMessage("Are you sure want to remove equipment from cart?")
+                        .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // begin delete;
+                                Toast.makeText(context, "Removing...", Toast.LENGTH_SHORT).show();
+                                MyApplication.removeFromCart(context, modelEquipment.getId());                            }
+                        })
+                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .show();
+
             }
         });
         holder.minus_button.setOnClickListener(new View.OnClickListener() {
