@@ -86,7 +86,7 @@
         android:layout_height="35dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="16dp"
-        android:text="200000 €"
+        android:text="76.620.000d / month"
         android:textColor="@color/green_200"
         android:textSize="30sp"
         android:textStyle="bold"

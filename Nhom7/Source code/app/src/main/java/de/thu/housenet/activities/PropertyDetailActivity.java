@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -107,12 +108,11 @@ public class PropertyDetailActivity extends AppCompatActivity {
     public void onLocationButtonClick(View view){
         // Go to Google maps location app and search by these coordinates
         String location = getIntent().getStringExtra("SELECTED_PROPERTY_LOCATION");
-        Uri gmmIntentUri = Uri.parse("geo:"+location);
+        String params = "geo:" + location + "?q=" + location;
+        Uri gmmIntentUri = Uri.parse(params);
         Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
         mapIntent.setPackage("com.google.android.apps.maps");
-        if (mapIntent.resolveActivity(getPackageManager()) != null) {
-            startActivity(mapIntent);
-        }
+        startActivity(mapIntent);
     }
 
 }
