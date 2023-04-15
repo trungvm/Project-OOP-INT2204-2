@@ -37,6 +37,7 @@
         <!--        Back-->
 
         <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardview_back_temperature"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
@@ -86,11 +87,11 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/textview_mode_temp"
+                android:id="@+id/textview_status_temp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="15dp"
-                android:text="Chế độ"
+                android:text="Trạng thái"
                 android:textAlignment="viewStart"
                 android:textColor="@color/third_light"
                 android:textSize="20sp" />
@@ -99,7 +100,7 @@
                 android:id="@+id/textview_temperature_temp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/textview_mode_temp"
+                android:layout_below="@id/textview_status_temp"
                 android:layout_marginVertical="15dp"
                 android:text="Nhiệt độ"
                 android:textAlignment="viewStart"
@@ -149,7 +150,7 @@
 
 
             <LinearLayout
-                android:id="@+id/layout_mode"
+                android:id="@+id/layout_status"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
@@ -161,10 +162,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:checkedButton="@id/radioButton_mode_off">
+                    android:checkedButton="@id/radiobutton_status_off">
 
                     <com.google.android.material.radiobutton.MaterialRadioButton
-                        android:id="@+id/radioButton_mode_on"
+                        android:id="@+id/radiobutton_status_on"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/nunito"
@@ -175,7 +176,7 @@
                         android:textStyle="bold" />
 
                     <com.google.android.material.radiobutton.MaterialRadioButton
-                        android:id="@+id/radioButton_mode_off"
+                        android:id="@+id/radiobutton_status_off"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/nunito"
@@ -190,10 +191,10 @@
             </LinearLayout>
 
             <com.google.android.material.slider.Slider
-                android:id="@+id/slider_temperature"
+                android:id="@+id/slider_temperature_temp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/layout_mode"
+                android:layout_below="@id/layout_status"
                 android:layout_centerHorizontal="true"
                 android:layout_marginHorizontal="10dp"
                 android:layout_marginVertical="5dp"
@@ -202,10 +203,10 @@
                 android:valueTo="30.0" />
 
             <com.google.android.material.slider.Slider
-                android:id="@+id/slider_fanSpeed"
+                android:id="@+id/slider_fanSpeed_temp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/slider_temperature"
+                android:layout_below="@id/slider_temperature_temp"
                 android:layout_centerHorizontal="true"
                 android:layout_marginHorizontal="10dp"
                 android:layout_marginVertical="5dp"
@@ -217,7 +218,7 @@
                 android:id="@+id/layout_eco"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/slider_fanSpeed"
+                android:layout_below="@id/slider_fanSpeed_temp"
                 android:layout_centerHorizontal="true"
                 android:layout_marginHorizontal="10dp"
                 android:layout_marginVertical="5dp"
@@ -227,10 +228,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:checkedButton="@id/radioButton_eco_off">
+                    android:checkedButton="@id/radiobutton_eco_off">
 
                     <com.google.android.material.radiobutton.MaterialRadioButton
-                        android:id="@+id/radioButton_eco_on"
+                        android:id="@+id/radiobutton_eco_on"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/nunito"
@@ -241,7 +242,7 @@
                         android:textStyle="bold" />
 
                     <com.google.android.material.radiobutton.MaterialRadioButton
-                        android:id="@+id/radioButton_eco_off"
+                        android:id="@+id/radiobutton_eco_off"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/nunito"
@@ -268,10 +269,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:checkedButton="@id/radioButton_timer_off">
+                    android:checkedButton="@id/radiobutton_timer_off">
 
                     <com.google.android.material.radiobutton.MaterialRadioButton
-                        android:id="@+id/radioButton_timer_on"
+                        android:id="@+id/radiobutton_timer_on"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/nunito"
@@ -282,7 +283,7 @@
                         android:textStyle="bold" />
 
                     <com.google.android.material.radiobutton.MaterialRadioButton
-                        android:id="@+id/radioButton_timer_off"
+                        android:id="@+id/radiobutton_timer_off"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/nunito"
@@ -314,7 +315,7 @@
                     android:textSize="15sp" />
 
                 <EditText
-                    android:id="@+id/edittext_timer_"
+                    android:id="@+id/edittext_timer_stop"
                     android:layout_width="70dp"
                     android:layout_height="40dp"
                     android:layout_alignParentEnd="true"
@@ -331,6 +332,7 @@
     </LinearLayout>
 
     <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_start_temperature"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/layout_setting_temperature"

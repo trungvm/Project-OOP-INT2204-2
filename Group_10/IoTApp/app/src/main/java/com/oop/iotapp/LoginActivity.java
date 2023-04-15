@@ -40,7 +40,7 @@ public class LoginActivity extends AppCompatActivity {
         String email = et_email.getText().toString();
         String password = et_password.getText().toString();
 
-        if (dbHandler.checkMatch(email, password)){
+        if (dbHandler.userCheckMatch(email, password)){
             Intent main = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(main);
         }

@@ -62,7 +62,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         if (username.equals("") || email.equals("") || password.equals("") || repassword.equals("")) {
             Toast.makeText(this, "Không được để trống trường nào!", Toast.LENGTH_SHORT).show();
-        } else if (!dbHandler.checkMatch(email)){
+        } else if (!dbHandler.userCheckMatch(email)){
             Toast.makeText(this, "Email đã tồn tại!", Toast.LENGTH_SHORT).show();
         } else if (password.length() < 8) {
             Toast.makeText(this, "Password cần nhiều hơn hoặc bằng 8 ký tự", Toast.LENGTH_SHORT).show();
