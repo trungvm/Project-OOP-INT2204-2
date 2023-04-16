@@ -140,7 +140,7 @@ public class EquipmentDetailActivity extends AppCompatActivity {
                         binding.dateTv.setText(date);
                         binding.numberOfBorrowings.setText(numberOfBorrowings);
                         binding.quantityTv.setText(quantity);
-                        if(status.equals("Borrowed") && personI4.equals("admin")){
+                        if((status.equals("Borrowed") && personI4.equals("admin") )||(status.equals("Waiting") && personI4.equals("admin")) ){
                             DatabaseReference ref = FirebaseDatabase.getInstance().getReference("EquipmentsBorrowed");
                             ref.child(key)
                                     .addListenerForSingleValueEvent(new ValueEventListener() {

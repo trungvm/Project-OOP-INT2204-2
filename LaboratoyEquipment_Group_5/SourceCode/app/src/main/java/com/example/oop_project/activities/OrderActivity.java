@@ -269,8 +269,8 @@ public class OrderActivity extends AppCompatActivity {
 
                     }
                 });
-        long timestamp = System.currentTimeMillis();
         for(int i = 0; i < listOfKey.size(); i++){
+            long timestamp = System.currentTimeMillis();
             HashMap <String, Object> hashMap = new HashMap<>();
             hashMap.put("fullName", fullName);
             hashMap.put("email", email);

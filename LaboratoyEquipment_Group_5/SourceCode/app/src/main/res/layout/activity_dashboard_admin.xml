@@ -157,7 +157,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/layoutRules"
+                android:id="@+id/layoutSchedule"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="22dp"
@@ -183,7 +183,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="Rules"
+                    android:text="Hẹn mượn"
                     android:textColor="@color/colorAccent"
                     android:textSize="20dp"
                     android:textStyle="bold" />
@@ -232,7 +232,7 @@
                 android:padding="20dp"
                 app:layout_constraintEnd_toEndOf="@id/layoutQA"
                 app:layout_constraintStart_toStartOf="@id/layoutEquipments"
-                app:layout_constraintTop_toBottomOf="@id/layoutRules">
+                app:layout_constraintTop_toBottomOf="@id/layoutSchedule">
 
                 <TextView
                     android:id="@+id/textTrending"

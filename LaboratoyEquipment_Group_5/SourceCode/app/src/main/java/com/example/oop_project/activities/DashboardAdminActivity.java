@@ -73,6 +73,13 @@ public class DashboardAdminActivity extends AppCompatActivity {
                 finish();
             }
         });
+        binding.layoutSchedule.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(DashboardAdminActivity.this, ScheduleAdminActivity.class));
+                finish();
+            }
+        });
     }
     String name = "";
     private void checkUser() {

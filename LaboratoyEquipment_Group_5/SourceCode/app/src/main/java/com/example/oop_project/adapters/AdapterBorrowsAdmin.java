@@ -89,6 +89,8 @@ public class AdapterBorrowsAdmin extends RecyclerView.Adapter<AdapterBorrowsAdmi
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                                         String equipmentId = "" + snapshot.child("equipmentId").getValue();
+                                        String quantityBorrowed = "" + snapshot.child("quantityBorrowed").getValue();
+                                        holder.quantityTv.setText(quantityBorrowed);
                                         DatabaseReference ref1 = FirebaseDatabase.getInstance().getReference("Equipments");
                                         ref1.child(equipmentId)
                                                 .addListenerForSingleValueEvent(new ValueEventListener() {

@@ -22,6 +22,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="30">
         <activity
+            android:name=".activities.ScheduleAdminActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.OrderScheduleActivity"
             android:exported="false" />
         <activity

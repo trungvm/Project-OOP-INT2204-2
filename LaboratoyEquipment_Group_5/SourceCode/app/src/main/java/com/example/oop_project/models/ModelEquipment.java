@@ -11,7 +11,9 @@ public class ModelEquipment {
     private String status;
     private boolean isFavorite;
     private int quantityBorrow;
+    private String adminStatus;
     public ModelEquipment() {
+        adminStatus = "";
         this.description = "";
         this.categoryId = "";
         this.manual = "";
@@ -32,6 +34,13 @@ public class ModelEquipment {
     }
 
 
+    public String getAdminStatus() {
+        return adminStatus;
+    }
+
+    public void setAdminStatus(String adminStatus) {
+        this.adminStatus = adminStatus;
+    }
 
     public String getStatus() {
         return status;

@@ -10,18 +10,36 @@ import com.example.oop_project.databinding.ActivitySuccessBinding;
 
 public class SuccessActivity extends AppCompatActivity {
     private ActivitySuccessBinding binding;
+    private String status;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivitySuccessBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                startActivity(new Intent(SuccessActivity.this, EquipmentsBorrowedActivity.class));
-                finish();
+        if(getIntent().getStringExtra("status") != null){
+            status = getIntent().getStringExtra("status");
+            if(status.equals("ScheduleRefuse")){
+                binding.textV.setText("Xác nhận thành công");
+            }else if (status.equals("ScheduleAccept")){
+                binding.textV.setText("Xác nhận thành công");
             }
-        }, 2000);
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    startActivity(new Intent(SuccessActivity.this, ScheduleAdminActivity.class));
+                    finish();
+                }
+            }, 2000);
+        }else{
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    startActivity(new Intent(SuccessActivity.this, EquipmentsBorrowedActivity.class));
+                    finish();
+                }
+            }, 2000);
+        }
+
     }
 }
