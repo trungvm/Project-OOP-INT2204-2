@@ -189,6 +189,8 @@ public class OrderActivity extends AppCompatActivity {
     }
 
     String fullName, email, mobile, address, birthday, gender, otherInfor = "", report = "";
+    String profileImage;
+    String quantityBorrowed = "";
     private void validateData() {
         fullName = binding.fullNameTv.getText().toString().trim();
         email = binding.emailTv.getText().toString().trim();
@@ -214,7 +216,6 @@ public class OrderActivity extends AppCompatActivity {
         }
 
     }
-    String profileImage;
     private void insertData() {
         progressDialog.setMessage("Đang tiến hành mượn!");
         progressDialog.show();
@@ -332,7 +333,6 @@ public class OrderActivity extends AppCompatActivity {
         });
     }
 
-    String quantityBorrowed = "";
     private void loadInformation() {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
         ref.child(firebaseAuth.getUid())
@@ -346,7 +346,7 @@ public class OrderActivity extends AppCompatActivity {
                         String birthday = "" + snapshot.child("birthday").getValue();
                         String gender = "" + snapshot.child("gender").getValue();
                         String otherInfor = "" + snapshot.child("otherInfor").getValue();
-                        profileImage = "" + snapshot.child("equipmentImage").getValue();
+                        profileImage = "" + snapshot.child("profileImage").getValue();
 
                         binding.fullNameTv.setText(fullName.equals("null") ? "" : fullName);
                         binding.emailTv.setText(fullName.equals("nulll") ? "" : email);

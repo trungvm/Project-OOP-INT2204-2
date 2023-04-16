@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.oop_project.activities.EquipmentsBorrowedActivity;
+import com.example.oop_project.adapters.AdapterBorrowsAdmin;
 import com.example.oop_project.adapters.AdapterEquipmentBorrowed;
 import com.example.oop_project.adapters.AdapterEquipmentUser;
 import com.example.oop_project.databinding.FragmentEquipmentBorrowedBinding;
@@ -41,6 +42,7 @@ public class EquipmentBorrowedFragment extends Fragment  implements ViewPager.On
     private ArrayList<ModelEquipment> equipmentArrayListBorrowing;
     private ArrayList<ModelEquipment> equipmentArrayListBorrowed;
     private AdapterEquipmentBorrowed adapterEquipmentBorrowed;
+    private ArrayList<ModelEquipment> equipmentArrayListWaiting;
 
     private FragmentEquipmentBorrowedBinding binding;
     private FirebaseAuth  firebaseAuth;
@@ -85,6 +87,8 @@ public class EquipmentBorrowedFragment extends Fragment  implements ViewPager.On
                 // hidden report layout + button
                 loadBorrowedEquipments();
 
+            }else if(categoryId.equals("03")){
+                loadWaitingEquipments();
             }
         } else {
             // Fragment được ẩn đi
@@ -103,6 +107,8 @@ public class EquipmentBorrowedFragment extends Fragment  implements ViewPager.On
             // hidden report layout + button
             loadBorrowedEquipments();
 
+        }else if (categoryId.equals("03")){
+            loadWaitingEquipments();
         }
 
 
@@ -236,6 +242,58 @@ public class EquipmentBorrowedFragment extends Fragment  implements ViewPager.On
 
                 });
 
+
+    }
+    private void loadWaitingEquipments(){
+        firebaseAuth = FirebaseAuth.getInstance();
+        equipmentArrayListWaiting = new ArrayList<>();
+        if(equipmentArrayListWaiting.size() != 0){
+            equipmentArrayListWaiting.clear();
+        }
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
+        ref.child(firebaseAuth.getUid())
+                .child("Borrowed")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        equipmentArrayListWaiting.clear();
+                        for(DataSnapshot ds : snapshot.getChildren()){
+                            if((""+ds.child("status").getValue()).equals("Waiting")){
+                                String key = ds.getKey();
+                                equipmentId = "" + ds.child("equipmentId").getValue();
+                                DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Equipments");
+                                reference.child(equipmentId).addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                        ModelEquipment model = snapshot.getValue(ModelEquipment.class);
+                                        model.setKey(key);
+                                        model.setStatus("Waiting");
+                                        equipmentArrayListWaiting.add(model);
+                                        adapterEquipmentBorrowed.notifyDataSetChanged();
+                                        binding.equipmentRv.setAdapter(adapterEquipmentBorrowed);
+
+
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+                                    }
+                                });
+                            }
+
+                        }
+                        if (adapterEquipmentBorrowed == null) {
+                            adapterEquipmentBorrowed = new AdapterEquipmentBorrowed(getContext(), equipmentArrayListWaiting);
+                            binding.equipmentRv.setAdapter(adapterEquipmentBorrowed);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+
+                });
 
     }
 

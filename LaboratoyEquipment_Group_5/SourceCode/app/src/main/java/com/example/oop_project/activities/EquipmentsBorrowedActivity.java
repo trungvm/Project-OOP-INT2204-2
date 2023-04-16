@@ -209,9 +209,11 @@ public class EquipmentsBorrowedActivity extends AppCompatActivity{
         categoryArrayList.clear();
         ModelCategory modelBorrowing = new ModelCategory("01", "Đang mượn", "", 1);
         ModelCategory modelBorrowed = new ModelCategory("02", "Đã mượn", "", 1);
+        ModelCategory modelWaiting = new ModelCategory("03", "Đang xử lý", "", 1);
 
         categoryArrayList.add(modelBorrowing);
         categoryArrayList.add(modelBorrowed);
+        categoryArrayList.add(modelWaiting);
         viewPagerAdapter.addFragment(EquipmentBorrowedFragment.newInstance(
                 "" + modelBorrowing.getId(),
                 ""+ modelBorrowing.getTitle(),
@@ -223,6 +225,11 @@ public class EquipmentsBorrowedActivity extends AppCompatActivity{
                 ""+ modelBorrowed.getTitle(),
                 "" + modelBorrowed.getUid()
         ), modelBorrowed.getTitle());
+        viewPagerAdapter.addFragment(EquipmentBorrowedFragment.newInstance(
+                "" + modelWaiting.getId(),
+                ""+ modelWaiting.getTitle(),
+                "" + modelWaiting.getUid()
+        ), modelWaiting.getTitle());
 
         // refresh list
         viewPagerAdapter.notifyDataSetChanged();

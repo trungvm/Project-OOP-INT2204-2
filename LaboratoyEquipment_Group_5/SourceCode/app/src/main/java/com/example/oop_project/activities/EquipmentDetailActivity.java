@@ -125,7 +125,7 @@ public class EquipmentDetailActivity extends AppCompatActivity {
                                                 if(position.equals("null")){
 
                                                 }else{
-                                                    binding.position.setText(title);
+                                                    binding.position.setText(position);
                                                 }
                                                 binding.categoryTv.setText(title);
                                             }
@@ -264,6 +264,28 @@ public class EquipmentDetailActivity extends AppCompatActivity {
 
                                         }
                                     });
+                        }else if(status.equals("Waiting")){
+                            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("EquipmentsBorrowed");
+                            ref.child(key)
+                                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                            String report = "" + snapshot.child("report").getValue();
+
+                                            String date = MyApplication.formatTimestampToDetailTime(Long.parseLong(timestamp));
+                                            String startDate = "" + snapshot.child("startDate").getValue();
+                                            String endDate = "" + snapshot.child("endDate").getValue();
+                                            binding.descriptionTv.setText("Thời gian dự kiến mượn : " + startDate + " - "
+                                                    + "Thời gian dự kiến trả : " + endDate);
+                                            binding.manualTv.setText("Báo cáo về thiết bị lúc mượn: " + (report.equals("null") ? "" : report));
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
+
+                                        }
+                                    });
+
                         }
 
                         else{

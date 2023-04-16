@@ -1,6 +1,8 @@
 package com.example.oop_project.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +18,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -24,6 +27,7 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.example.oop_project.MyApplication;
+import com.example.oop_project.activities.EquipmentDetailActivity;
 import com.example.oop_project.databinding.RowEquipmentsScheduleBinding;
 import com.example.oop_project.filters.FilterBorrowsAdmin;
 import com.example.oop_project.filters.FilterSchedule;
@@ -42,11 +46,19 @@ public class AdapterSchedule extends  RecyclerView.Adapter<AdapterSchedule.Holde
     public ArrayList<ModelEquipment> equipmentArrayList, filterList;
     private RowEquipmentsScheduleBinding binding;
     private FilterSchedule filter;
+    private ArrayList<Integer> quantityBorrow;
+    private ArrayList<Boolean> isChecked;
 
     public AdapterSchedule(Context context, ArrayList<ModelEquipment> equipmentArrayList) {
         this.context = context;
         this.equipmentArrayList = equipmentArrayList;
         this.filterList = equipmentArrayList;
+        quantityBorrow = new ArrayList<>();
+        isChecked = new ArrayList<>();
+        for(int i = 0; i < 10000; i++){
+            quantityBorrow.add(0);
+            isChecked.add(false);
+        }
     }
 
     @NonNull
@@ -57,9 +69,80 @@ public class AdapterSchedule extends  RecyclerView.Adapter<AdapterSchedule.Holde
     }
 
     @Override
-    public void onBindViewHolder(@NonNull HolderEquipmentsSchedule holder, int position) {
+    public void onBindViewHolder(@NonNull HolderEquipmentsSchedule holder, @SuppressLint("RecyclerView") int position) {
         ModelEquipment modelEquipment = equipmentArrayList.get(position);
         loadEquipmentDetails(modelEquipment, holder);
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, EquipmentDetailActivity.class);
+                intent.putExtra("equipmentId", modelEquipment.getId());
+                context.startActivity(intent);
+            }
+        });
+        holder.minus_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(quantityBorrow.get(position) == 0){
+                    quantityBorrow.set(position, 0);
+                }else{
+                    int x = quantityBorrow.get(position);
+                    x--;
+                    quantityBorrow.set(position, x);
+                }
+                holder.quantity_text_choose.setText(""+quantityBorrow.get(position));
+                modelEquipment.setQuantityBorrow(quantityBorrow.get(position));
+                long timestamp = System.currentTimeMillis();
+                Intent intent = new Intent("ACTION_GET_DATASCHEDULE");
+                intent.putExtra("equipmentId", modelEquipment.getId());
+                intent.putExtra("quantityBorrowed", ""+quantityBorrow.get(position));
+                intent.putExtra("equipmentName", modelEquipment.getTitle());
+                intent.putExtra("timestamp", ""+timestamp);
+                intent.putExtra("isChecked", ""+isChecked.get(position));
+                LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+            }
+        });
+        holder.plus_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(quantityBorrow.get(position) < modelEquipment.getQuantity()){
+                    int x = quantityBorrow.get(position);
+                    x++;
+                    quantityBorrow.set(position, x);
+                }else{
+                    quantityBorrow.set(position, modelEquipment.getQuantity());
+                }
+                holder.quantity_text_choose.setText(""+quantityBorrow.get(position));
+                modelEquipment.setQuantityBorrow(quantityBorrow.get(position));
+                long timestamp = System.currentTimeMillis();
+                Intent intent = new Intent("ACTION_GET_DATASCHEDULE");
+                intent.putExtra("equipmentId", modelEquipment.getId());
+                intent.putExtra("quantityBorrowed", ""+quantityBorrow.get(position));
+                intent.putExtra("equipmentName", modelEquipment.getTitle());
+                intent.putExtra("timestamp", ""+timestamp);
+                intent.putExtra("isChecked", ""+isChecked.get(position));
+                LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+            }
+        });
+
+        holder.checkIsBorrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean flag = isChecked.get(position);
+                flag = !flag;
+                isChecked.set(position, flag);
+                holder.checkIsBorrow.setChecked(flag);
+                equipmentArrayList.set(position, modelEquipment);
+                long timestamp = System.currentTimeMillis();
+                Intent intent = new Intent("ACTION_GET_DATASCHEDULE");
+                intent.putExtra("equipmentId", modelEquipment.getId());
+                intent.putExtra("quantityBorrowed", ""+quantityBorrow.get(position));
+                intent.putExtra("equipmentName", modelEquipment.getTitle());
+                intent.putExtra("timestamp", ""+timestamp);
+                intent.putExtra("isChecked", ""+isChecked.get(position));
+                LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+            }
+        });
 
     }
     private void loadEquipmentDetails(ModelEquipment model, HolderEquipmentsSchedule holder) {
@@ -74,6 +157,7 @@ public class AdapterSchedule extends  RecyclerView.Adapter<AdapterSchedule.Holde
         holder.titleTv.setText(title);
         holder.descriptionTv.setText(description);
         holder.quantityTv.setText(""+quantity);
+        holder.quantity_text_choose.setText("0");
         String categoryId = model.getCategoryId();
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Categories");
         ref.child(categoryId)

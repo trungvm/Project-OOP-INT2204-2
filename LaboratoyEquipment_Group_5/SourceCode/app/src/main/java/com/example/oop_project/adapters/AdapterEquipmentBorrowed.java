@@ -87,7 +87,7 @@ public class AdapterEquipmentBorrowed extends  RecyclerView.Adapter<AdapterEquip
         if(model.getStatus().equals("Borrowed")){
             binding.checkBox.setVisibility(View.VISIBLE);
             binding.categoryTv.setVisibility(View.GONE);
-        }else if(model.getStatus().equals("History")){
+        }else if(model.getStatus().equals("History") || model.getStatus().equals("Waiting")){
             binding.checkBox.setVisibility(View.GONE);
             binding.categoryTv.setVisibility(View.GONE);
         }
@@ -115,7 +115,6 @@ public class AdapterEquipmentBorrowed extends  RecyclerView.Adapter<AdapterEquip
 
         holder.titleTv.setText(title);
         holder.descriptionTv.setText(description);
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Categories");
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
