@@ -10,7 +10,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class LoginActivity extends AppCompatActivity {
-
     private EditText et_email;
     private EditText et_password;
     private Button bt_loginButton;
@@ -26,7 +25,7 @@ public class LoginActivity extends AppCompatActivity {
         initViews();
 
         bt_loginButton.setOnClickListener(e -> {
-            registerIntent();
+            loginProcess();
         });
 
         tv_registerForward.setOnClickListener(e -> {
@@ -35,13 +34,14 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private void registerIntent() {
+    private void loginProcess() {
 
         String email = et_email.getText().toString();
         String password = et_password.getText().toString();
 
         if (dbHandler.userCheckMatch(email, password)){
             Intent main = new Intent(LoginActivity.this, MainActivity.class);
+            main.putExtra("email", email);
             startActivity(main);
         }
         else {

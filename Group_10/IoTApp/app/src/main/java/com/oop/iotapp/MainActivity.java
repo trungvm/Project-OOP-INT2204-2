@@ -18,10 +18,15 @@ public class MainActivity extends AppCompatActivity {
 
     private String user = "USER";
 
+    private String email;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Intent loginIntent = getIntent();
+        email = loginIntent.getStringExtra("email");
 
         initViews();
 
@@ -47,8 +52,9 @@ public class MainActivity extends AppCompatActivity {
         });
 
         cvTemperature.setOnClickListener(e -> {
-            Intent intentTemperature = new Intent(MainActivity.this, null);
-            //TODO click Temperature
+            Intent intentTemperature = new Intent(MainActivity.this, TemperatureActivity.class);
+            intentTemperature.putExtra("email", email);
+            startActivity(intentTemperature);
         });
 
         cvDoor.setOnClickListener(e -> {

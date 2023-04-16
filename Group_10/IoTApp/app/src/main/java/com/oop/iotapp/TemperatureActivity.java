@@ -34,8 +34,8 @@ public class TemperatureActivity extends AppCompatActivity {
 
     private void initViews() {
 
-        rb_mode_on = findViewById(R.id.radiobutton_mode_on);
-        rb_mode_off = findViewById(R.id.radiobutton_mode_off);
+        rb_mode_on = findViewById(R.id.radiobutton_status_on);
+        rb_mode_off = findViewById(R.id.radiobutton_status_off);
         rb_eco_on = findViewById(R.id.radiobutton_eco_on);
         rb_eco_off = findViewById(R.id.radiobutton_eco_off);
         rb_timer_on = findViewById(R.id.radiobutton_timer_on);

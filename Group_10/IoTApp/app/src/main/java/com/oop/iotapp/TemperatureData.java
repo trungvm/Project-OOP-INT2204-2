@@ -2,7 +2,7 @@ package com.oop.iotapp;
 
 public class TemperatureData {
     private Long userId, status, temperature, fanSpeed, ecoMode, timerMode;
-    private String timer_start, timer_stop;
+    private String timerStart, timerStop;
 
     public TemperatureData(){
         this.userId = 0L;
@@ -11,19 +11,19 @@ public class TemperatureData {
         this.fanSpeed = 0L;
         this.ecoMode = 0L;
         this.timerMode = 0L;
-        this.timer_start = "#";
-        this.timer_stop = "#";
+        this.timerStart = "#";
+        this.timerStop = "#";
     }
 
-    public TemperatureData(Long userId, Long status, Long temperature, Long fanSpeed, Long ecoMode, Long timerMode, String timer_start, String timer_stop) {
+    public TemperatureData(Long userId, Long status, Long temperature, Long fanSpeed, Long ecoMode, Long timerMode, String timerStart, String timerStop) {
         this.userId = userId;
         this.status = status;
         this.temperature = temperature;
         this.fanSpeed = fanSpeed;
         this.ecoMode = ecoMode;
         this.timerMode = timerMode;
-        this.timer_start = timer_start;
-        this.timer_stop = timer_stop;
+        this.timerStart = timerStart;
+        this.timerStop = timerStop;
     }
 
     public Long getUserId() {
@@ -74,19 +74,19 @@ public class TemperatureData {
         this.timerMode = timerMode;
     }
 
-    public String getTimer_start() {
-        return timer_start;
+    public String getTimerStart() {
+        return timerStart;
     }
 
-    public void setTimer_start(String timer_start) {
-        this.timer_start = timer_start;
+    public void setTimerStart(String timerStart) {
+        this.timerStart = timerStart;
     }
 
-    public String getTimer_stop() {
-        return timer_stop;
+    public String getTimerStop() {
+        return timerStop;
     }
 
-    public void setTimer_stop(String timer_stop) {
-        this.timer_stop = timer_stop;
+    public void setTimerStop(String timerStop) {
+        this.timerStop = timerStop;
     }
 }

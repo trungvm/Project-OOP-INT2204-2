@@ -1,5 +1,7 @@
 package com.oop.iotapp;
 
+import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -49,7 +51,8 @@ public class DBHandler extends SQLiteOpenHelper {
                 + TEMPERATURE_ECO_COL + " INTEGER,"
                 + TEMPERATURE_TIMER_COL + " INTEGER,"
                 + TEMPERATURE_TIMER_START_COL + " TEXT,"
-                + TEMPERATURE_TIMER_STOP_COL + " TEXT)";
+                + TEMPERATURE_TIMER_STOP_COL + " TEXT,"
+                + "FOREIGN KEY (" + TEMPERATURE_USER_ID_COL + ") REFERENCES " + USER_TABLE_NAME + "(" + TEMPERATURE_ID_COL + "))";
         sqLiteDatabase.execSQL(temperatureQuery);
     }
 
@@ -64,6 +67,40 @@ public class DBHandler extends SQLiteOpenHelper {
         db.insert(USER_TABLE_NAME, null, values);
 
         db.close();
+    }
+
+    public User getUserByEmail(String email) {
+        SQLiteDatabase db = getReadableDatabase();
+        String[] projection = {
+                USER_ID_COL,
+                USER_NAME_COL,
+                USER_EMAIL_COL,
+                USER_PASSWORD_COL
+        };
+        String selection = USER_EMAIL_COL + " = ?";
+        String[] selectionArgs = { email };
+
+        Cursor cursor = db.query(
+                USER_TABLE_NAME,
+                projection,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                null
+        );
+
+        User user = null;
+
+        if (cursor.moveToFirst()) {
+            long userId = cursor.getLong(cursor.getColumnIndexOrThrow(USER_ID_COL));
+            String userName = cursor.getString(cursor.getColumnIndexOrThrow(USER_NAME_COL));
+            String userEmail = cursor.getString(cursor.getColumnIndexOrThrow(USER_EMAIL_COL));
+            String password = cursor.getString(cursor.getColumnIndexOrThrow(USER_PASSWORD_COL));
+            user = new User(userId, userName, userEmail, password);
+        }
+        cursor.close();
+        return user;
     }
 
     public boolean userCheckMatch(String email){
@@ -101,9 +138,29 @@ public class DBHandler extends SQLiteOpenHelper {
         return false;
     }
 
+    public void addTemperature(TemperatureData temperatureData){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put(TEMPERATURE_USER_ID_COL, temperatureData.getUserId());
+        values.put(TEMPERATURE_STATUS_COL, temperatureData.getStatus());
+        values.put(TEMPERATURE_TEMP_COL, temperatureData.getTemperature());
+        values.put(TEMPERATURE_FANSPEED_COL, temperatureData.getFanSpeed());
+        values.put(TEMPERATURE_ECO_COL, temperatureData.getEcoMode());
+        values.put(TEMPERATURE_TIMER_COL, temperatureData.getTimerMode());
+        values.put(TEMPERATURE_TIMER_START_COL, temperatureData.getTimerStart());
+        values.put(TEMPERATURE_TIMER_STOP_COL, temperatureData.getTimerStop());
+
+        db.insert(TEMPERATURE_TABLE_NAME, null, values);
+
+        db.close();
+    }
+
+
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + USER_TABLE_NAME);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TEMPERATURE_TABLE_NAME);
         onCreate(sqLiteDatabase);
     }
 }

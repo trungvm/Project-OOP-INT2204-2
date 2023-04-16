@@ -14,7 +14,7 @@ import com.orm.SugarRecord;
 import java.util.List;
 
 public class RegisterActivity extends AppCompatActivity {
-    List<User> users;
+//    List<User> users;
     private EditText et_username;
     private EditText et_email;
     private EditText et_password;
