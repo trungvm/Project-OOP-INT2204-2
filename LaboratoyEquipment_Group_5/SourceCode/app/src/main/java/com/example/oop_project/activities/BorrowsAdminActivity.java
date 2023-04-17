@@ -54,9 +54,11 @@ public class BorrowsAdminActivity extends AppCompatActivity {
         categoryArrayList.clear();
         ModelCategory modelBorrowing = new ModelCategory("01", "Đang mượn", "", 1);
         ModelCategory modelBorrowed = new ModelCategory("02", "Đã mượn", "", 1);
+        ModelCategory modelRefuse = new ModelCategory("03", "Đã hủy", "", 1);
 
         categoryArrayList.add(modelBorrowing);
         categoryArrayList.add(modelBorrowed);
+        categoryArrayList.add(modelRefuse);
         viewPagerAdapter.addFragment(BorrowsAdminFragment.newInstance(
                 "" + modelBorrowing.getId(),
                 ""+ modelBorrowing.getTitle(),
@@ -68,6 +70,11 @@ public class BorrowsAdminActivity extends AppCompatActivity {
                 ""+ modelBorrowed.getTitle(),
                 "" + modelBorrowed.getUid()
         ), modelBorrowed.getTitle());
+        viewPagerAdapter.addFragment(BorrowsAdminFragment.newInstance(
+                "" + modelRefuse.getId(),
+                ""+ modelRefuse.getTitle(),
+                "" + modelRefuse.getUid()
+        ), modelRefuse.getTitle());
 
         // refresh list
         viewPagerAdapter.notifyDataSetChanged();

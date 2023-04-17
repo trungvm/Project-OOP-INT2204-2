@@ -269,14 +269,14 @@ public class ScheduleAdminActivity extends AppCompatActivity {
                                     childUpdates.put("timestampAdminSchedue", timestamp);
                                     snapshot.getRef().updateChildren(childUpdates);
                                 }
-                                snapshot.getRef().child("status").setValue("History");
+                                snapshot.getRef().child("status").setValue("Borrowed");
                                 String uid = "" + snapshot.child("uid").getValue();
                                 DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
                                 reference.child(uid).child("Borrowed").child(key)
                                         .addListenerForSingleValueEvent(new ValueEventListener() {
                                             @Override
                                             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                                snapshot.getRef().child("status").setValue("History");
+                                                snapshot.getRef().child("status").setValue("Borrowed");
                                                 if (snapshot.hasChild("timestampAdminSchedue")) {
                                                     snapshot.getRef().child("timestampAdminSchedue").setValue(timestamp);
                                                 } else {

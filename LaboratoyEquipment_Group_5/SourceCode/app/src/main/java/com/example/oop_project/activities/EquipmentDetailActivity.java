@@ -140,7 +140,47 @@ public class EquipmentDetailActivity extends AppCompatActivity {
                         binding.dateTv.setText(date);
                         binding.numberOfBorrowings.setText(numberOfBorrowings);
                         binding.quantityTv.setText(quantity);
-                        if((status.equals("Borrowed") && personI4.equals("admin") )||(status.equals("Waiting") && personI4.equals("admin")) ){
+                        if(status.equals("Refuse") && personI4.equals("admin")){
+                            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("EquipmentsBorrowed");
+                            ref.child(key)
+                                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                            String timestamp = "" + snapshot.child("timestamp").getValue();
+                                            String report = "" + snapshot.child("report").getValue();
+                                            String fullName = "" + snapshot.child("fullName").getValue();
+                                            String email = "" + snapshot.child("email").getValue();
+                                            String address = "" + snapshot.child("address").getValue();
+                                            String birthday = "" + snapshot.child("birthday").getValue();
+                                            String mobile = "" + snapshot.child("mobile").getValue();
+                                            String gender = "" + snapshot.child("gender").getValue();
+                                            String otherInfor = "" + snapshot.child("otherInfor").getValue();
+                                            String reportRefuse = "" + snapshot.child("reportRefuse").getValue();
+                                            String startDate = "" + snapshot.child("startDate").getValue();
+                                            String endDate = "" + snapshot.child("endDate").getValue();
+                                            String date = MyApplication.formatTimestampToDetailTime(Long.parseLong(timestamp));
+                                            binding.descriptionTv.setText("Thời gian xác nhận : " +  date
+                                            +"\n" + "Thời gian dự kiến mượn : " + startDate
+                                            +"\n" + "Thời gian dự kiến trả : " + endDate
+                                            +"\n" + "Lí do hủy : " + reportRefuse
+                                            );
+                                            binding.manualTv.setText("Báo cáo về thiết bị lúc mượn: " + (report.equals("null") ? "" : report)
+                                                    + "\n" + "Họ và tên: " + fullName
+                                                    + "\n" + "Email: " +email
+                                                    + "\n" + "Địa chỉ: " + address
+                                                    + "\n" + "Ngày sinh: " + birthday
+                                                    + "\n" + "Số điện thoại: " + mobile
+                                                    + "\n" + "Giới tính: " + gender
+                                                    + "\n" + "Thông tin khác: " + otherInfor
+                                            );
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
+
+                                        }
+                                    });
+                        }else if((status.equals("Borrowed") && personI4.equals("admin") )||(status.equals("Waiting") && personI4.equals("admin")) ){
                             DatabaseReference ref = FirebaseDatabase.getInstance().getReference("EquipmentsBorrowed");
                             ref.child(key)
                                     .addListenerForSingleValueEvent(new ValueEventListener() {

@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,6 +48,8 @@ public class BorrowsAdminFragment extends Fragment {
     private ArrayList<ModelEquipment> equipmentArrayListBorrowing;
     private ArrayList<ModelEquipment> equipmentArrayListBorrowed;
     private AdapterBorrowsAdmin adapterBorrowsAdmin;
+    private ArrayList<ModelEquipment> getEquipmentArrayListRefuse;
+    private ArrayList<ModelEquipment> equipmentArrayListAccept;
     public BorrowsAdminFragment() {
         // Required empty public constructor
     }
@@ -102,6 +105,8 @@ public class BorrowsAdminFragment extends Fragment {
             // hidden report layout + button
             loadBorrowedEquipments();
 
+        }else if (categoryId.equals("03")){
+            loadRefuseEquipments();
         }
         binding.searchEt.addTextChangedListener(new TextWatcher() {
             @Override
@@ -201,6 +206,50 @@ public class BorrowsAdminFragment extends Fragment {
                     adapterBorrowsAdmin = new AdapterBorrowsAdmin(getContext(), equipmentArrayListBorrowed);
                     adapterBorrowsAdmin.notifyDataSetChanged();
                     binding.equipmentRv.setAdapter(adapterBorrowsAdmin);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+    }
+    private  void loadRefuseEquipments(){
+        getEquipmentArrayListRefuse = new ArrayList<>();
+        if(getEquipmentArrayListRefuse.size() != 0){
+            getEquipmentArrayListRefuse.clear();
+        }
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("EquipmentsBorrowed");
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                getEquipmentArrayListRefuse.clear();
+                for(DataSnapshot ds: snapshot.getChildren()){
+                    if((""+ds.child("status").getValue()).equals("Refuse")){
+                        String key = ds.getKey();
+                        String uid = "" + ds.child("uid").getValue();
+                        ModelEquipment model = snapshot.getValue(ModelEquipment.class);
+                        String equipmentId = "" + ds.child("equipmentId").getValue();
+                        String title = "" + ds.child("title").getValue();
+                        model.setTitle(title);
+
+                        model.setId(equipmentId);
+                        model.setKey(key);
+                        model.setUid(uid);
+                        model.setStatus("Refuse");
+                        getEquipmentArrayListRefuse.add(model);
+
+
+
+                    }
+                }
+
+                adapterBorrowsAdmin = new AdapterBorrowsAdmin(getContext(), getEquipmentArrayListRefuse);
+                adapterBorrowsAdmin.notifyDataSetChanged();
+                binding.equipmentRv.setAdapter(adapterBorrowsAdmin);
+
 
             }
 
