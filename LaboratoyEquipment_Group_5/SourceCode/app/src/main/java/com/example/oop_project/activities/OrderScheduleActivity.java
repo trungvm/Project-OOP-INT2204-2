@@ -244,6 +244,9 @@ public class OrderScheduleActivity extends AppCompatActivity {
                             if((ds.child("status").getValue()).equals("new")){
                                 DatabaseReference reference =  ds.child("status").getRef();
                                 reference.setValue("Waiting");
+                                if(!ds.hasChild("preStatus")){
+                                    ds.getRef().child("preStatus").setValue("Waiting");
+                                }
                                 int quantityBorrowed = Integer.parseInt(""+ds.child("quantityBorrowed").getValue());
                                 String equipmentId = "" + ds.child("equipmentId").getValue();
                                 DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference("Equipments");
@@ -299,6 +302,7 @@ public class OrderScheduleActivity extends AppCompatActivity {
             hashMap.put("status", "Waiting");
             hashMap.put("startDate", startDate);
             hashMap.put("endDate", endDate);
+            hashMap.put("preStatus", "Waiting");
             hashMap.put("uid", firebaseAuth.getUid());
             hashMap.put("equipmentId", listOfEquipmentId.get(i));
             hashMap.put("title", listOfTitleEquipment.get(i));
@@ -344,7 +348,7 @@ public class OrderScheduleActivity extends AppCompatActivity {
                         profileImage = "" + snapshot.child("profileImage").getValue();
 
                         binding.fullNameTv.setText(fullName.equals("null") ? "" : fullName);
-                        binding.emailTv.setText(fullName.equals("nulll") ? "" : email);
+                        binding.emailTv.setText(fullName.equals("null") ? "" : email);
                         binding.mobileTv.setText(mobile.equals("null") ? "" : mobile);
                         binding.addressTv.setText(address.equals("null") ? "" : address);
                         binding.birthdayTv.setText(birthday.equals("null") ? "" : birthday);

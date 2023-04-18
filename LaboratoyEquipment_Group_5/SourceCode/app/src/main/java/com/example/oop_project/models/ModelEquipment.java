@@ -12,12 +12,14 @@ public class ModelEquipment {
     private boolean isFavorite;
     private int quantityBorrow;
     private String adminStatus;
+    private String preStatus;
     public ModelEquipment() {
         adminStatus = "";
         this.description = "";
         this.categoryId = "";
         this.manual = "";
         isUsedBy = "user";
+        preStatus = "";
         title = "";
         equipmentImage = "";
         this.quantity = 0;
@@ -33,6 +35,13 @@ public class ModelEquipment {
         this.quantity = quantity;
     }
 
+    public String getPreStatus() {
+        return preStatus;
+    }
+
+    public void setPreStatus(String preStatus) {
+        this.preStatus = preStatus;
+    }
 
     public String getAdminStatus() {
         return adminStatus;

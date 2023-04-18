@@ -8,6 +8,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -27,6 +29,8 @@ import com.bumptech.glide.request.target.Target;
 import com.example.oop_project.MyApplication;
 import com.example.oop_project.activities.EquipmentDetailActivity;
 import com.example.oop_project.databinding.RowEquipmentsScheduleAdminBinding;
+import com.example.oop_project.filters.FilterSchedule;
+import com.example.oop_project.filters.FilterScheduleAdmin;
 import com.example.oop_project.models.ModelEquipment;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -36,13 +40,14 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class AdapterScheduleAdmin extends RecyclerView.Adapter<AdapterScheduleAdmin.HolderEquipmentsScheduleAdmin>{
+public class AdapterScheduleAdmin extends RecyclerView.Adapter<AdapterScheduleAdmin.HolderEquipmentsScheduleAdmin> implements Filterable {
     private Context context;
     public ArrayList<ModelEquipment> equipmentArrayList, filterList;
     private RowEquipmentsScheduleAdminBinding binding;
     private ArrayList<Boolean> isChecked;
     private ArrayList<String> startDate;
     private ArrayList<String> endDate;
+    private FilterScheduleAdmin filter;
 
 
     public AdapterScheduleAdmin(Context context, ArrayList<ModelEquipment> equipmentArrayList) {
@@ -51,6 +56,7 @@ public class AdapterScheduleAdmin extends RecyclerView.Adapter<AdapterScheduleAd
         isChecked =  new ArrayList<>();
         startDate = new ArrayList<>();
         endDate = new ArrayList<>();
+        filterList = equipmentArrayList;
         for(int i = 0; i < 10000; i++){
             isChecked.add(false);
             startDate.add(" ");
@@ -207,6 +213,14 @@ public class AdapterScheduleAdmin extends RecyclerView.Adapter<AdapterScheduleAd
     @Override
     public int getItemCount() {
         return equipmentArrayList.size();
+    }
+
+    @Override
+    public Filter getFilter() {
+        if(filter == null){
+            filter = new FilterScheduleAdmin(filterList, this);
+        }
+        return filter;
     }
 
     class HolderEquipmentsScheduleAdmin extends RecyclerView.ViewHolder{

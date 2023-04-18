@@ -38,7 +38,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
             android:fontFamily="sans-serif-condensed"
-            android:text="Edit Equipment Information"
+            android:text="Sửa đổi thông tin thiết bị"
             android:textColor="@color/white"
             android:textSize="20sp"/>
 

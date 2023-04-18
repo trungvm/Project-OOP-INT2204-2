@@ -189,11 +189,11 @@ public class ScheduleAdminActivity extends AppCompatActivity {
                                         childUpdates.put("reportRefuse", reportRefuse);
                                         snapshot.getRef().updateChildren(childUpdates);
                                     }
-                                    if(snapshot.hasChild("timestampAdminSchedue")){
-                                        snapshot.getRef().child("timestampAdminSchedue").setValue(timestamp);
+                                    if(snapshot.hasChild("timestampAdminSchedule")){
+                                        snapshot.getRef().child("timestampAdminSchedule").setValue(timestamp);
                                     }else{
                                         HashMap<String, Object> childUpdates = new HashMap<>();
-                                        childUpdates.put("timestampAdminSchedue", timestamp);
+                                        childUpdates.put("timestampAdminSchedule", timestamp);
                                         snapshot.getRef().updateChildren(childUpdates);
                                     };
                                     snapshot.getRef().child("status").setValue("Refuse");
@@ -204,11 +204,11 @@ public class ScheduleAdminActivity extends AppCompatActivity {
                                                 @Override
                                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                                                     snapshot.getRef().child("status").setValue("Refuse");
-                                                    if(snapshot.hasChild("timestampAdminSchedue")){
-                                                        snapshot.getRef().child("timestampAdminSchedue").setValue(timestamp);
+                                                    if(snapshot.hasChild("timestampAdminSchedule")){
+                                                        snapshot.getRef().child("timestampAdminSchedule").setValue(timestamp);
                                                     }else{
                                                         HashMap<String, Object> childUpdates = new HashMap<>();
-                                                        childUpdates.put("timestampAdminSchedue", timestamp);
+                                                        childUpdates.put("timestampAdminSchedule", timestamp);
                                                         snapshot.getRef().updateChildren(childUpdates);
                                                     }
                                                     int quantityBorrowed = Integer.parseInt("" + snapshot.child("quantityBorrowed").getValue());
@@ -262,11 +262,11 @@ public class ScheduleAdminActivity extends AppCompatActivity {
                         .addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                if (snapshot.hasChild("timestampAdminSchedue")) {
-                                    snapshot.getRef().child("timestampAdminSchedue").setValue(timestamp);
+                                if (snapshot.hasChild("timestampAdminSchedule")) {
+                                    snapshot.getRef().child("timestampAdminSchedule").setValue(timestamp);
                                 } else {
                                     HashMap<String, Object> childUpdates = new HashMap<>();
-                                    childUpdates.put("timestampAdminSchedue", timestamp);
+                                    childUpdates.put("timestampAdminSchedule", timestamp);
                                     snapshot.getRef().updateChildren(childUpdates);
                                 }
                                 snapshot.getRef().child("status").setValue("Borrowed");
@@ -277,11 +277,11 @@ public class ScheduleAdminActivity extends AppCompatActivity {
                                             @Override
                                             public void onDataChange(@NonNull DataSnapshot snapshot) {
                                                 snapshot.getRef().child("status").setValue("Borrowed");
-                                                if (snapshot.hasChild("timestampAdminSchedue")) {
-                                                    snapshot.getRef().child("timestampAdminSchedue").setValue(timestamp);
+                                                if (snapshot.hasChild("timestampAdminSchedule")) {
+                                                    snapshot.getRef().child("timestampAdminSchedule").setValue(timestamp);
                                                 } else {
                                                     HashMap<String, Object> childUpdates = new HashMap<>();
-                                                    childUpdates.put("timestampAdminSchedue", timestamp);
+                                                    childUpdates.put("timestampAdminSchedule", timestamp);
                                                     snapshot.getRef().updateChildren(childUpdates);
                                                 }
                                             }
@@ -313,7 +313,7 @@ public class ScheduleAdminActivity extends AppCompatActivity {
             String adminStatus = intent.getStringExtra("adminStatus");
             ModelEquipment model = new ModelEquipment();
             model.setId(equipmentId);
-            model.setTimestamp(Long.parseLong(timestamp));
+//            model.setTimestamp(Long.parseLong(timestamp));
             String isChecked = intent.getStringExtra("isChecked");
             boolean flag = true;
             int index = -1;

@@ -40,6 +40,7 @@ public class EquipmentDetailActivity extends AppCompatActivity {
     String key = "";
     String role = "";
     String personI4 = "";
+    String preStatus = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +59,9 @@ public class EquipmentDetailActivity extends AppCompatActivity {
         }
         if(intent.getStringExtra("personI4") != null){
             personI4 = intent.getStringExtra("personI4");
+        }
+        if(intent.getStringExtra("preStatus") != null){
+            preStatus = intent.getStringExtra("preStatus");
         }
         firebaseAuth = FirebaseAuth.getInstance();
         if(!role.equals("admin") && firebaseAuth.getCurrentUser() != null){
@@ -140,13 +144,92 @@ public class EquipmentDetailActivity extends AppCompatActivity {
                         binding.dateTv.setText(date);
                         binding.numberOfBorrowings.setText(numberOfBorrowings);
                         binding.quantityTv.setText(quantity);
-                        if(status.equals("Refuse") && personI4.equals("admin")){
+                        if(status.equals("Borrowed") && personI4.equals("admin") && preStatus.equals("Waiting")){
                             DatabaseReference ref = FirebaseDatabase.getInstance().getReference("EquipmentsBorrowed");
                             ref.child(key)
                                     .addListenerForSingleValueEvent(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                            String timestamp = "" + snapshot.child("timestamp").getValue();
+                                            String timestamp = "" + snapshot.child("timestampAdminSchedule").getValue();
+                                            String report = "" + snapshot.child("report").getValue();
+                                            String fullName = "" + snapshot.child("fullName").getValue();
+                                            String email = "" + snapshot.child("email").getValue();
+                                            String address = "" + snapshot.child("address").getValue();
+                                            String birthday = "" + snapshot.child("birthday").getValue();
+                                            String mobile = "" + snapshot.child("mobile").getValue();
+                                            String gender = "" + snapshot.child("gender").getValue();
+                                            String otherInfor = "" + snapshot.child("otherInfor").getValue();
+                                            String startDate = "" + snapshot.child("startDate").getValue();
+                                            String endDate = "" + snapshot.child("endDate").getValue();
+                                            String date = MyApplication.formatTimestampToDetailTime(Long.parseLong(timestamp));
+                                            binding.descriptionTv.setText("Thời gian xác nhận : " +  date
+                                                    +"\n" + "Thời gian dự kiến mượn : " + startDate
+                                                    +"\n" + "Thời gian dự kiến trả : " + endDate
+                                            );
+                                            binding.manualTv.setText("Báo cáo về thiết bị lúc mượn: " + (report.equals("null") ? "" : report)
+                                                    + "\n" + "Họ và tên: " + fullName
+                                                    + "\n" + "Email: " +email
+                                                    + "\n" + "Địa chỉ: " + address
+                                                    + "\n" + "Ngày sinh: " + birthday
+                                                    + "\n" + "Số điện thoại: " + mobile
+                                                    + "\n" + "Giới tính: " + gender
+                                                    + "\n" + "Thông tin khác: " + otherInfor
+                                            );
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
+
+                                        }
+                                    });
+                        }else if(status.equals("History") && personI4.equals("admin") && preStatus.equals("Waiting")){
+                            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("EquipmentsBorrowed");
+                            ref.child(key)
+                                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                            String timestamp = "" + snapshot.child("timestampAdminSchedule").getValue();
+                                            String report = "" + snapshot.child("report").getValue();
+                                            String fullName = "" + snapshot.child("fullName").getValue();
+                                            String email = "" + snapshot.child("email").getValue();
+                                            String address = "" + snapshot.child("address").getValue();
+                                            String birthday = "" + snapshot.child("birthday").getValue();
+                                            String mobile = "" + snapshot.child("mobile").getValue();
+                                            String gender = "" + snapshot.child("gender").getValue();
+                                            String otherInfor = "" + snapshot.child("otherInfor").getValue();
+                                            String startDate = "" + snapshot.child("startDate").getValue();
+                                            String endDate = "" + snapshot.child("endDate").getValue();
+                                            String date = MyApplication.formatTimestampToDetailTime(Long.parseLong(timestamp));
+                                            String reportHistory = "" + snapshot.child("reportHistory").getValue();
+                                            binding.descriptionTv.setText("Thời gian xác nhận : " +  date
+                                                    +"\n" + "Thời gian dự kiến mượn : " + startDate
+                                                    +"\n" + "Thời gian dự kiến trả : " + endDate
+                                            );
+                                            binding.manualTv.setText("Báo cáo về thiết bị lúc mượn: " + (report.equals("null") ? "" : report)
+                                                    + "\n" + "Báo cáo về thiết bị lúc trả : " + reportHistory
+                                                    + "\n" + "Họ và tên: " + fullName
+                                                    + "\n" + "Email: " +email
+                                                    + "\n" + "Địa chỉ: " + address
+                                                    + "\n" + "Ngày sinh: " + birthday
+                                                    + "\n" + "Số điện thoại: " + mobile
+                                                    + "\n" + "Giới tính: " + gender
+                                                    + "\n" + "Thông tin khác: " + otherInfor
+                                            );
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
+
+                                        }
+                                    });
+                        }
+                        else if(status.equals("Refuse") && personI4.equals("admin")){
+                            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("EquipmentsBorrowed");
+                            ref.child(key)
+                                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                            String timestamp = "" + snapshot.child("timestampAdminSchedule").getValue();
                                             String report = "" + snapshot.child("report").getValue();
                                             String fullName = "" + snapshot.child("fullName").getValue();
                                             String email = "" + snapshot.child("email").getValue();
@@ -258,6 +341,68 @@ public class EquipmentDetailActivity extends AppCompatActivity {
                                         }
                                     });
 
+                        }else if(status.equals("Borrowed") && preStatus.equals("Waiting")){
+                            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("EquipmentsBorrowed");
+                            ref.child(key)
+                                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                            String timestamp = "" + snapshot.child("timestamp").getValue();
+                                            String report = "" + snapshot.child("report").getValue();
+                                            String timestampAdminSchedule = "" + snapshot.child("timestampAdminSchedule").getValue();
+                                            String dateSchedule = MyApplication.formatTimestampToDetailTime(Long.parseLong(timestampAdminSchedule));
+                                            String startDate = "" + snapshot.child("startDate").getValue();
+                                            String endDate = "" + snapshot.child("endDate").getValue();
+
+                                            String date = MyApplication.formatTimestampToDetailTime(Long.parseLong(timestamp));
+                                            binding.descriptionTv.setText("Thời gian mượn : " +  date
+                                                + "\n" + "Thời gian xác nhận : " + dateSchedule
+                                                    +"\n" + "Thời gian dự kiến mượn : " + startDate
+                                                    + "\n" + "Thời gian dự kiến trả : " + endDate
+                                            );
+                                            binding.manualTv.setText("Báo cáo về thiết bị lúc mượn: " + (report.equals("null") ? "" : report)
+                                            );
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
+
+                                        }
+                                    });
+                        }
+                        else if(status.equals("History") && preStatus.equals("Waiting")){
+                            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("EquipmentsBorrowed");
+                            ref.child(key)
+                                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                            String timestamp = "" + snapshot.child("timestamp").getValue();
+                                            String report = "" + snapshot.child("report").getValue();
+                                            String timestampAdminSchedule = "" + snapshot.child("timestampAdminSchedule").getValue();
+                                            String dateSchedule = MyApplication.formatTimestampToDetailTime(Long.parseLong(timestampAdminSchedule));
+                                            String startDate = "" + snapshot.child("startDate").getValue();
+                                            String endDate = "" + snapshot.child("endDate").getValue();
+                                            String timeReturn = "" + snapshot.child("timestampReturn").getValue();
+                                            String dateReturn = MyApplication.formatTimestampToDetailTime(Long.parseLong(timeReturn));
+                                            String reportHistory  = "" + snapshot.child("reportHistory").getValue();
+                                            String date = MyApplication.formatTimestampToDetailTime(Long.parseLong(timestamp));
+                                            binding.descriptionTv.setText("Thời gian mượn : " +  date
+                                                    + "\n" + "Thời gian xác nhận : " + dateSchedule
+                                                    +"\n" + "Thời gian dự kiến mượn : " + startDate
+                                                    + "\n" + "Thời gian dự kiến trả : " + endDate
+                                                    +"\n" + "Thời gian trả : " + dateReturn
+
+                                            );
+                                            binding.manualTv.setText("Báo cáo về thiết bị lúc mượn: " + (report.equals("null") ? "" : report)
+                                                    +"\n" + "Báo cáo về thiết bị lúc trả : " + reportHistory
+                                            );
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
+
+                                        }
+                                    });
                         }
                         else if(status.equals("Borrowed")){
                             DatabaseReference ref = FirebaseDatabase.getInstance().getReference("EquipmentsBorrowed");
@@ -287,8 +432,8 @@ public class EquipmentDetailActivity extends AppCompatActivity {
                                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                                             String timestamp = "" + snapshot.child("timestamp").getValue();
                                             String timestampReturn = ""+ snapshot.child("timestampReturn").getValue();
-
-                                            String report = "" + snapshot.child("reportHistory").getValue();
+                                            String report = "" + snapshot.child("report").getValue();
+                                            String reportHistory = "" + snapshot.child("reportHistory").getValue();
                                             String date = "";
                                             String dateReturn = "";
                                             if(!timestamp.equals("null") && !timestampReturn.equals("null")){
@@ -296,7 +441,9 @@ public class EquipmentDetailActivity extends AppCompatActivity {
                                                 dateReturn = MyApplication.formatTimestampToDetailTime(Long.parseLong(timestampReturn));
                                             }
                                             binding.descriptionTv.setText("Thời gian mượn: " +  date + " - Thời gian trả : " + dateReturn);
-                                            binding.manualTv.setText("Báo cáo về thiết bị lúc trả: " + (report.equals("null") ? "" : report));
+                                            binding.manualTv.setText("Báo cáo về thiết bị lúc mượn: " + (report.equals("null") ? "" : report)
+                                            + "\n" + "Báo cáo về thiết bị lúc trả : " + reportHistory
+                                            );
                                         }
 
                                         @Override
@@ -317,6 +464,32 @@ public class EquipmentDetailActivity extends AppCompatActivity {
                                             String endDate = "" + snapshot.child("endDate").getValue();
                                             binding.descriptionTv.setText("Thời gian dự kiến mượn : " + startDate + " - "
                                                     + "Thời gian dự kiến trả : " + endDate);
+                                            binding.manualTv.setText("Báo cáo về thiết bị lúc mượn: " + (report.equals("null") ? "" : report));
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
+
+                                        }
+                                    });
+
+                        }else if(status.equals("Refuse")){
+                            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("EquipmentsBorrowed");
+                            ref.child(key)
+                                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                            String timestamp = "" + snapshot.child("timestampAdminSchedule").getValue();
+                                            String report = "" + snapshot.child("report").getValue();
+                                            String reportRefuse = "" + snapshot.child("reportRefuse").getValue();
+                                            String date = MyApplication.formatTimestampToDetailTime(Long.parseLong(timestamp));
+                                            String startDate = "" + snapshot.child("startDate").getValue();
+                                            String endDate = "" + snapshot.child("endDate").getValue();
+                                            binding.descriptionTv.setText("Thời gian xác nhận : " +  date
+                                                    +"\n" + "Thời gian dự kiến mượn : " + startDate
+                                                    +"\n" + "Thời gian dự kiến trả : " + endDate
+                                                    +"\n" + "Lí do hủy : " + reportRefuse
+                                            );
                                             binding.manualTv.setText("Báo cáo về thiết bị lúc mượn: " + (report.equals("null") ? "" : report));
                                         }
 

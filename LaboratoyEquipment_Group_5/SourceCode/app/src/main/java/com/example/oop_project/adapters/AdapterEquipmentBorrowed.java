@@ -84,10 +84,11 @@ public class AdapterEquipmentBorrowed extends  RecyclerView.Adapter<AdapterEquip
         String description = model.getDescription();
         String equipmentImage = model.getEquipmentImage();
         String key = model.getKey();
+        String preStatus = model.getPreStatus();
         if(model.getStatus().equals("Borrowed")){
             binding.checkBox.setVisibility(View.VISIBLE);
             binding.categoryTv.setVisibility(View.GONE);
-        }else if(model.getStatus().equals("History") || model.getStatus().equals("Waiting")){
+        }else if(model.getStatus().equals("History") || model.getStatus().equals("Waiting") || model.getStatus().equals("Refuse")){
             binding.checkBox.setVisibility(View.GONE);
             binding.categoryTv.setVisibility(View.GONE);
         }
@@ -112,7 +113,7 @@ public class AdapterEquipmentBorrowed extends  RecyclerView.Adapter<AdapterEquip
 
                     }
                 });
-
+        Log.d("TAGGG", title + " " + preStatus);
         holder.titleTv.setText(title);
         holder.descriptionTv.setText(description);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -122,6 +123,7 @@ public class AdapterEquipmentBorrowed extends  RecyclerView.Adapter<AdapterEquip
                 intent.putExtra("equipmentId", model.getId());
                 intent.putExtra("status", model.getStatus());
                 intent.putExtra("key", model.getKey());
+                intent.putExtra("preStatus", preStatus);
                 context.startActivity(intent);
             }
         });

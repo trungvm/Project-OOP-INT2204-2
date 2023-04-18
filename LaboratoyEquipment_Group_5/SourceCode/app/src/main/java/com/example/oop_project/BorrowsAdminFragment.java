@@ -148,8 +148,12 @@ public class BorrowsAdminFragment extends Fragment {
                         ModelEquipment model = snapshot.getValue(ModelEquipment.class);
                         String equipmentId = "" + ds.child("equipmentId").getValue();
                         String title = "" + ds.child("title").getValue();
+                        String preStatus = "";
+                        if(ds.hasChild("preStatus")){
+                            preStatus = "" + ds.child("preStatus").getValue();
+                        }
                         model.setTitle(title);
-
+                        model.setPreStatus(preStatus);
                         model.setId(equipmentId);
                         model.setKey(key);
                         model.setUid(uid);
@@ -194,9 +198,14 @@ public class BorrowsAdminFragment extends Fragment {
                         ModelEquipment model = snapshot.getValue(ModelEquipment.class);
                         String equipmentId = "" + ds.child("equipmentId").getValue();
                         String title = "" + ds.child("title").getValue();
+                        String preStatus = "";
+                        if(ds.hasChild("preStatus")){
+                            preStatus = "" + ds.child("preStatus").getValue();
+                        }
                         model.setTitle(title);
                         model.setId(equipmentId);
                         model.setKey(key);
+                        model.setPreStatus(preStatus);
                         model.setUid(uid);
                         model.setStatus("History");
 

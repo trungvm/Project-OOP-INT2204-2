@@ -66,6 +66,7 @@ public class AdapterBorrowsAdmin extends RecyclerView.Adapter<AdapterBorrowsAdmi
         binding.textDate.setText("Thời gian mượn: ");
         binding.categoryTv.setVisibility(View.GONE);
         String uid = model.getUid();
+        String preStatus = model.getPreStatus();
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("EquipmentsBorrowed");
         ref.child(key)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
@@ -127,6 +128,7 @@ public class AdapterBorrowsAdmin extends RecyclerView.Adapter<AdapterBorrowsAdmi
                 intent.putExtra("key", model.getKey());
                 intent.putExtra("role", "admin");
                 intent.putExtra("personI4", "admin");
+                intent.putExtra("preStatus", preStatus);
                 context.startActivity(intent);
             }
         });

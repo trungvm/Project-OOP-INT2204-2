@@ -6,6 +6,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContract;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
@@ -15,6 +16,7 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -28,6 +30,10 @@ import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.example.oop_project.MyApplication;
 import com.example.oop_project.R;
 import com.example.oop_project.databinding.ActivityProfileEditBinding;
@@ -115,10 +121,10 @@ public class ProfileEditActivity extends AppCompatActivity {
         address = binding.addressEt.getText().toString().trim();
         otherInformation = binding.otherInforEt.getText().toString().trim();
         birthday = binding.birthdayEt.getText().toString().trim();
-        String id = String.valueOf(binding.genderRadioGroup.getCheckedRadioButtonId());
-        if(id.equals("2131231333")){
+        int id = binding.genderRadioGroup.getCheckedRadioButtonId();
+        if(id == R.id.male_radio_button){
             gender = 1;
-        }else if(id.equals("2131231329")){
+        }else if(id == R.id.female_radio_button){
             gender = 2;
         }
         if(TextUtils.isEmpty(fullName)){
@@ -132,7 +138,7 @@ public class ProfileEditActivity extends AppCompatActivity {
         }else if(TextUtils.isEmpty(birthday)){
             Toast.makeText(this, "Enter birthday", Toast.LENGTH_SHORT).show();
         }else if(gender == 0){
-            Toast.makeText(this, "Choose gender..." + id, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Choose gender...", Toast.LENGTH_SHORT).show();
         }else{
             if(imageUri == null){
                 // need to update without image
@@ -297,6 +303,24 @@ public class ProfileEditActivity extends AppCompatActivity {
                         }else if(gender.equals("2")){
                             sex = "Nữ";
                         }
+                        Glide.with(ProfileEditActivity.this)
+                                .load(profileImage)
+                                .centerCrop()
+                                .listener(new RequestListener<Drawable>() {
+                                    @Override
+                                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                                        binding.profileTv.setVisibility(View.VISIBLE);
+                                        return false;
+                                    }
+
+                                    @Override
+                                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+
+                                        binding.profileTv.setVisibility(View.VISIBLE);
+                                        return false;
+                                    }
+                                })
+                                .into(binding.profileTv);
                         String formattedDate = MyApplication.formatTimestamp(Long.parseLong(timestamp));
                         // set data to ui
                         binding.nameEt.setText(fullName.equals("null") ? "" : fullName);

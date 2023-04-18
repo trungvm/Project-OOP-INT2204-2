@@ -112,9 +112,9 @@ public class ScheduleActivity extends AppCompatActivity {
         });
     }
     private void insertDataToFirebase() {
+        long timestamp = System.currentTimeMillis();
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
         for(int i = 0; i < listIdChecked.size(); i++){
-            long timestamp = System.currentTimeMillis();
             String key = ref.push().getKey();
             listOfKey.add("HH"+key);
             listOfEquipmentId.add(listIdChecked.get(i).first);
