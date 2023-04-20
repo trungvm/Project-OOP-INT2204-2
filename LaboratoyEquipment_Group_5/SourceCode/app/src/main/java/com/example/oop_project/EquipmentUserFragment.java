@@ -11,7 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.oop_project.adapters.AdapterEquipmentUser;
+import com.example.oop_project.adapters.user.AdapterEquipmentUser;
 import com.example.oop_project.databinding.FragmentEquipmentUserBinding;
 import com.example.oop_project.models.ModelEquipment;
 import com.google.firebase.database.DataSnapshot;

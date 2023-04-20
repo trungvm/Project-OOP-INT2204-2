@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.EquipmentEditActivity"
+    tools:context=".activities.admin.EquipmentEditActivity"
     android:background="@drawable/back01"
     >
 

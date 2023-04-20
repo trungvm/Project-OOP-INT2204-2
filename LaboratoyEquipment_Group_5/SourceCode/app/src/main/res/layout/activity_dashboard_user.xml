@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorBackground"
     android:focusableInTouchMode="true"
-    tools:context=".activities.DashboardAdminActivity">
+    tools:context=".activities.admin.DashboardAdminActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layoutHeader"
@@ -61,9 +61,10 @@
         android:id="@+id/profileTv"
         android:layout_width="120dp"
         android:layout_height="120dp"
-        android:layout_marginStart="155dp"
+        android:layout_marginStart="130dp"
         android:layout_marginTop="44dp"
         android:layout_marginEnd="136dp"
+
         android:background="@color/white"
         android:elevation="10dp"
         android:src="@drawable/ic_person_gray"

@@ -81,16 +81,6 @@
                 android:layout_marginTop="5dp"
                 />
             <TextView
-                android:id="@+id/categoryTv"
-                style="@style/TextAppearance.MaterialComponents.Body2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Category"
-                android:maxLines="1"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentBottom="true"
-                />
-            <TextView
                 android:id="@+id/textQuantity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -116,6 +106,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Thời gian mượn: "
+                android:textSize="10sp"
                 android:layout_alignParentBottom="true"
                 android:layout_toEndOf="@id/equipmentRL"
                 android:textColor="@color/black"
@@ -126,9 +117,9 @@
                 android:layout_height="wrap_content"
                 style="@style/TextAppearance.MaterialComponents.Caption"
                 android:text="dd/MM/yyyy"
-                android:layout_toEndOf="@id/textDate"
-                android:layout_toStartOf="@id/categoryTv"
                 android:textAlignment="center"
+                android:textSize="10sp"
+                android:layout_toEndOf="@id/textDate"
                 android:layout_alignParentBottom="true"
                 android:maxLines="1"
                 />

@@ -12,11 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.oop_project.activities.ScheduleActivity;
-import com.example.oop_project.adapters.AdapterBorrowsAdmin;
-import com.example.oop_project.adapters.AdapterSchedule;
-import com.example.oop_project.adapters.AdapterScheduleAdmin;
-import com.example.oop_project.databinding.FragmentBorrowsAdminBinding;
+import com.example.oop_project.adapters.user.AdapterScheduleAdmin;
 import com.example.oop_project.databinding.FragmentScheduleAdminBinding;
 import com.example.oop_project.models.ModelEquipment;
 import com.google.firebase.database.DataSnapshot;

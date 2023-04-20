@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.EquipmentsBorrowedActivity"
+    tools:context=".activities.user.EquipmentsBorrowedActivity"
     android:background="@drawable/back01"
     >
     <RelativeLayout
@@ -35,7 +35,6 @@
             android:textStyle="bold" />
     </RelativeLayout>
     <com.google.android.material.tabs.TabLayout
-        android:layout_marginTop="4dp"
         android:id="@+id/tabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -79,6 +78,7 @@
                    android:layout_marginStart="20dp"
                    />
                <EditText
+                   android:gravity="start"
                    android:id="@+id/reportEt"
                    android:layout_marginStart="10dp"
                    android:layout_width="match_parent"

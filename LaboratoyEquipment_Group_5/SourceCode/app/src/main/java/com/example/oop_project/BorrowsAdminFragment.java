@@ -1,7 +1,6 @@
 package com.example.oop_project;
 
 import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -9,18 +8,13 @@ import androidx.fragment.app.Fragment;
 
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.oop_project.adapters.AdapterBorrowsAdmin;
-import com.example.oop_project.adapters.AdapterEquipmentBorrowed;
+import com.example.oop_project.adapters.admin.AdapterBorrowsAdmin;
 import com.example.oop_project.databinding.FragmentBorrowsAdminBinding;
-import com.example.oop_project.databinding.FragmentEquipmentUserBinding;
 import com.example.oop_project.models.ModelEquipment;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -28,12 +22,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-
 
 
 public class BorrowsAdminFragment extends Fragment {

@@ -1,29 +1,21 @@
 package com.example.oop_project;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.viewpager.widget.ViewPager;
 
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.example.oop_project.activities.EquipmentsBorrowedActivity;
-import com.example.oop_project.adapters.AdapterBorrowsAdmin;
-import com.example.oop_project.adapters.AdapterEquipmentBorrowed;
-import com.example.oop_project.adapters.AdapterEquipmentUser;
+import com.example.oop_project.adapters.user.AdapterEquipmentBorrowed;
 import com.example.oop_project.databinding.FragmentEquipmentBorrowedBinding;
-import com.example.oop_project.databinding.FragmentEquipmentUserBinding;
 import com.example.oop_project.models.ModelEquipment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
