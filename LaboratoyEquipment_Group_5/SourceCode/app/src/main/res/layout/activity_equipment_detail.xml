@@ -50,7 +50,7 @@
                 <RelativeLayout
                     android:id="@+id/equipmentRL"
                     android:layout_width="100dp"
-                    android:layout_height="160dp"
+                    android:layout_height="140dp"
                     android:layout_marginEnd="5dp"
                     android:background="@color/gray02"
                     >
@@ -92,7 +92,7 @@
                             android:layout_width="wrap_content"
                             android:layout_marginEnd="5dp"
                             android:text="Thể loại: "
-                            android:textSize="16sp"
+                            android:textSize="14sp"
                             android:textStyle="italic"
                             />
                         <TextView
@@ -102,7 +102,7 @@
                             android:layout_width="wrap_content"
                             android:layout_marginEnd="5dp"
                             android:text="N/A"
-                            android:textSize="16sp"
+                            android:textSize="14sp"
                             />
                     </TableRow>
                     <TableRow>
@@ -113,7 +113,7 @@
                             android:layout_width="wrap_content"
                             android:layout_marginEnd="5dp"
                             android:text="Ngày nhập: "
-                            android:textSize="16sp"
+                            android:textSize="14sp"
                             android:textStyle="italic"
                             />
                         <TextView
@@ -123,7 +123,7 @@
                             android:layout_width="wrap_content"
                             android:layout_marginEnd="5dp"
                             android:text="N/A"
-                            android:textSize="16sp"
+                            android:textSize="14sp"
                             />
                     </TableRow>
                     <TableRow>
@@ -134,7 +134,7 @@
                             android:layout_width="wrap_content"
                             android:layout_marginEnd="5dp"
                             android:text="Số lượng trong kho: "
-                            android:textSize="16sp"
+                            android:textSize="14sp"
                             android:textStyle="italic"
                             />
                         <TextView
@@ -144,7 +144,7 @@
                             android:layout_width="wrap_content"
                             android:layout_marginEnd="5dp"
                             android:text="N/A"
-                            android:textSize="16sp"
+                            android:textSize="14sp"
                             />
                     </TableRow>
                     <TableRow>
@@ -155,7 +155,7 @@
                             android:layout_width="wrap_content"
                             android:layout_marginEnd="5dp"
                             android:text="Số lượng đã xem: "
-                            android:textSize="16sp"
+                            android:textSize="14sp"
                             android:textStyle="italic"
                             />
                         <TextView
@@ -165,7 +165,7 @@
                             android:layout_width="wrap_content"
                             android:layout_marginEnd="5dp"
                             android:text="N/A"
-                            android:textSize="16sp"
+                            android:textSize="14sp"
                             />
                     </TableRow>
                     <TableRow>
@@ -176,7 +176,7 @@
                             android:layout_width="wrap_content"
                             android:layout_marginEnd="5dp"
                             android:text="Số lượng đã mượn: "
-                            android:textSize="16sp"
+                            android:textSize="14sp"
                             android:textStyle="italic"
                             />
                         <TextView
@@ -186,7 +186,7 @@
                             android:layout_width="wrap_content"
                             android:layout_marginEnd="5dp"
                             android:text="N/A"
-                            android:textSize="16sp"
+                            android:textSize="14sp"
                             />
                     </TableRow>
                     <TableRow>
@@ -197,7 +197,7 @@
                             android:layout_width="wrap_content"
                             android:layout_marginEnd="5dp"
                             android:text="Vị trí thiết bị: "
-                            android:textSize="16sp"
+                            android:textSize="14sp"
                             android:textStyle="italic"
                             />
                         <TextView
@@ -207,7 +207,7 @@
                             android:layout_width="wrap_content"
                             android:layout_marginEnd="5dp"
                             android:text="N/A"
-                            android:textSize="16sp"
+                            android:textSize="14sp"
                             />
                     </TableRow>
                 </TableLayout>

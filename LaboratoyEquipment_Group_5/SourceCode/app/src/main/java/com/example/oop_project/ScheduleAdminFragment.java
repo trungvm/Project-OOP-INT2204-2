@@ -26,6 +26,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -131,10 +133,17 @@ public class ScheduleAdminFragment extends Fragment {
                         model.setStatus("Waiting");
                         equipmentArrayListAccept.add(model);
 
-
-
                     }
                 }
+                Collections.sort(equipmentArrayListAccept, new Comparator<ModelEquipment>() {
+                    @Override
+                    public int compare(ModelEquipment o1, ModelEquipment o2) {
+                        // Sử dụng trường "ti" (timestamp) để so sánh
+                        long ti1 = o1.getTimestamp();
+                        long ti2 = o2.getTimestamp();
+                        return Long.compare(ti1, ti2);
+                    }
+                });
 
                 adapterScheduleAdmin = new AdapterScheduleAdmin(getContext(), equipmentArrayListAccept);
                 adapterScheduleAdmin.notifyDataSetChanged();
@@ -183,6 +192,15 @@ public class ScheduleAdminFragment extends Fragment {
 
                     }
                 }
+                Collections.sort(equipmentArrayListRefuse, new Comparator<ModelEquipment>() {
+                    @Override
+                    public int compare(ModelEquipment o1, ModelEquipment o2) {
+                        // Sử dụng trường "ti" (timestamp) để so sánh
+                        long ti1 = o1.getTimestamp();
+                        long ti2 = o2.getTimestamp();
+                        return Long.compare(ti1, ti2);
+                    }
+                });
 
                 adapterScheduleAdmin = new AdapterScheduleAdmin(getContext(), equipmentArrayListRefuse);
                 adapterScheduleAdmin.notifyDataSetChanged();

@@ -5,9 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Spanned;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
 import com.example.oop_project.R;
@@ -21,7 +24,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.commonmark.node.Node;
+
 import java.util.Calendar;
+
+import io.noties.markwon.Markwon;
 
 
 public class DashboardUserActivity extends AppCompatActivity {
@@ -29,6 +36,7 @@ public class DashboardUserActivity extends AppCompatActivity {
     private ActivityDashboardUserBinding binding;
     private boolean isUser = false;
     private int isLoginWithout = 0;
+    boolean isLayoutOpen = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,7 +65,6 @@ public class DashboardUserActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(DashboardUserActivity.this, EquipmentsBorrowedActivity.class));
-                finish();
             }
         });
       if(isUser == true){
@@ -93,14 +100,47 @@ public class DashboardUserActivity extends AppCompatActivity {
           @Override
           public void onClick(View v) {
               startActivity(new Intent(DashboardUserActivity.this, CartActivity.class));
-              finish();
           }
       });
       binding.layoutSchedule.setOnClickListener(new View.OnClickListener() {
           @Override
           public void onClick(View v) {
               startActivity(new Intent(DashboardUserActivity.this, ScheduleActivity.class));
-              finish();
+          }
+      });
+
+      binding.layoutRules.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View v) {
+              int heightInPxt = (int) TypedValue.applyDimension(
+                      TypedValue.COMPLEX_UNIT_DIP, 930, getResources().getDisplayMetrics());
+              if(isLayoutOpen){
+                  binding.contentRulesSv.setVisibility(View.GONE);
+                  binding.layoutRules.getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;
+                  binding.layoutRules.requestLayout();
+                  isLayoutOpen = false;
+              }else{
+                  binding.layoutRules.getLayoutParams().height = heightInPxt;
+                  binding.layoutRules.requestLayout();
+                  binding.contentRulesSv.setVisibility(View.VISIBLE);
+                  isLayoutOpen = true;
+                  DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Rules");
+                  ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                      @Override
+                      public void onDataChange(@NonNull DataSnapshot snapshot) {
+                          final Markwon markwon = Markwon.create(DashboardUserActivity.this);
+                          String text = "" + snapshot.child("content").getValue();
+
+                          markwon.setMarkdown(binding.contentRules, text);
+                      }
+
+                      @Override
+                      public void onCancelled(@NonNull DatabaseError error) {
+
+                      }
+                  });
+              }
+
           }
       });
 

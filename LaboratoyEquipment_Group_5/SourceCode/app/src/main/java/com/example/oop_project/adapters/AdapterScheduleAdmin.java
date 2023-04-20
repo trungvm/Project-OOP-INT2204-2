@@ -31,7 +31,10 @@ import com.example.oop_project.activities.EquipmentDetailActivity;
 import com.example.oop_project.databinding.RowEquipmentsScheduleAdminBinding;
 import com.example.oop_project.filters.FilterSchedule;
 import com.example.oop_project.filters.FilterScheduleAdmin;
+import com.example.oop_project.models.ModelCategory;
 import com.example.oop_project.models.ModelEquipment;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -86,6 +89,8 @@ public class AdapterScheduleAdmin extends RecyclerView.Adapter<AdapterScheduleAd
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         String startDate = "" + snapshot.child("startDate").getValue();
                         String endDate = "" + snapshot.child("endDate").getValue();
+                        String fullName = "" + snapshot.child("fullName").getValue();
+                        holder.descriptionTv.setText("Người mượn: " + fullName);
                         holder.startDate.setText(startDate);
                         holder.endDate.setText(endDate);
 
@@ -113,21 +118,19 @@ public class AdapterScheduleAdmin extends RecyclerView.Adapter<AdapterScheduleAd
                                         String title = "" + snapshots.child("title").getValue();
                                         String description = "" + snapshots.child("description").getValue();
                                         holder.titleTv.setText(title);
-                                        holder.descriptionTv.setText(description);
+//                                        holder.descriptionTv.setText(description);
                                         String equipmentId = "" + snapshots.child("id").getValue();
                                         model.setId(equipmentId);
                                         String categoryId = "" + snapshots.child("categoryId").getValue();
-                                        DatabaseReference ref1 = FirebaseDatabase.getInstance().getReference("Categories");
-                                        ref1.child(categoryId).addListenerForSingleValueEvent(new ValueEventListener() {
-                                            @Override
-                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                                String title = "" + snapshot.child("title").getValue();
-                                                holder.categoryTv.setText(title);
-                                            }
 
+                                        ModelCategory modelCategory = new ModelCategory();
+                                        modelCategory.getDataFromFireBase(categoryId).addOnCompleteListener(new OnCompleteListener<ModelCategory>() {
                                             @Override
-                                            public void onCancelled(@NonNull DatabaseError error) {
-
+                                            public void onComplete(@NonNull Task<ModelCategory> task) {
+                                                if(task.isSuccessful()){
+                                                    ModelCategory newModelCategory = task.getResult();
+                                                    holder.categoryTv.setText(newModelCategory.getTitle());
+                                                }
                                             }
                                         });
 

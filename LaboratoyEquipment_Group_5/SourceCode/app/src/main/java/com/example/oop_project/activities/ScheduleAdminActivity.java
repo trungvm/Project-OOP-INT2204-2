@@ -29,6 +29,9 @@ import com.example.oop_project.adapters.AdapterScheduleAdmin;
 import com.example.oop_project.databinding.ActivityScheduleAdminBinding;
 import com.example.oop_project.models.ModelCategory;
 import com.example.oop_project.models.ModelEquipment;
+import com.example.oop_project.models.User;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -38,6 +41,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Set;
 
 public class ScheduleAdminActivity extends AppCompatActivity {
     private ActivityScheduleAdminBinding binding;
@@ -46,13 +50,19 @@ public class ScheduleAdminActivity extends AppCompatActivity {
     private ArrayList<Pair<Pair<String, String>, String>> listIdChecked;
     private int cntRefuse;
     private int cntAccpet;
+    private ArrayList<String> listKeyRefuse;
+    private ArrayList<String> listKeyAccept;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityScheduleAdminBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        // -----
         listIdChecked = new ArrayList<>();
+        listKeyAccept = new ArrayList<>();
+        listKeyRefuse = new ArrayList<>();
+        ///
         setupViewPagerAdapter(binding.viewPagerBorrowed);
         binding.tabLayout.setupWithViewPager(binding.viewPagerBorrowed);
         LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,
@@ -70,8 +80,7 @@ public class ScheduleAdminActivity extends AppCompatActivity {
                 flag = true;
                 counting();
                 validateRefuseData();
-                if(flag == true){
-                    Toast.makeText(ScheduleAdminActivity.this, "Xác nhận hủy thành công", Toast.LENGTH_SHORT).show();
+                if (flag == true) {
                     Intent intent = new Intent(ScheduleAdminActivity.this, SuccessActivity.class);
                     intent.putExtra("status", "ScheduleRefuse");
                     startActivity(intent);
@@ -84,7 +93,7 @@ public class ScheduleAdminActivity extends AppCompatActivity {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 int position = tab.getPosition();
-                switch (position){
+                switch (position) {
                     case 0:
                         binding.submitBtn.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -92,8 +101,7 @@ public class ScheduleAdminActivity extends AppCompatActivity {
                                 flag = true;
                                 counting();
                                 validateRefuseData();
-                                if(flag == true){
-                                    Toast.makeText(ScheduleAdminActivity.this, "Xác nhận hủy thành công", Toast.LENGTH_SHORT).show();
+                                if (flag == true) {
                                     Intent intent = new Intent(ScheduleAdminActivity.this, SuccessActivity.class);
                                     intent.putExtra("status", "ScheduleRefuse");
                                     startActivity(intent);
@@ -115,8 +123,7 @@ public class ScheduleAdminActivity extends AppCompatActivity {
                                 flag = true;
                                 counting();
                                 validateAcceptData();
-                                if(flag == true){
-                                    Toast.makeText(ScheduleAdminActivity.this, "Xác nhận thành công!", Toast.LENGTH_SHORT).show();
+                                if (flag == true) {
                                     Intent intent = new Intent(ScheduleAdminActivity.this, SuccessActivity.class);
                                     intent.putExtra("status", "ScheduleAccept");
                                     startActivity(intent);
@@ -151,73 +158,79 @@ public class ScheduleAdminActivity extends AppCompatActivity {
 
     String reportRefuse;
     boolean flag = true;
-    private void counting(){
+
+    private void counting() {
         cntRefuse = 0;
         cntAccpet = 0;
-        for(int i =0 ; i < listIdChecked.size(); i++){
+        for (int i = 0; i < listIdChecked.size(); i++) {
             String status = listIdChecked.get(i).second;
-            if(status.equals("Refuse")){
-                cntRefuse ++;
-            }else cntAccpet ++;
+            if (status.equals("Refuse")) {
+                cntRefuse++;
+            } else cntAccpet++;
         }
     }
+
+
+
+
     private void validateRefuseData() {
         reportRefuse = binding.reportEt.getText().toString().trim();
-        if(cntRefuse == 0 ){
+        if (cntRefuse == 0) {
             Toast.makeText(this, "Vui lòng chọn thiết bị", Toast.LENGTH_SHORT).show();
             flag = false;
-        }
-        else if(TextUtils.isEmpty(reportRefuse)){
+        } else if (TextUtils.isEmpty(reportRefuse)) {
             Toast.makeText(ScheduleAdminActivity.this, "Điền lý do!", Toast.LENGTH_SHORT).show();
             flag = false;
-        }else{
+        } else {
             Long timestamp = System.currentTimeMillis();
-            for(int i = 0; i < listIdChecked.size(); i++){
-                String status =  listIdChecked.get(i).second;
-                if(status.equals("Refuse")){
+            for (int i = 0; i < listIdChecked.size(); i++) {
+                String status = listIdChecked.get(i).second;
+                if (status.equals("Refuse")) {
                     String equipmentId = listIdChecked.get(i).first.first;
                     String key = listIdChecked.get(i).first.second;
+                    listKeyRefuse.add(key);
                     DatabaseReference ref = FirebaseDatabase.getInstance().getReference("EquipmentsBorrowed");
                     ref.child(key)
                             .addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                    if(snapshot.hasChild("reportRefuse")){
+                                    if (snapshot.hasChild("reportRefuse")) {
                                         snapshot.getRef().child("reportRefuse").setValue(reportRefuse);
-                                    }else{
+                                    } else {
                                         HashMap<String, Object> childUpdates = new HashMap<>();
                                         childUpdates.put("reportRefuse", reportRefuse);
                                         snapshot.getRef().updateChildren(childUpdates);
                                     }
-                                    if(snapshot.hasChild("timestampAdminSchedule")){
+                                    if (snapshot.hasChild("timestampAdminSchedule")) {
                                         snapshot.getRef().child("timestampAdminSchedule").setValue(timestamp);
-                                    }else{
+                                    } else {
                                         HashMap<String, Object> childUpdates = new HashMap<>();
                                         childUpdates.put("timestampAdminSchedule", timestamp);
                                         snapshot.getRef().updateChildren(childUpdates);
-                                    };
+                                    }
+                                    ;
                                     snapshot.getRef().child("status").setValue("Refuse");
-                                    String uid =  "" + snapshot.child("uid").getValue();
+                                    String uid = "" + snapshot.child("uid").getValue();
                                     DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
                                     reference.child(uid).child("Borrowed").child(key)
                                             .addListenerForSingleValueEvent(new ValueEventListener() {
                                                 @Override
                                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                                                     snapshot.getRef().child("status").setValue("Refuse");
-                                                    if(snapshot.hasChild("timestampAdminSchedule")){
+                                                    if (snapshot.hasChild("timestampAdminSchedule")) {
                                                         snapshot.getRef().child("timestampAdminSchedule").setValue(timestamp);
-                                                    }else{
+                                                    } else {
                                                         HashMap<String, Object> childUpdates = new HashMap<>();
                                                         childUpdates.put("timestampAdminSchedule", timestamp);
                                                         snapshot.getRef().updateChildren(childUpdates);
                                                     }
                                                     int quantityBorrowed = Integer.parseInt("" + snapshot.child("quantityBorrowed").getValue());
-                                                    DatabaseReference ref1 =  FirebaseDatabase.getInstance().getReference("Equipments");
+                                                    DatabaseReference ref1 = FirebaseDatabase.getInstance().getReference("Equipments");
                                                     ref1.child(equipmentId)
                                                             .addListenerForSingleValueEvent(new ValueEventListener() {
                                                                 @Override
                                                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                                                    int x = Integer.parseInt(""+ snapshot.child("quantity").getValue());
+                                                                    int x = Integer.parseInt("" + snapshot.child("quantity").getValue());
                                                                     x = x + quantityBorrowed;
                                                                     snapshot.getRef().child("quantity").setValue(x);
                                                                 }
@@ -245,61 +258,62 @@ public class ScheduleAdminActivity extends AppCompatActivity {
             }
         }
     }
-    private void validateAcceptData(){
-        if(cntAccpet == 0 ){
+
+    private void validateAcceptData() {
+        if (cntAccpet == 0) {
             Toast.makeText(this, "Vui lòng chọn thiết bị", Toast.LENGTH_SHORT).show();
             flag = false;
-        }
-        else{
-        Long timestamp = System.currentTimeMillis();
-        for(int i = 0; i < listIdChecked.size(); i++) {
-            String status = listIdChecked.get(i).second;
-            if (status.equals("Accept")) {
-                String equipmentId = listIdChecked.get(i).first.first;
-                String key = listIdChecked.get(i).first.second;
-                DatabaseReference ref = FirebaseDatabase.getInstance().getReference("EquipmentsBorrowed");
-                ref.child(key)
-                        .addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                if (snapshot.hasChild("timestampAdminSchedule")) {
-                                    snapshot.getRef().child("timestampAdminSchedule").setValue(timestamp);
-                                } else {
-                                    HashMap<String, Object> childUpdates = new HashMap<>();
-                                    childUpdates.put("timestampAdminSchedule", timestamp);
-                                    snapshot.getRef().updateChildren(childUpdates);
-                                }
-                                snapshot.getRef().child("status").setValue("Borrowed");
-                                String uid = "" + snapshot.child("uid").getValue();
-                                DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
-                                reference.child(uid).child("Borrowed").child(key)
-                                        .addListenerForSingleValueEvent(new ValueEventListener() {
-                                            @Override
-                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                                snapshot.getRef().child("status").setValue("Borrowed");
-                                                if (snapshot.hasChild("timestampAdminSchedule")) {
-                                                    snapshot.getRef().child("timestampAdminSchedule").setValue(timestamp);
-                                                } else {
-                                                    HashMap<String, Object> childUpdates = new HashMap<>();
-                                                    childUpdates.put("timestampAdminSchedule", timestamp);
-                                                    snapshot.getRef().updateChildren(childUpdates);
+        } else {
+            Long timestamp = System.currentTimeMillis();
+            for (int i = 0; i < listIdChecked.size(); i++) {
+                String status = listIdChecked.get(i).second;
+                if (status.equals("Accept")) {
+                    String equipmentId = listIdChecked.get(i).first.first;
+                    String key = listIdChecked.get(i).first.second;
+                    listKeyAccept.add(key);
+                    DatabaseReference ref = FirebaseDatabase.getInstance().getReference("EquipmentsBorrowed");
+                    ref.child(key)
+                            .addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    if (snapshot.hasChild("timestampAdminSchedule")) {
+                                        snapshot.getRef().child("timestampAdminSchedule").setValue(timestamp);
+                                    } else {
+                                        HashMap<String, Object> childUpdates = new HashMap<>();
+                                        childUpdates.put("timestampAdminSchedule", timestamp);
+                                        snapshot.getRef().updateChildren(childUpdates);
+                                    }
+                                    snapshot.getRef().child("status").setValue("Borrowed");
+                                    String uid = "" + snapshot.child("uid").getValue();
+                                    DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
+                                    reference.child(uid).child("Borrowed").child(key)
+                                            .addListenerForSingleValueEvent(new ValueEventListener() {
+                                                @Override
+                                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                    snapshot.getRef().child("status").setValue("Borrowed");
+                                                    if (snapshot.hasChild("timestampAdminSchedule")) {
+                                                        snapshot.getRef().child("timestampAdminSchedule").setValue(timestamp);
+                                                    } else {
+                                                        HashMap<String, Object> childUpdates = new HashMap<>();
+                                                        childUpdates.put("timestampAdminSchedule", timestamp);
+                                                        snapshot.getRef().updateChildren(childUpdates);
+                                                    }
                                                 }
-                                            }
 
-                                            @Override
-                                            public void onCancelled(@NonNull DatabaseError error) {
+                                                @Override
+                                                public void onCancelled(@NonNull DatabaseError error) {
 
-                                            }
-                                        });
-                            }
+                                                }
+                                            });
+                                }
 
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError error) {
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
 
-                            }
-                        });
+                                }
+                            });
+                }
             }
-        }
         }
 
     }
@@ -325,17 +339,17 @@ public class ScheduleAdminActivity extends AppCompatActivity {
                         break;
                     }
                 }
-                if(flag == false){
+                if (flag == false) {
                     Pair<String, String> p = new Pair<>(equipmentId, key);
-                    Pair<Pair<String, String>, String> p1 =  new Pair<>(p, adminStatus);
+                    Pair<Pair<String, String>, String> p1 = new Pair<>(p, adminStatus);
                     listIdChecked.set(index, p1);
-                }else{
+                } else {
                     Pair<String, String> p = new Pair<>(equipmentId, key);
-                    Pair<Pair<String, String>, String> p1 =  new Pair<>(p, adminStatus);
+                    Pair<Pair<String, String>, String> p1 = new Pair<>(p, adminStatus);
                     listIdChecked.add(p1);
                 }
 
-            }else{
+            } else {
                 for (int i = 0; i < listIdChecked.size(); i++) {
                     if (listIdChecked.get(i).first.equals(equipmentId)) {
                         flag = false;
@@ -343,7 +357,7 @@ public class ScheduleAdminActivity extends AppCompatActivity {
                         break;
                     }
                 }
-                if(flag == false){
+                if (flag == false) {
                     listIdChecked.remove(index);
                 }
             }
@@ -351,7 +365,7 @@ public class ScheduleAdminActivity extends AppCompatActivity {
         }
     };
 
-    private void setupViewPagerAdapter(ViewPager viewPager){
+    private void setupViewPagerAdapter(ViewPager viewPager) {
 
         viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT, this);
         categoryArrayList = new ArrayList<>();
@@ -364,13 +378,13 @@ public class ScheduleAdminActivity extends AppCompatActivity {
         categoryArrayList.add(modelBorrowed);
         viewPagerAdapter.addFragment(ScheduleAdminFragment.newInstance(
                 "" + modelBorrowing.getId(),
-                ""+ modelBorrowing.getTitle(),
+                "" + modelBorrowing.getTitle(),
                 "" + modelBorrowing.getUid()
         ), modelBorrowing.getTitle());
 
         viewPagerAdapter.addFragment(ScheduleAdminFragment.newInstance(
                 "" + modelBorrowed.getId(),
-                ""+ modelBorrowed.getTitle(),
+                "" + modelBorrowed.getTitle(),
                 "" + modelBorrowed.getUid()
         ), modelBorrowed.getTitle());
 
@@ -410,7 +424,8 @@ public class ScheduleAdminActivity extends AppCompatActivity {
         public int getCount() {
             return fragmentList.size();
         }
-        private void addFragment(ScheduleAdminFragment fragment, String title){
+
+        private void addFragment(ScheduleAdminFragment fragment, String title) {
             fragmentList.add(fragment);
             fragmentTitleList.add(title);
 

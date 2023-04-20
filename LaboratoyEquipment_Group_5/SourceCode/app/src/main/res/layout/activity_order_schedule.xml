@@ -334,6 +334,7 @@
                     android:layout_marginStart="20dp"
                     />
                 <EditText
+                    android:gravity="start"
                     android:id="@+id/reportEt"
                     android:layout_marginStart="10dp"
                     android:layout_width="match_parent"

@@ -37,6 +37,8 @@ import com.bumptech.glide.request.target.Target;
 import com.example.oop_project.MyApplication;
 import com.example.oop_project.R;
 import com.example.oop_project.databinding.ActivityProfileEditBinding;
+import com.example.oop_project.models.Person;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -281,65 +283,51 @@ public class ProfileEditActivity extends AppCompatActivity {
     );
 
     private void loadUserInformation() {
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
-        ref.child(firebaseAuth.getUid())
-                .addValueEventListener(new ValueEventListener() {
+        Person person = new Person("Users");
+        person.getDataFromFireBase(firebaseAuth.getUid())
+                .addOnCompleteListener(new OnCompleteListener<Person>() {
                     @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        String email = "" + snapshot.child("email").getValue();
-                        String fullName = "" + snapshot.child("fullName").getValue();
-                        String profileImage = "" + snapshot.child("profileImage").getValue();
-                        String timestamp = "" + snapshot.child("timestamp").getValue();
-                        String uid = "" + snapshot.child("uid").getValue();
-                        String accountType = "" + snapshot.child("accountType").getValue();
-                        String mobile = "" + snapshot.child("mobile").getValue();
-                        String address = "" + snapshot.child("address").getValue();
-                        String otherInfor = "" + snapshot.child("otherInfor").getValue();
-                        String birthday = "" + snapshot.child("birthday").getValue();
-                        String gender = "" + snapshot.child("gender").getValue();
-                        String sex = "N/A";
-                        if(gender.equals("1")){
-                            sex = "Nam";
-                        }else if(gender.equals("2")){
-                            sex = "Nữ";
+                    public void onComplete(@NonNull Task<Person> task) {
+                        if(task.isSuccessful()){
+                            Person newPerson = task.getResult();
+                            String sex = "N/A";
+                            if(newPerson.getGender() == 1){
+                                sex = "Nam";
+                            }else if(newPerson.getGender() == 2){
+                                sex = "Nữ";
+                            }
+                            Glide.with(ProfileEditActivity.this)
+                                    .load(newPerson.getProfileImage())
+                                    .centerCrop()
+                                    .listener(new RequestListener<Drawable>() {
+                                        @Override
+                                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                                            binding.profileTv.setVisibility(View.VISIBLE);
+                                            return false;
+                                        }
+
+                                        @Override
+                                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+
+                                            binding.profileTv.setVisibility(View.VISIBLE);
+                                            return false;
+                                        }
+                                    })
+                                    .into(binding.profileTv);
+//                            String formattedDate = MyApplication.formatTimestamp(Long.parseLong(timestamp));
+                            // set data to ui
+                            binding.nameEt.setText(newPerson.getFullName().equals("null") ? "" : newPerson.getFullName());
+                            binding.mobileEt.setText(newPerson.getMobile().equals("null")? "" : newPerson.getMobile());
+                            binding.addressEt.setText(newPerson.getAddress().equals("null") ? "" :  newPerson.getAddress());
+                            binding.otherInforEt.setText(newPerson.getOtherInfor().equals("null") ? "" : newPerson.getOtherInfor());
+                            binding.birthdayEt.setText(newPerson.getBirthday().equals("null") ? "" : newPerson.getBirthday());
+                            if(sex.equals("Nam")){
+                                binding.maleRadioButton.setChecked(true);
+                            }else if(sex.equals("Nữ")){
+                                binding.femaleRadioButton.setChecked(true);
+                            }
+
                         }
-                        Glide.with(ProfileEditActivity.this)
-                                .load(profileImage)
-                                .centerCrop()
-                                .listener(new RequestListener<Drawable>() {
-                                    @Override
-                                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                                        binding.profileTv.setVisibility(View.VISIBLE);
-                                        return false;
-                                    }
-
-                                    @Override
-                                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-
-                                        binding.profileTv.setVisibility(View.VISIBLE);
-                                        return false;
-                                    }
-                                })
-                                .into(binding.profileTv);
-                        String formattedDate = MyApplication.formatTimestamp(Long.parseLong(timestamp));
-                        // set data to ui
-                        binding.nameEt.setText(fullName.equals("null") ? "" : fullName);
-                        binding.mobileEt.setText(mobile.equals("null")? "" : mobile);
-                        binding.addressEt.setText(address.equals("null") ? "" : address);
-                        binding.otherInforEt.setText(otherInfor.equals("null") ? "" : otherInfor);
-                        binding.birthdayEt.setText(birthday.equals("null") ? "" : birthday);
-                        if(sex.equals("Nam")){
-                            binding.maleRadioButton.setChecked(true);
-                        }else if(sex.equals("Nữ")){
-                            binding.femaleRadioButton.setChecked(true);
-                        }
-
-
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
                     }
                 });
     }

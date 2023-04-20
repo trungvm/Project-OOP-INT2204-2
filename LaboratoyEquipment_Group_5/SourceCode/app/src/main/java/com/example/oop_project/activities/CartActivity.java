@@ -57,6 +57,7 @@ public class CartActivity extends AppCompatActivity  {
             public void onClick(View v) {
                 startActivity(new Intent(CartActivity.this, DashboardUserActivity.class));
                 finish();
+                onBackPressed();
             }
         });
         LoadCartEquipments();

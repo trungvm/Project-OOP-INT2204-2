@@ -68,8 +68,7 @@ public class EquipmentAddActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                startActivity(new Intent(EquipmentAddActivity.this, EquipmentManagerActivity.class));
-                finish();
+                onBackPressed();
 
             }
         });

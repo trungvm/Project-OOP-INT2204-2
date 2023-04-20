@@ -20,6 +20,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.oop_project.databinding.ActivityOrderScheduleBinding;
+import com.example.oop_project.models.User;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -43,8 +44,14 @@ public class OrderScheduleActivity extends AppCompatActivity {
     private ProgressDialog progressDialog;
     private ArrayList<String> listOfEquipmentId;
     private ArrayList<String> listOfTitleEquipment;
+    private String titleEquipment = "";
+    String fullName, email, mobile, address, birthday, gender, otherInfor = "", report = "";
+    String profileImage;
+    String quantityBorrowed = "";
+    String startDate, endDate;
+
     @Override
-    protected void onDestroy(){
+    protected void onDestroy() {
         super.onDestroy();
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
         ref.child(firebaseAuth.getUid())
@@ -52,8 +59,8 @@ public class OrderScheduleActivity extends AppCompatActivity {
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        for(DataSnapshot ds: snapshot.getChildren()){
-                            if((""+ds.child("status").getValue()).equals("new")){
+                        for (DataSnapshot ds : snapshot.getChildren()) {
+                            if (("" + ds.child("status").getValue()).equals("new")) {
                                 ds.getRef().removeValue();
                             }
                         }
@@ -65,6 +72,7 @@ public class OrderScheduleActivity extends AppCompatActivity {
                     }
                 });
     }
+
     @Override
     protected void onStop() {
         super.onStop();
@@ -74,8 +82,8 @@ public class OrderScheduleActivity extends AppCompatActivity {
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        for(DataSnapshot ds: snapshot.getChildren()){
-                            if((""+ds.child("status").getValue()).equals("new")){
+                        for (DataSnapshot ds : snapshot.getChildren()) {
+                            if (("" + ds.child("status").getValue()).equals("new")) {
                                 ds.getRef().removeValue();
                             }
                         }
@@ -88,6 +96,7 @@ public class OrderScheduleActivity extends AppCompatActivity {
                     }
                 });
     }
+
     @Override
     protected void onPause() {
 
@@ -98,8 +107,8 @@ public class OrderScheduleActivity extends AppCompatActivity {
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        for(DataSnapshot ds: snapshot.getChildren()){
-                            if((""+ds.child("status").getValue()).equals("new")){
+                        for (DataSnapshot ds : snapshot.getChildren()) {
+                            if (("" + ds.child("status").getValue()).equals("new")) {
                                 ds.getRef().removeValue();
                             }
                         }
@@ -112,6 +121,7 @@ public class OrderScheduleActivity extends AppCompatActivity {
                     }
                 });
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -136,8 +146,8 @@ public class OrderScheduleActivity extends AppCompatActivity {
                         .addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                for(DataSnapshot ds: snapshot.getChildren()){
-                                    if((""+ds.child("status").getValue()).equals("new")){
+                                for (DataSnapshot ds : snapshot.getChildren()) {
+                                    if (("" + ds.child("status").getValue()).equals("new")) {
                                         ds.getRef().removeValue();
                                     }
                                 }
@@ -151,8 +161,7 @@ public class OrderScheduleActivity extends AppCompatActivity {
                         });
 
 
-                startActivity(new Intent(OrderScheduleActivity.this, ScheduleActivity.class));
-                finish();
+                onBackPressed();
             }
         });
         binding.genderTv.setOnClickListener(new View.OnClickListener() {
@@ -168,10 +177,8 @@ public class OrderScheduleActivity extends AppCompatActivity {
             }
         });
     }
-    String fullName, email, mobile, address, birthday, gender, otherInfor = "", report = "";
-    String profileImage;
-    String quantityBorrowed = "";
-    String startDate, endDate;
+
+
     private void validateData() {
         fullName = binding.fullNameTv.getText().toString().trim();
         email = binding.emailTv.getText().toString().trim();
@@ -185,21 +192,21 @@ public class OrderScheduleActivity extends AppCompatActivity {
         endDate = binding.endDate.getText().toString().trim();
         boolean flag = false;
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-        if(TextUtils.isEmpty(fullName)){
+        if (TextUtils.isEmpty(fullName)) {
             Toast.makeText(this, "Điền họ và tên!", Toast.LENGTH_SHORT).show();
-        }else if(TextUtils.isEmpty(email)){
+        } else if (TextUtils.isEmpty(email)) {
             Toast.makeText(this, "Điền email!", Toast.LENGTH_SHORT).show();
-        }else if(TextUtils.isEmpty(mobile)){
+        } else if (TextUtils.isEmpty(mobile)) {
             Toast.makeText(this, "Điền số điện thoại!", Toast.LENGTH_SHORT).show();
-        }else if(TextUtils.isEmpty(address)){
+        } else if (TextUtils.isEmpty(address)) {
             Toast.makeText(this, "Điền địa chỉ!", Toast.LENGTH_SHORT).show();
-        }else if(TextUtils.isEmpty(gender)){
+        } else if (TextUtils.isEmpty(gender)) {
             Toast.makeText(this, "Điền giới tính", Toast.LENGTH_SHORT).show();
-        }else if(TextUtils.isEmpty(startDate)){
+        } else if (TextUtils.isEmpty(startDate)) {
             Toast.makeText(this, "Điền ngày tiến hành mượn", Toast.LENGTH_SHORT).show();
-        }else if(TextUtils.isEmpty(endDate)){
+        } else if (TextUtils.isEmpty(endDate)) {
             Toast.makeText(this, "Điền ngày trả", Toast.LENGTH_SHORT).show();
-        }else{
+        } else {
             try {
                 Date endDateObj = sdf.parse(endDate); // Chuyển đổi chuỗi endDate sang đối tượng Date
                 // Nếu không có lỗi, thì endDate đúng định dạng ngày giờ
@@ -231,6 +238,7 @@ public class OrderScheduleActivity extends AppCompatActivity {
         }
 
     }
+
     private void insertData() {
         progressDialog.setMessage("Đang tiến hành đặt lịch!");
         progressDialog.show();
@@ -240,14 +248,14 @@ public class OrderScheduleActivity extends AppCompatActivity {
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        for(DataSnapshot ds : snapshot.getChildren()){
-                            if((ds.child("status").getValue()).equals("new")){
-                                DatabaseReference reference =  ds.child("status").getRef();
+                        for (DataSnapshot ds : snapshot.getChildren()) {
+                            if ((ds.child("status").getValue()).equals("new")) {
+                                DatabaseReference reference = ds.child("status").getRef();
                                 reference.setValue("Waiting");
-                                if(!ds.hasChild("preStatus")){
+                                if (!ds.hasChild("preStatus")) {
                                     ds.getRef().child("preStatus").setValue("Waiting");
                                 }
-                                int quantityBorrowed = Integer.parseInt(""+ds.child("quantityBorrowed").getValue());
+                                int quantityBorrowed = Integer.parseInt("" + ds.child("quantityBorrowed").getValue());
                                 String equipmentId = "" + ds.child("equipmentId").getValue();
                                 DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference("Equipments");
                                 reference1.child(equipmentId)
@@ -255,7 +263,7 @@ public class OrderScheduleActivity extends AppCompatActivity {
                                             @Override
                                             public void onDataChange(@NonNull DataSnapshot snapshot) {
                                                 int quantity = Integer.parseInt("" + snapshot.child("quantity").getValue());
-                                                int x = quantity-quantityBorrowed;
+                                                int x = quantity - quantityBorrowed;
                                                 DatabaseReference ref2 = snapshot.child("quantity").getRef();
                                                 ref2.setValue(x);
                                                 int numberOfBorrowings;
@@ -287,7 +295,9 @@ public class OrderScheduleActivity extends AppCompatActivity {
 
                     }
                 });
-      for(int i = 0; i < listOfKey.size(); i++){
+
+        sendMail();
+        for (int i = 0; i < listOfKey.size(); i++) {
             long timestamp = System.currentTimeMillis();
             HashMap<String, Object> hashMap = new HashMap<>();
             hashMap.put("fullName", fullName);
@@ -330,8 +340,25 @@ public class OrderScheduleActivity extends AppCompatActivity {
         }
 
 
-
     }
+
+    private void sendMail() {
+        for(int i = 0; i < listOfTitleEquipment.size(); i++){
+            titleEquipment += listOfTitleEquipment.get(i) + "\n";
+        }
+        User user = new User();
+        String subject = "Đặt lịch thành công!";
+        user.setFullName(fullName);
+        String message = "Chúc mừng " + fullName + " đã đặt lịch thành công thiết bị từ chúng tôi!" +
+                "\n" + "Danh sách thiết bị gồm: " + "\n"
+                + titleEquipment
+                + "Thời gian dự kiến mượn: " + startDate
+                + "\n" + "Thời gian dự kiến trả: " + endDate
+                + "\n" + "Báo cáo về thiết bị lúc mượn: " + report
+                + "\n" + "Chúc bạn hoàn thành tốt công việc";
+        user.sendMail(OrderScheduleActivity.this, firebaseAuth.getUid(), subject, message);
+    }
+
     private void loadInformation() {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
         ref.child(firebaseAuth.getUid())
@@ -353,9 +380,9 @@ public class OrderScheduleActivity extends AppCompatActivity {
                         binding.addressTv.setText(address.equals("null") ? "" : address);
                         binding.birthdayTv.setText(birthday.equals("null") ? "" : birthday);
                         binding.otherInfo.setText(otherInfor.equals("null") ? "" : otherInfor);
-                        if(gender.equals("1")){
+                        if (gender.equals("1")) {
                             binding.genderTv.setText("Nam");
-                        }else if(gender.equals("2")){
+                        } else if (gender.equals("2")) {
                             binding.genderTv.setText("Nữ");
                         }
 
@@ -373,10 +400,10 @@ public class OrderScheduleActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshots) {
 
-                        for(DataSnapshot ds : snapshots.getChildren()){
-                            if((ds.child("status").getValue()).equals("new")){
+                        for (DataSnapshot ds : snapshots.getChildren()) {
+                            if ((ds.child("status").getValue()).equals("new")) {
                                 String part = "" + ds.child("quantityBorrowed").getValue();
-                                quantityBorrowed += "x" +part + "\n";
+                                quantityBorrowed += "x" + part + "\n";
                                 String equipmentId = "" + ds.child("equipmentId").getValue();
                                 DatabaseReference refChild = FirebaseDatabase.getInstance().getReference("Equipments");
                                 refChild.child(equipmentId)
@@ -405,6 +432,7 @@ public class OrderScheduleActivity extends AppCompatActivity {
                     }
                 });
     }
+
     private void showMenuGender() {
         PopupMenu popupMenu = new PopupMenu(this, binding.genderTv);
         popupMenu.getMenu().add(Menu.NONE, 0, 0, "Nam");
@@ -416,9 +444,9 @@ public class OrderScheduleActivity extends AppCompatActivity {
             public boolean onMenuItemClick(MenuItem item) {
                 // get id of item clicked
                 int which = item.getItemId();
-                if(which == 0){
+                if (which == 0) {
                     binding.genderTv.setText("Nam");
-                }else if(which == 1){
+                } else if (which == 1) {
                     binding.genderTv.setText("Nữ");
                 }
                 return false;

@@ -58,8 +58,7 @@ public class ScheduleActivity extends AppCompatActivity {
         binding.backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(ScheduleActivity.this, DashboardUserActivity.class));
-                finish();
+                onBackPressed();
             }
         });
         loadListEquipments();

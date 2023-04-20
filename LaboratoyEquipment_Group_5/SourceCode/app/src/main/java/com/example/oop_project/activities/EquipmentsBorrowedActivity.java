@@ -23,8 +23,12 @@ import android.widget.Toast;
 import com.example.oop_project.EquipmentBorrowedFragment;
 import com.example.oop_project.databinding.ActivityEquipmentsBorrowedBinding;
 import com.example.oop_project.models.ModelCategory;
+import com.example.oop_project.models.ModelEquipment;
+import com.example.oop_project.models.User;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -41,24 +45,32 @@ public class EquipmentsBorrowedActivity extends AppCompatActivity{
     public EquipmentsBorrowedActivity.ViewPagerAdapter viewPagerAdapter;
     private ActivityEquipmentsBorrowedBinding binding;
     private FirebaseAuth firebaseAuth;
-    ArrayList<String> equipmentKeyArrayList;
+    private ArrayList<String> equipmentKeyArrayList;
+    private long timestamp;
+    private String reportHistory;
+    private String titleEquipment = "";
+    private ArrayList<String> equipmentIdArrayList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityEquipmentsBorrowedBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
         firebaseAuth = FirebaseAuth.getInstance();
         LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,
                 new IntentFilter("ACTION_GET_DATA"));
         equipmentKeyArrayList = new ArrayList<>();
+        equipmentIdArrayList = new ArrayList<>();
+
+
+
         setupViewPagerAdapter(binding.viewPagerBorrowed);
         binding.tabLayout.setupWithViewPager(binding.viewPagerBorrowed);
         binding.backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(EquipmentsBorrowedActivity.this, DashboardUserActivity.class));
-                finish();
+               onBackPressed();
 
             }
         });
@@ -102,6 +114,7 @@ public class EquipmentsBorrowedActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 validateData();
+                sendMail();
                 startActivity(new Intent(EquipmentsBorrowedActivity.this, SuccessActivity.class));
                 finish();
             }
@@ -112,8 +125,7 @@ public class EquipmentsBorrowedActivity extends AppCompatActivity{
     }
 
 
-    long timestamp;
-    String reportHistory;
+
     private void validateData() {
         // cài đặt lại logic, chọn cái nào thì update cái đó trong database và reload lại thiết bị
         if(equipmentKeyArrayList.size() == 0){
@@ -133,6 +145,7 @@ public class EquipmentsBorrowedActivity extends AppCompatActivity{
                                     DatabaseReference reference = snapshot.child("status").getRef();
                                     reference.setValue("History");
                                     String equipmentId = "" + snapshot.child("equipmentId").getValue();
+                                    equipmentIdArrayList.add(equipmentId);
                                     int quantityBorrowed = Integer.parseInt(""+snapshot.child("quantityBorrowed").getValue());
                                     DatabaseReference refE = FirebaseDatabase.getInstance().getReference("Equipments");
                                     refE.child(equipmentId)
@@ -142,6 +155,9 @@ public class EquipmentsBorrowedActivity extends AppCompatActivity{
                                                     int quantity = Integer.parseInt("" + snapshot.child("quantity").getValue());
                                                     DatabaseReference refQ = snapshot.child("quantity").getRef();
                                                     refQ.setValue(quantity + quantityBorrowed);
+                                                    String title = "" + snapshot.child("title").getValue();
+                                                    titleEquipment += title + "\n";
+
 
                                                 }
 
@@ -168,6 +184,7 @@ public class EquipmentsBorrowedActivity extends AppCompatActivity{
                                 @Override
                                 public void onSuccess(Void unused) {
 
+
                                 }
                             })
                             .addOnFailureListener(new OnFailureListener() {
@@ -179,6 +196,40 @@ public class EquipmentsBorrowedActivity extends AppCompatActivity{
             }
 
             }
+    }
+    private void sendMail(){
+        ModelEquipment model = new ModelEquipment();
+        for(int i = 0; i < equipmentIdArrayList.size(); i++){
+            model.getTitle(equipmentIdArrayList.get(i)).addOnCompleteListener(new OnCompleteListener<String>() {
+                @Override
+                public void onComplete(@NonNull Task<String> task) {
+                    if(task.isSuccessful()){
+                        titleEquipment += task.getResult();
+                    }else{
+                        Exception exception = task.getException();
+                    }
+                }
+            });
+        }
+        User user = new User();
+        user.getFullName(firebaseAuth.getUid()).addOnCompleteListener(new OnCompleteListener<String>() {
+            @Override
+            public void onComplete(@NonNull Task<String> task) {
+                if (task.isSuccessful()) {
+                    String  fullName = task.getResult();
+                    String subject = "Trả thiết bị thành công!";
+                    user.setFullName(fullName);
+                    String message = "Chúc mừng " + fullName + " đã trả thành công thiết bị từ chúng tôi!" +
+                            "\n" + "Danh sách thiết bị gồm: "+ "\n"
+                            + titleEquipment  + "Báo cáo về thiết bị lúc trả: " + reportHistory
+                            +"\n" + "Chúc bạn hoàn thành tốt công việc";
+                    user.sendMail(EquipmentsBorrowedActivity.this, firebaseAuth.getUid(),subject, message);
+                } else {
+                    Exception exception = task.getException();
+                    // Xử lý lỗi ở đây
+                }
+            }
+        });
     }
 
     public BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {

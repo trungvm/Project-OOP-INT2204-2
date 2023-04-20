@@ -19,8 +19,11 @@ import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import com.example.oop_project.databinding.ActivityOrderBinding;
+import com.example.oop_project.models.User;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -39,117 +42,56 @@ public class OrderActivity extends AppCompatActivity {
     private ProgressDialog progressDialog;
     private ArrayList<String> listOfEquipmentId;
     private ArrayList<String> listOfTitleEquipment;
+    private String fullName, email, mobile, address, birthday, gender, otherInfor = "", report = "";
+    private String quantityBorrowed = "";
+    private String titleEquipment = "";
+    private boolean flag = true;
+
+    // handle clean data when change in event
     @Override
-    protected void onDestroy(){
+    protected void onDestroy() {
         super.onDestroy();
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
-        ref.child(firebaseAuth.getUid())
-                .child("Borrowed")
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        for(DataSnapshot ds: snapshot.getChildren()){
-                            if((""+ds.child("status").getValue()).equals("new")){
-                                ds.getRef().removeValue();
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
+        cleanData();
     }
+
     @Override
     protected void onStop() {
         super.onStop();
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
-        ref.child(firebaseAuth.getUid())
-                .child("Borrowed")
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        for(DataSnapshot ds: snapshot.getChildren()){
-                            if((""+ds.child("status").getValue()).equals("new")){
-                                ds.getRef().removeValue();
-                            }
-                        }
-
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
+        cleanData();
     }
+
     @Override
     protected void onPause() {
 
         super.onPause();
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
-        ref.child(firebaseAuth.getUid())
-                .child("Borrowed")
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        for(DataSnapshot ds: snapshot.getChildren()){
-                            if((""+ds.child("status").getValue()).equals("new")){
-                                ds.getRef().removeValue();
-                            }
-                        }
-
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
+        cleanData();
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityOrderBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        // default setup
         firebaseAuth = FirebaseAuth.getInstance();
         progressDialog = new ProgressDialog(this);
-        progressDialog.setTitle("Please wait!");
+        progressDialog.setTitle("Vui lòng đợi!");
         progressDialog.setCanceledOnTouchOutside(false);
         listOfKey = getIntent().getStringArrayListExtra("listOfKey");
         listOfEquipmentId = getIntent().getStringArrayListExtra("listOfEquipmentId");
         listOfTitleEquipment = getIntent().getStringArrayListExtra("listOfTitleEquipment");
         loadInformation();
+
+        // handle backBtn
         binding.backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
-                ref.child(firebaseAuth.getUid())
-                        .child("Borrowed")
-                                .addListenerForSingleValueEvent(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                        for(DataSnapshot ds: snapshot.getChildren()){
-                                            if((""+ds.child("status").getValue()).equals("new")){
-                                                ds.getRef().removeValue();
-                                            }
-                                        }
-
-                                    }
-
-                                    @Override
-                                    public void onCancelled(@NonNull DatabaseError error) {
-
-                                    }
-                                });
-
-
-                startActivity(new Intent(OrderActivity.this, CartActivity.class));
-                finish();
+                cleanData();
+                onBackPressed();
             }
         });
+        // handle click in birthday
         binding.birthdayTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -184,82 +126,26 @@ public class OrderActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 validateData();
+
+                if(flag == true){
+                    sendMail();
+                    return;
+                }
             }
         });
     }
 
-    String fullName, email, mobile, address, birthday, gender, otherInfor = "", report = "";
-    String profileImage;
-    String quantityBorrowed = "";
-    private void validateData() {
-        fullName = binding.fullNameTv.getText().toString().trim();
-        email = binding.emailTv.getText().toString().trim();
-        mobile = binding.mobileTv.getText().toString().trim();
-        address = binding.addressTv.getText().toString().trim();
-        birthday = binding.birthdayTv.getText().toString().trim();
-        gender = binding.genderTv.getText().toString().trim();
-        otherInfor = binding.otherInfo.getText().toString().trim();
-        report = binding.reportEt.getText().toString().trim();
-
-        if(TextUtils.isEmpty(fullName)){
-            Toast.makeText(this, "Điền họ và tên!", Toast.LENGTH_SHORT).show();
-        }else if(TextUtils.isEmpty(email)){
-            Toast.makeText(this, "Điền email!", Toast.LENGTH_SHORT).show();
-        }else if(TextUtils.isEmpty(mobile)){
-            Toast.makeText(this, "Điền số điện thoại!", Toast.LENGTH_SHORT).show();
-        }else if(TextUtils.isEmpty(address)){
-            Toast.makeText(this, "Điền địa chỉ!", Toast.LENGTH_SHORT).show();
-        }else if(TextUtils.isEmpty(gender)){
-            Toast.makeText(this, "Điền giới tính", Toast.LENGTH_SHORT).show();
-        }else{
-            insertData();
-        }
-
-    }
-    private void insertData() {
-        progressDialog.setMessage("Đang tiến hành mượn!");
-        progressDialog.show();
-        DatabaseReference refBorowed = FirebaseDatabase.getInstance().getReference("Users");
-        refBorowed.child(firebaseAuth.getUid())
+    private void cleanData() {
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
+        ref.child(firebaseAuth.getUid())
                 .child("Borrowed")
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        for(DataSnapshot ds : snapshot.getChildren()){
-                           if((ds.child("status").getValue()).equals("new")){
-                               DatabaseReference reference =  ds.child("status").getRef();
-                               reference.setValue("Borrowed");
-                               int quantityBorrowed = Integer.parseInt(""+ds.child("quantityBorrowed").getValue());
-                               String equipmentId = "" + ds.child("equipmentId").getValue();
-                               DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference("Equipments");
-                               reference1.child(equipmentId)
-                                       .addListenerForSingleValueEvent(new ValueEventListener() {
-                                           @Override
-                                           public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                               int quantity = Integer.parseInt("" + snapshot.child("quantity").getValue());
-                                               int x = quantity-quantityBorrowed;
-                                               DatabaseReference ref2 = snapshot.child("quantity").getRef();
-                                               ref2.setValue(x);
-                                               int numberOfBorrowings;
-                                               if (snapshot.hasChild("numberOfBorrowings")) {
-                                                   // Nếu tồn tại, lấy giá trị của child "numberOfBorrowings"
-                                                   numberOfBorrowings = Integer.parseInt(snapshot.child("numberOfBorrowings").getValue().toString());
-                                               } else {
-                                                   // Nếu không tồn tại, thêm mới thuộc tính "numberOfBorrowings" và set giá trị là 0
-                                                   snapshot.getRef().child("numberOfBorrowings").setValue(0);
-                                                   numberOfBorrowings = 0;
-                                               }
-                                               numberOfBorrowings++;
-                                               snapshot.getRef().child("numberOfBorrowings").setValue(numberOfBorrowings);
-
-                                           }
-
-                                           @Override
-                                           public void onCancelled(@NonNull DatabaseError error) {
-
-                                           }
-                                       });
-                           }
+                        for (DataSnapshot ds : snapshot.getChildren()) {
+                            if (("" + ds.child("status").getValue()).equals("new")) {
+                                ds.getRef().removeValue();
+                            }
                         }
 
                     }
@@ -270,9 +156,98 @@ public class OrderActivity extends AppCompatActivity {
                     }
                 });
 
+    }
+
+    private void validateData() {
+        fullName = binding.fullNameTv.getText().toString().trim();
+        email = binding.emailTv.getText().toString().trim();
+        mobile = binding.mobileTv.getText().toString().trim();
+        address = binding.addressTv.getText().toString().trim();
+        birthday = binding.birthdayTv.getText().toString().trim();
+        gender = binding.genderTv.getText().toString().trim();
+        otherInfor = binding.otherInfo.getText().toString().trim();
+        report = binding.reportEt.getText().toString().trim();
+
+        if (TextUtils.isEmpty(fullName)) {
+            flag = false;
+            Toast.makeText(this, "Điền họ và tên!", Toast.LENGTH_SHORT).show();
+        } else if (TextUtils.isEmpty(email)) {
+            flag = false;
+            Toast.makeText(this, "Điền email!", Toast.LENGTH_SHORT).show();
+        } else if (TextUtils.isEmpty(mobile)) {
+            flag = false;
+            Toast.makeText(this, "Điền số điện thoại!", Toast.LENGTH_SHORT).show();
+        } else if (TextUtils.isEmpty(address)) {
+            flag = false;
+            Toast.makeText(this, "Điền địa chỉ!", Toast.LENGTH_SHORT).show();
+        } else if (TextUtils.isEmpty(gender)) {
+            flag = false;
+            Toast.makeText(this, "Điền giới tính", Toast.LENGTH_SHORT).show();
+        } else {
+            insertData();
+        }
+
+    }
+
+    private void insertData() {
+        progressDialog.setMessage("Đang tiến hành mượn!");
+        progressDialog.show();
+        DatabaseReference refBorowed = FirebaseDatabase.getInstance().getReference("Users");
+        refBorowed.child(firebaseAuth.getUid())
+                .child("Borrowed")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        for (DataSnapshot ds : snapshot.getChildren()) {
+                            if ((ds.child("status").getValue()).equals("new")) {
+                                DatabaseReference reference = ds.child("status").getRef();
+                                reference.setValue("Borrowed");
+                                int quantityBorrowed = Integer.parseInt("" + ds.child("quantityBorrowed").getValue());
+                                String equipmentId = "" + ds.child("equipmentId").getValue();
+                                DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference("Equipments");
+                                reference1.child(equipmentId)
+                                        .addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                int quantity = Integer.parseInt("" + snapshot.child("quantity").getValue());
+                                                int x = quantity - quantityBorrowed;
+                                                DatabaseReference ref2 = snapshot.child("quantity").getRef();
+                                                ref2.setValue(x);
+                                                int numberOfBorrowings;
+                                                if (snapshot.hasChild("numberOfBorrowings")) {
+                                                    // Nếu tồn tại, lấy giá trị của child "numberOfBorrowings"
+                                                    numberOfBorrowings = Integer.parseInt(snapshot.child("numberOfBorrowings").getValue().toString());
+                                                } else {
+                                                    // Nếu không tồn tại, thêm mới thuộc tính "numberOfBorrowings" và set giá trị là 0
+                                                    snapshot.getRef().child("numberOfBorrowings").setValue(0);
+                                                    numberOfBorrowings = 0;
+                                                }
+                                                numberOfBorrowings++;
+                                                snapshot.getRef().child("numberOfBorrowings").setValue(numberOfBorrowings);
+
+                                            }
+
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError error) {
+                                                flag = false;
+
+                                            }
+                                        });
+                            }
+                        }
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+
         long timestamp = System.currentTimeMillis();
-        for(int i = 0; i < listOfKey.size(); i++){
-            HashMap <String, Object> hashMap = new HashMap<>();
+        for (int i = 0; i < listOfKey.size(); i++) {
+            HashMap<String, Object> hashMap = new HashMap<>();
             hashMap.put("fullName", fullName);
             hashMap.put("email", email);
             hashMap.put("mobile", mobile);
@@ -287,6 +262,7 @@ public class OrderActivity extends AppCompatActivity {
             hashMap.put("equipmentId", listOfEquipmentId.get(i));
             hashMap.put("title", listOfTitleEquipment.get(i));
 
+
             DatabaseReference ref = FirebaseDatabase.getInstance().getReference("EquipmentsBorrowed");
             ref.child(listOfKey.get(i))
                     .setValue(hashMap)
@@ -295,6 +271,7 @@ public class OrderActivity extends AppCompatActivity {
                         public void onSuccess(Void unused) {
                             progressDialog.dismiss();
                             Toast.makeText(OrderActivity.this, "Mượn thành công!", Toast.LENGTH_SHORT).show();
+
                             startActivity(new Intent(OrderActivity.this, CartActivity.class));
                             finish();
 
@@ -302,6 +279,7 @@ public class OrderActivity extends AppCompatActivity {
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
+                            flag = false;
                             progressDialog.dismiss();
                             Toast.makeText(OrderActivity.this, "Có lỗi xảy ra!", Toast.LENGTH_SHORT).show();
                         }
@@ -309,8 +287,19 @@ public class OrderActivity extends AppCompatActivity {
 
         }
 
-
-
+    }
+    private void sendMail(){
+        for(int i = 0; i < listOfTitleEquipment.size(); i++){
+            titleEquipment += listOfTitleEquipment.get(i) + "\n";
+        }
+        User user = new User();
+        String subject = "Mượn thiết bị thành công!";
+        user.setFullName(fullName);
+        String message = "Chúc mừng " + fullName + " đã mượn thành công thiết bị từ chúng tôi!" +
+                "\n" + "Danh sách thiết bị gồm: "+ "\n"
+                + titleEquipment  + "Báo cáo về thiết bị lúc mượn: " + report
+                +"\n" + "Chúc bạn hoàn thành tốt công việc";
+        user.sendMail(OrderActivity.this, firebaseAuth.getUid(),subject, message);
     }
 
     private void showMenuGender() {
@@ -324,9 +313,9 @@ public class OrderActivity extends AppCompatActivity {
             public boolean onMenuItemClick(MenuItem item) {
                 // get id of item clicked
                 int which = item.getItemId();
-                if(which == 0){
+                if (which == 0) {
                     binding.genderTv.setText("Nam");
-                }else if(which == 1){
+                } else if (which == 1) {
                     binding.genderTv.setText("Nữ");
                 }
                 return false;
@@ -347,7 +336,6 @@ public class OrderActivity extends AppCompatActivity {
                         String birthday = "" + snapshot.child("birthday").getValue();
                         String gender = "" + snapshot.child("gender").getValue();
                         String otherInfor = "" + snapshot.child("otherInfor").getValue();
-                        profileImage = "" + snapshot.child("profileImage").getValue();
 
                         binding.fullNameTv.setText(fullName.equals("null") ? "" : fullName);
                         binding.emailTv.setText(fullName.equals("nulll") ? "" : email);
@@ -355,9 +343,9 @@ public class OrderActivity extends AppCompatActivity {
                         binding.addressTv.setText(address.equals("null") ? "" : address);
                         binding.birthdayTv.setText(birthday.equals("null") ? "" : birthday);
                         binding.otherInfo.setText(otherInfor.equals("null") ? "" : otherInfor);
-                        if(gender.equals("1")){
+                        if (gender.equals("1")) {
                             binding.genderTv.setText("Nam");
-                        }else if(gender.equals("2")){
+                        } else if (gender.equals("2")) {
                             binding.genderTv.setText("Nữ");
                         }
 
@@ -375,27 +363,27 @@ public class OrderActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshots) {
 
-                        for(DataSnapshot ds : snapshots.getChildren()){
-                           if((ds.child("status").getValue()).equals("new")){
-                               String part = "" + ds.child("quantityBorrowed").getValue();
-                               quantityBorrowed += "x" +part + "\n";
-                               String equipmentId = "" + ds.child("equipmentId").getValue();
-                               DatabaseReference refChild = FirebaseDatabase.getInstance().getReference("Equipments");
-                               refChild.child(equipmentId)
-                                       .addValueEventListener(new ValueEventListener() {
-                                           @Override
-                                           public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                               String name = "" + snapshot.child("title").getValue();
-                                               binding.textBorrowed.append(name + "\n");
+                        for (DataSnapshot ds : snapshots.getChildren()) {
+                            if ((ds.child("status").getValue()).equals("new")) {
+                                String part = "" + ds.child("quantityBorrowed").getValue();
+                                quantityBorrowed += "x" + part + "\n";
+                                String equipmentId = "" + ds.child("equipmentId").getValue();
+                                DatabaseReference refChild = FirebaseDatabase.getInstance().getReference("Equipments");
+                                refChild.child(equipmentId)
+                                        .addValueEventListener(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                String name = "" + snapshot.child("title").getValue();
+                                                binding.textBorrowed.append(name + "\n");
 
-                                           }
+                                            }
 
-                                           @Override
-                                           public void onCancelled(@NonNull DatabaseError error) {
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError error) {
 
-                                           }
-                                       });
-                           }
+                                            }
+                                        });
+                            }
                         }
                         binding.quantityBorrowed.setText(quantityBorrowed);
 

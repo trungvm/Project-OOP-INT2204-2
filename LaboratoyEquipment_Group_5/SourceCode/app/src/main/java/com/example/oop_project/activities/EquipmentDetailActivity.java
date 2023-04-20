@@ -21,6 +21,9 @@ import com.bumptech.glide.request.target.Target;
 import com.example.oop_project.MyApplication;
 import com.example.oop_project.R;
 import com.example.oop_project.databinding.ActivityEquipmentDetailBinding;
+import com.example.oop_project.models.ModelCategory;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -119,26 +122,17 @@ public class EquipmentDetailActivity extends AppCompatActivity {
                         if(snapshot.hasChild("numberOfBorrowings")){
                             numberOfBorrowings = "" + snapshot.child("numberOfBorrowings").getValue();
                         }
-                        DatabaseReference refCategory = FirebaseDatabase.getInstance().getReference("Categories");
-                        refCategory.child(categoryId)
-                                        .addListenerForSingleValueEvent(new ValueEventListener() {
-                                            @Override
-                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                                String title = ""+snapshot.child("title").getValue();
-                                                String position = "" + snapshot.child("position").getValue();
-                                                if(position.equals("null")){
-
-                                                }else{
-                                                    binding.position.setText(position);
-                                                }
-                                                binding.categoryTv.setText(title);
-                                            }
-
-                                            @Override
-                                            public void onCancelled(@NonNull DatabaseError error) {
-
-                                            }
-                                        });
+                        ModelCategory modelCategory = new ModelCategory();
+                        modelCategory.getDataFromFireBase(categoryId).addOnCompleteListener(new OnCompleteListener<ModelCategory>() {
+                            @Override
+                            public void onComplete(@NonNull Task<ModelCategory> task) {
+                                if(task.isSuccessful()){
+                                    ModelCategory newModelCategory = task.getResult();
+                                    binding.categoryTv.setText(newModelCategory.getTitle());
+                                    binding.position.setText(newModelCategory.getPosition());
+                                }
+                            }
+                        });
 
                         binding.titleTv.setText(title);
                         binding.dateTv.setText(date);

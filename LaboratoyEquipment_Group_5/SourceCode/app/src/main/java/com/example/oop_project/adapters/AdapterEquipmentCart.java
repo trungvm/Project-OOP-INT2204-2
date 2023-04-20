@@ -30,7 +30,10 @@ import com.bumptech.glide.request.target.Target;
 import com.example.oop_project.MyApplication;
 import com.example.oop_project.activities.EquipmentDetailActivity;
 import com.example.oop_project.databinding.RowEquipmentsCartBinding;
+import com.example.oop_project.models.ModelCategory;
 import com.example.oop_project.models.ModelEquipment;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -179,20 +182,17 @@ public class AdapterEquipmentCart extends RecyclerView.Adapter<AdapterEquipmentC
         holder.quantityTv.setText(""+quantity);
         String categoryId = model.getCategoryId();
         binding.quantityTextChoose.setText(""+0);
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Categories");
-        ref.child(categoryId)
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        String titleCategory = "" + snapshot.child("title").getValue();
-                        holder.categoryTv.setText(titleCategory);
-                    }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
+        ModelCategory modelCategory = new ModelCategory();
+        modelCategory.getDataFromFireBase(categoryId).addOnCompleteListener(new OnCompleteListener<ModelCategory>() {
+            @Override
+            public void onComplete(@NonNull Task<ModelCategory> task) {
+                if(task.isSuccessful()){
+                    ModelCategory newModelCategory = task.getResult();
+                    holder.categoryTv.setText(newModelCategory.getTitle());
+                }
+            }
+        });
 
         Glide.with(context)
                 .load(equipmentImage)

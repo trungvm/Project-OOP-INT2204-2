@@ -75,6 +75,8 @@ public class AdapterBorrowsAdmin extends RecyclerView.Adapter<AdapterBorrowsAdmi
                         String timestamp = "" + snapshot.child("timestamp").getValue();
                         String date = MyApplication.formatTimestampToDetailTime(Long.parseLong(timestamp));
                         holder.dateTv.setText(date);
+                        String fullName = "" + snapshot.child("fullName").getValue();
+                        holder.descriptionTv.setText("Người mượn: " + fullName);
 
                     }
 
@@ -100,7 +102,7 @@ public class AdapterBorrowsAdmin extends RecyclerView.Adapter<AdapterBorrowsAdmi
                                                         String title = "" + snapshots.child("title").getValue();
                                                         String description = "" + snapshots.child("description").getValue();
                                                         holder.titleTv.setText(title);
-                                                        holder.descriptionTv.setText(description);
+//                                                        holder.descriptionTv.setText(description);
                                                         String equipmentId = "" + snapshots.child("id").getValue();
                                                         model.setId(equipmentId);
 

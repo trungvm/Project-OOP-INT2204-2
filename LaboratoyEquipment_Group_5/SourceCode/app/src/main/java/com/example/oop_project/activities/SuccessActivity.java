@@ -19,18 +19,25 @@ public class SuccessActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         if(getIntent().getStringExtra("status") != null){
             status = getIntent().getStringExtra("status");
-            if(status.equals("ScheduleRefuse")){
+            if(status.equals("True")){
                 binding.textV.setText("Xác nhận thành công");
-            }else if (status.equals("ScheduleAccept")){
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        startActivity(new Intent(SuccessActivity.this, AddRulesAdminActivity.class));
+                        finish();
+                    }
+                }, 2000);
+            }else{
                 binding.textV.setText("Xác nhận thành công");
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        startActivity(new Intent(SuccessActivity.this, ScheduleAdminActivity.class));
+                        finish();
+                    }
+                }, 2000);
             }
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    startActivity(new Intent(SuccessActivity.this, ScheduleAdminActivity.class));
-                    finish();
-                }
-            }, 2000);
         }else{
             new Handler().postDelayed(new Runnable() {
                 @Override

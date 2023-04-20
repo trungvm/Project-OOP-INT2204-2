@@ -3,16 +3,21 @@ package com.example.oop_project;
 import android.app.Application;
 
 import android.content.Context;
+import android.text.Spanned;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.example.oop_project.models.ModelMail;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import org.commonmark.node.Node;
 
 import java.text.SimpleDateFormat;
 import java.time.Instant;
@@ -21,6 +26,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
+import io.noties.markwon.Markwon;
+
 
 public class MyApplication extends Application {
     public int idOfBorrowed;
@@ -142,5 +149,28 @@ public class MyApplication extends Application {
                         }
                     });
         }
+    }
+    public static void ConvertMarkDown(Context context, String s){
+        HashMap<String, Object> hashMap = new HashMap<>();
+        Long timestamp = System.currentTimeMillis();
+        hashMap.put("content", s);
+        hashMap.put("timestamp", timestamp);
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Rules");
+        ref.setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+
+            }
+        })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+
+                    }
+                });
+    }
+    public static void sendMail(Context context, String mail, String subject, String message){
+            ModelMail modelMail = new ModelMail(context, mail, subject, message);
+            modelMail.execute();
     }
 }

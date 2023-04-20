@@ -5,8 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
 import com.example.oop_project.R;
@@ -20,9 +22,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import io.noties.markwon.Markwon;
+
 public class DashboardAdminActivity extends AppCompatActivity {
     public ActivityDashboardAdminBinding binding;
     private FirebaseAuth firebaseAuth;
+    private boolean isLayoutOpen = false;
+    int cnt = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,7 +41,6 @@ public class DashboardAdminActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(DashboardAdminActivity.this, EquipmentManagerActivity.class));
-                finish();
             }
         });
         binding.logoutBtn.setOnClickListener(new View.OnClickListener() {
@@ -70,7 +75,6 @@ public class DashboardAdminActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(DashboardAdminActivity.this, BorrowsAdminActivity.class));
-                finish();
             }
         });
         binding.layoutSchedule.setOnClickListener(new View.OnClickListener() {
@@ -80,7 +84,75 @@ public class DashboardAdminActivity extends AppCompatActivity {
                 finish();
             }
         });
+        setUpNotification();
+        binding.layoutRules.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(DashboardAdminActivity.this, AddRulesAdminActivity.class));
+            }
+        });
+        binding.layoutRulesC.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int heightInPxt = (int) TypedValue.applyDimension(
+                        TypedValue.COMPLEX_UNIT_DIP, 930, getResources().getDisplayMetrics());
+                if(isLayoutOpen){
+                    binding.contentRulesSv.setVisibility(View.GONE);
+                    binding.layoutRulesC.getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;
+                    binding.layoutRulesC.requestLayout();
+                    isLayoutOpen = false;
+                }else{
+                    binding.layoutRulesC.getLayoutParams().height = heightInPxt;
+                    binding.layoutRulesC.requestLayout();
+                    binding.contentRulesSv.setVisibility(View.VISIBLE);
+                    isLayoutOpen = true;
+                    DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Rules");
+                    ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            final Markwon markwon = Markwon.create(DashboardAdminActivity.this);
+                            String text = "" + snapshot.child("content").getValue();
+
+                            markwon.setMarkdown(binding.contentRules, text);
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+                }
+
+            }
+        });
     }
+
+    private void setUpNotification() {
+        cnt = 0;
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("EquipmentsBorrowed");
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot ds : snapshot.getChildren()){
+                    if(("" + ds.child("status").getValue()).equals("Waiting")){
+                        cnt++;
+                    }
+                }
+               if(cnt == 0){
+                   binding.notification.setVisibility(View.GONE);
+               }else{
+                   binding.notification.setText(""+cnt);
+               }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+    }
+
     String name = "";
     private void checkUser() {
         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();

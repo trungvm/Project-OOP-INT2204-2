@@ -37,8 +37,7 @@ public class BorrowsAdminActivity extends AppCompatActivity {
         binding.backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(BorrowsAdminActivity.this, DashboardAdminActivity.class));
-                finish();
+              onBackPressed();
 
             }
         });

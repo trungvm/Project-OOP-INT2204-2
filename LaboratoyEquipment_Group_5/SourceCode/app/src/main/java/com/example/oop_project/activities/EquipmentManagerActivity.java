@@ -39,8 +39,7 @@ public class EquipmentManagerActivity extends AppCompatActivity {
         binding.backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(EquipmentManagerActivity.this, DashboardAdminActivity.class));
-                finish();
+               onBackPressed();
             }
         });
 
@@ -69,7 +68,6 @@ public class EquipmentManagerActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(EquipmentManagerActivity.this, EquipmentAddActivity.class));
-                finish();
             }
         });
         // handle click logout
@@ -78,7 +76,6 @@ public class EquipmentManagerActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(EquipmentManagerActivity.this, CategoryAddActivity.class));
-                finish();
             }
         });
     }
