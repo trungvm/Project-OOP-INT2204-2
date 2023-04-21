@@ -89,14 +89,16 @@ public class EquipmentUserShowActivity extends AppCompatActivity {
                 viewPagerAdapter.notifyDataSetChanged();
 
                 for(DataSnapshot ds: snapshot.getChildren()){
-                    ModelCategory model = ds.getValue(ModelCategory.class);
-                    categoryArrayList.add(model);
+                    if(("" + ds.child("status").getValue()).equals("use")){
+                        ModelCategory model = ds.getValue(ModelCategory.class);
+                        categoryArrayList.add(model);
 
-                    viewPagerAdapter.addFragment(EquipmentUserFragment.newInstance(
-                            ""+model.getId(),
-                            ""+ model.getTitle(),
-                            ""+model.getUid()), model.getTitle());
-                    viewPagerAdapter.notifyDataSetChanged();
+                        viewPagerAdapter.addFragment(EquipmentUserFragment.newInstance(
+                                ""+model.getId(),
+                                ""+ model.getTitle(),
+                                ""+model.getUid()), model.getTitle());
+                        viewPagerAdapter.notifyDataSetChanged();
+                    }
                 }
 
             }
