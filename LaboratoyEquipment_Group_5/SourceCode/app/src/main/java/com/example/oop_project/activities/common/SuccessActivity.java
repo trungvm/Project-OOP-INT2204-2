@@ -31,8 +31,17 @@ public class SuccessActivity extends AppCompatActivity {
                         finish();
                     }
                 }, 2000);
-            }else{
-                binding.textV.setText("Xác nhận thành công");
+            }else if(status.equals("ScheduleRefuse")){
+                binding.textV.setText("Xác nhận hủy thành công");
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        startActivity(new Intent(SuccessActivity.this, ScheduleAdminActivity.class));
+                        finish();
+                    }
+                }, 2000);
+            }else if(status.equals("ScheduleAccept")){
+                binding.textV.setText("Xác nhận cho mượn thành công");
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {

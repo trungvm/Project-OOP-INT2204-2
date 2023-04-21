@@ -85,6 +85,8 @@ public class OrderActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 cleanData();
+                startActivity(new Intent(OrderActivity.this, CartActivity.class));
+                finish();
                 onBackPressed();
             }
         });
@@ -323,7 +325,7 @@ public class OrderActivity extends AppCompatActivity {
     private void loadInformation() {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
         ref.child(firebaseAuth.getUid())
-                .addListenerForSingleValueEvent(new ValueEventListener() {
+                .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         String fullName = "" + snapshot.child("fullName").getValue();

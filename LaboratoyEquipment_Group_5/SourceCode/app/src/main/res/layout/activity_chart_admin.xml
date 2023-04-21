@@ -43,6 +43,7 @@
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
            android:text="Viewed"
+           android:gravity="center"
            android:layout_alignParentEnd="true"
            android:layout_marginEnd="60dp"
            android:background="@drawable/edittext_report_gray"

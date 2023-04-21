@@ -102,10 +102,22 @@ public class DashboardAdminActivity extends AppCompatActivity {
                     binding.layoutRulesC.getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;
                     binding.layoutRulesC.requestLayout();
                     isLayoutOpen = false;
+                    binding.layoutMain.setVisibility(View.VISIBLE);
+
+                    int heightInPxt1 = (int) TypedValue.applyDimension(
+                            TypedValue.COMPLEX_UNIT_DIP, 405, getResources().getDisplayMetrics());
+
+                    ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) binding.layoutRulesC.getLayoutParams();
+                    params.topMargin = heightInPxt1;
+                    binding.layoutRulesC.setLayoutParams(params);
                 }else{
                     binding.layoutRulesC.getLayoutParams().height = heightInPxt;
                     binding.layoutRulesC.requestLayout();
                     binding.contentRulesSv.setVisibility(View.VISIBLE);
+                    binding.layoutMain.setVisibility(View.GONE);
+                    ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) binding.layoutRulesC.getLayoutParams();
+                    params.topMargin = 0;
+                    binding.layoutRulesC.setLayoutParams(params);
                     isLayoutOpen = true;
                     DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Rules");
                     ref.addListenerForSingleValueEvent(new ValueEventListener() {
