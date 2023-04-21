@@ -106,16 +106,6 @@ public class AdapterEquipmentUser extends RecyclerView.Adapter<AdapterEquipmentU
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Equipments");
-                ref.child(model.getId()).child("viewed")
-                        .setValue(viewed + 1)
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-
-                            }
-                        });
-
                 Intent intent = new Intent(context, EquipmentDetailActivity.class);
                 intent.putExtra("equipmentId", model.getId());
                 context.startActivity(intent);

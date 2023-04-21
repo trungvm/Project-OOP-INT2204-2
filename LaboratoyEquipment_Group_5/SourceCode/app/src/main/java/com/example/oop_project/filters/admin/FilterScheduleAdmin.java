@@ -2,7 +2,7 @@ package com.example.oop_project.filters.admin;
 
 import android.widget.Filter;
 
-import com.example.oop_project.adapters.user.AdapterScheduleAdmin;
+import com.example.oop_project.adapters.admin.AdapterScheduleAdmin;
 import com.example.oop_project.models.ModelEquipment;
 
 import java.util.ArrayList;

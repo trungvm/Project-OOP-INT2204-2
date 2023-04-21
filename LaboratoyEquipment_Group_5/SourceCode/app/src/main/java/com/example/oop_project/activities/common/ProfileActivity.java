@@ -118,11 +118,11 @@ public class ProfileActivity extends AppCompatActivity {
                         String formattedDate = MyApplication.formatTimestamp(Long.parseLong(timestamp));
                         // set data to ui
                         binding.emailTv.setText(email == ""? "N/A" : email);
-                        binding.nameTv.setText(fullName.equals("null")? "N/A" : fullName);
+                        binding.nameTv.setText(fullName.equals("null") || fullName.equals("") ? "N/A" : fullName);
                         binding.memberTv.setText(formattedDate);
                         binding.accountTv.setText(accountType);
-                        binding.mobileTv.setText(mobile.equals("null") ? "N/A" : mobile);
-                        binding.addressTv.setText(address.equals("null") ? "N/A" :address);
+                        binding.mobileTv.setText(mobile.equals("null") || mobile.equals("") ? "N/A" : mobile);
+                        binding.addressTv.setText(address.equals("null") || address.equals("") ? "N/A" :address);
                         binding.otherInfo.setText(otherInfor.equals("null") ? "N/A" : otherInfor);
                         binding.genderTv.setText(sex);
                         if(!profileImage.equals("null") && !isDestroyed()){
@@ -131,7 +131,7 @@ public class ProfileActivity extends AppCompatActivity {
                                     .placeholder(R.drawable.ic_person_gray)
                                     .into(binding.profileTv);
                         }
-                        binding.birthdayTv.setText(birthday.equals("null") ? "N/A" : birthday);
+                        binding.birthdayTv.setText(birthday.equals("null") || birthday.equals("") ? "N/A" : birthday);
                         if(accountType.equals("admin")) {
                             binding.bottomNavigationView.getMenu().findItem(R.id.menuFavorite).setVisible(false);
                         }

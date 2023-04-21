@@ -98,6 +98,7 @@ public class AdapterEquipmentAdmin extends RecyclerView.Adapter<AdapterEquipment
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, EquipmentDetailActivity.class);
+                intent.putExtra("personI4", "admin");
                 intent.putExtra("equipmentId", model.getId());
                 if(model.getIsUsedBy().equals("admin")){
                     intent.putExtra("role", model.getIsUsedBy());

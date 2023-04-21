@@ -83,7 +83,6 @@ public class DashboardAdminActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(DashboardAdminActivity.this, ScheduleAdminActivity.class));
-                finish();
             }
         });
         setUpNotification();
@@ -127,14 +126,20 @@ public class DashboardAdminActivity extends AppCompatActivity {
 
             }
         });
+        binding.chartBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(DashboardAdminActivity.this, ChartAdminActivity.class));
+            }
+        });
     }
 
     private void setUpNotification() {
-        cnt = 0;
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("EquipmentsBorrowed");
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                cnt = 0;
                 for(DataSnapshot ds : snapshot.getChildren()){
                     if(("" + ds.child("status").getValue()).equals("Waiting")){
                         cnt++;

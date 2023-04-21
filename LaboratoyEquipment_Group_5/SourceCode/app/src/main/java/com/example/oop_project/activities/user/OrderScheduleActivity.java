@@ -325,8 +325,7 @@ public class OrderScheduleActivity extends AppCompatActivity {
                         public void onSuccess(Void unused) {
                             progressDialog.dismiss();
                             Toast.makeText(OrderScheduleActivity.this, "Đặt lịch thành công!", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(OrderScheduleActivity.this, ScheduleActivity.class));
-                            finish();
+                            onBackPressed();
 
                         }
                     }).addOnFailureListener(new OnFailureListener() {

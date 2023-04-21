@@ -15,7 +15,7 @@ import android.util.Pair;
 import android.view.View;
 import android.widget.Toast;
 
-import com.example.oop_project.adapters.admin.AdapterSchedule;
+import com.example.oop_project.adapters.user.AdapterSchedule;
 import com.example.oop_project.databinding.ActivityScheduleBinding;
 import com.example.oop_project.models.ModelEquipment;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -103,7 +103,6 @@ public class ScheduleActivity extends AppCompatActivity {
                         intent.putStringArrayListExtra("listOfEquipmentId", listOfEquipmentId);
                         intent.putStringArrayListExtra("listOfTitleEquipment", listOfTitleEquipment);
                         startActivity(intent);
-                        finish();
                     }
                 }
             }
@@ -197,6 +196,7 @@ public class ScheduleActivity extends AppCompatActivity {
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                equipmentArrayList.clear();
                 for(DataSnapshot ds: snapshot.getChildren()){
                    if(("" + ds.child("status").getValue()).equals("use")){
                        String title = "" + ds.child("title").getValue();

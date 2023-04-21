@@ -1,4 +1,4 @@
-package com.example.oop_project.adapters.user;
+package com.example.oop_project.adapters.admin;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

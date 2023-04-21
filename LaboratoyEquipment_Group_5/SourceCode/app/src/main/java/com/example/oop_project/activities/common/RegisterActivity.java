@@ -116,7 +116,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void updateUserInfo(User user) {
-        progressDialog.setMessage("Saving user information...");
+        progressDialog.setMessage("...");
 
         // timestamp
         long timestamp = System.currentTimeMillis();

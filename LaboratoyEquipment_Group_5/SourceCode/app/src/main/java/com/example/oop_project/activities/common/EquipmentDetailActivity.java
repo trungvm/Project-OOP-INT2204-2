@@ -21,6 +21,7 @@ import com.example.oop_project.R;
 import com.example.oop_project.databinding.ActivityEquipmentDetailBinding;
 import com.example.oop_project.models.ModelCategory;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -144,7 +145,18 @@ public class EquipmentDetailActivity extends AppCompatActivity {
                                 }
                             }
                         });
+                        if(!personI4.equals("admin")){
+                            int viewede = Integer.parseInt(viewed) + 1;
+                            DatabaseReference ref1 = FirebaseDatabase.getInstance().getReference("Equipments");
+                            ref1.child(equipmentId).child("viewed")
+                                    .setValue(viewede)
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
 
+                                        }
+                                    });
+                        }
                         binding.titleTv.setText(title);
                         binding.dateTv.setText(date);
                         binding.numberOfBorrowings.setText(numberOfBorrowings);

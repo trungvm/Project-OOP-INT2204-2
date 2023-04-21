@@ -62,8 +62,7 @@ public class ScheduleAdminActivity extends AppCompatActivity {
         binding.backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(ScheduleAdminActivity.this, DashboardAdminActivity.class));
-                finish();
+                onBackPressed();
             }
         });
         binding.submitBtn.setOnClickListener(new View.OnClickListener() {

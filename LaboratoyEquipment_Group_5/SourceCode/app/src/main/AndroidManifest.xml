@@ -22,6 +22,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="30">
         <activity
+            android:name=".activities.admin.ChartAdminActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.common.ForgotPasswordActivity"
             android:exported="false" />
         <activity
