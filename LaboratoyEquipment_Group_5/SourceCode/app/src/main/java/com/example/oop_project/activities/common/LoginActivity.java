@@ -79,10 +79,12 @@ public class LoginActivity extends AppCompatActivity {
     }
     private void validateData(User user) {
         getData(user);
-        if (!Patterns.EMAIL_ADDRESS.matcher(user.getEmail()).matches()) {
-            Toast.makeText(this, "Invalid email...!", Toast.LENGTH_SHORT).show();
+        if(TextUtils.isEmpty(user.getEmail())){
+            Toast.makeText(this, "Vui lòng nhập email...!", Toast.LENGTH_SHORT).show();
+        } else if (!Patterns.EMAIL_ADDRESS.matcher(user.getEmail()).matches()) {
+            Toast.makeText(this, "Lỗi email...!", Toast.LENGTH_SHORT).show();
         } else if (TextUtils.isEmpty(user.getPassword())) {
-            Toast.makeText(this, "Enter password...!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Vui lòng nhập mật khẩu..!", Toast.LENGTH_SHORT).show();
         }else{
             loginUser(user);
         }

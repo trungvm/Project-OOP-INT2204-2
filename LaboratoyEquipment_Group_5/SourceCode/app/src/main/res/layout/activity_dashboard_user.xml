@@ -41,18 +41,17 @@
             app:layout_constraintStart_toEndOf="@id/textHello"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageButton
+        <ImageView
             android:id="@+id/logoutBtn"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginEnd="15dp"
-            android:background="@android:color/transparent"
             android:contentDescription="@string/app_name"
-            android:src="@drawable/ic_logout_white"
+            android:src="@drawable/logout"
             app:layout_constraintBottom_toBottomOf="@id/textHello"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/textHello"
-            app:tint="@color/white" />
+            app:tint="#F15D5D" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -100,7 +99,7 @@
                 android:orientation="vertical"
                 android:padding="10dp"
                 app:layout_constraintDimensionRatio="H, 1:1"
-                app:layout_constraintEnd_toStartOf="@id/layoutCart"
+                app:layout_constraintEnd_toStartOf="@id/layoutSchedule"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:ignore="MissingConstraints">
@@ -111,7 +110,7 @@
                     android:layout_margin="8dp"
                     android:contentDescription="@string/app_name"
                     android:padding="8dp"
-                    android:src="@drawable/le" />
+                    android:src="@drawable/calculator" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -125,7 +124,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/layoutCart"
+                android:id="@+id/layoutSchedule"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="22dp"
@@ -145,13 +144,50 @@
                     android:layout_margin="8dp"
                     android:contentDescription="@string/app_name"
                     android:padding="8dp"
-                    android:src="@drawable/cart" />
+                    android:src="@drawable/calendar" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="Giỏ đồ mượn"
+                    android:text="Đặt lịch mượn"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layoutCart"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/white_rectangle_background"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="10dp"
+
+                app:layout_constraintDimensionRatio="H, 1:1"
+                app:layout_constraintEnd_toStartOf="@id/layoutSchedule"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/layoutEquipments"
+                tools:ignore="MissingConstraints">
+
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_margin="8dp"
+                    android:contentDescription="@string/app_name"
+                    android:padding="8dp"
+                    android:src="@drawable/cart"
+                    android:tint="#1EBACD"
+                    tools:ignore="UseAppTint" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Giỏ đồ"
                     android:textColor="@color/colorAccent"
                     android:textSize="20dp"
                     android:textStyle="bold" />
@@ -167,45 +203,10 @@
                 android:gravity="center"
                 android:orientation="vertical"
                 android:padding="10dp"
-
-                app:layout_constraintDimensionRatio="H, 1:1"
-                app:layout_constraintEnd_toStartOf="@id/layoutCart"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/layoutEquipments"
-                tools:ignore="MissingConstraints">
-
-                <ImageView
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:layout_margin="8dp"
-                    android:contentDescription="@string/app_name"
-                    android:padding="8dp"
-                    android:src="@drawable/rules" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="Thiết bị mượn"
-                    android:textColor="@color/colorAccent"
-                    android:textSize="20dp"
-                    android:textStyle="bold" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/layoutSchedule"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/white_rectangle_background"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:padding="10dp"
                 app:layout_constraintDimensionRatio="H, 1:1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/layoutEquipments"
-                app:layout_constraintTop_toBottomOf="@id/layoutCart"
+                app:layout_constraintTop_toBottomOf="@id/layoutSchedule"
                 tools:ignore="MissingConstraints">
 
                 <ImageView
@@ -214,13 +215,13 @@
                     android:layout_margin="8dp"
                     android:contentDescription="@string/app_name"
                     android:padding="8dp"
-                    android:src="@drawable/qa" />
+                    android:src="@drawable/history" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="Đặt lịch mượn"
+                    android:text="Lịch sử"
                     android:textColor="@color/colorAccent"
                     android:textSize="20dp"
                     android:textStyle="bold" />
@@ -237,16 +238,13 @@
         android:id="@+id/layoutRules"
         android:layout_width="368dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="22dp"
-        android:layout_marginTop="435dp"
-        android:layout_marginEnd="22dp"
-        android:layout_marginBottom="96dp"
+        android:layout_marginTop="530dp"
         android:background="@drawable/trending_background"
         android:padding="20dp"
-        app:layout_constraintBottom_toBottomOf="@+id/scrollView2"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="@+id/layoutHeader">
 
         <TextView
             android:id="@+id/textTrending"
@@ -273,7 +271,7 @@
             app:layout_constraintBottom_toBottomOf="@id/textTrending"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/textTrending"
-            app:tint="@color/white" />
+            app:tint="#836841" />
 
         <TextView
             android:id="@+id/textRules"
@@ -281,11 +279,11 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:ellipsize="end"
+            android:gravity="center"
             android:maxLines="3"
             android:text="Nội quy phòng thí nghiệm"
             android:textColor="@color/white"
             android:textSize="20sp"
-            android:gravity="center"
             app:layout_constraintTop_toBottomOf="@id/textTrending"
             tools:layout_editor_absoluteX="20dp" />
 
@@ -304,7 +302,7 @@
                 android:layout_height="wrap_content"
                 android:text="test"
                 android:textColor="@color/white"
-                android:textSize="20sp" />
+                android:textSize="14sp" />
         </ScrollView>
 
 

@@ -69,7 +69,7 @@ public class MyApplication extends Application {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
-                        Toast.makeText(context, "Thêm vào giỏ hàng thành công", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "Thêm vào giỏ hàng thành công!", Toast.LENGTH_SHORT).show();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -82,7 +82,7 @@ public class MyApplication extends Application {
     public static void removeFromCart(Context context, String equipmentId){
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         if(firebaseAuth.getCurrentUser() == null){
-            Toast.makeText(context, "You're not logged in", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Bạn không đăng nhập!", Toast.LENGTH_SHORT).show();
         }else{
             DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
             ref.child(firebaseAuth.getUid()).child("Carts").child(equipmentId)
@@ -90,13 +90,13 @@ public class MyApplication extends Application {
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void unused) {
-                            Toast.makeText(context, "Removed to your cart", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "Xóa thành công khỏi giỏ hàng!", Toast.LENGTH_SHORT).show();
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(context, "Failed to remove cart!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "Xóa thất bại!", Toast.LENGTH_SHORT).show();
                         }
                     });
         }
@@ -117,13 +117,13 @@ public class MyApplication extends Application {
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void unused) {
-                            Toast.makeText(context, "Added to your favorite", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "Đã thêm vào yêu thích!", Toast.LENGTH_SHORT).show();
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(context, "Failed to add favorite!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "Thêm vào yêu thích thất bại!", Toast.LENGTH_SHORT).show();
                         }
                     });
         }
@@ -139,13 +139,13 @@ public class MyApplication extends Application {
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void unused) {
-                            Toast.makeText(context, "Removed to your favorite", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "Xóa yêu thích thành công!", Toast.LENGTH_SHORT).show();
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(context, "Failed to remove favorite!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "Xóa yêu thích thất bại!", Toast.LENGTH_SHORT).show();
                         }
                     });
         }

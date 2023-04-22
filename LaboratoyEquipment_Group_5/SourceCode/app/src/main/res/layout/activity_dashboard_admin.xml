@@ -41,24 +41,24 @@
             app:layout_constraintStart_toEndOf="@id/textHello"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageButton
+        <ImageView
             android:id="@+id/logoutBtn"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginEnd="15dp"
-            android:background="@android:color/transparent"
             android:contentDescription="@string/app_name"
-            android:src="@drawable/ic_logout_white"
+            android:src="@drawable/logout"
             app:layout_constraintBottom_toBottomOf="@id/textHello"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/textHello"
-            app:tint="@color/white" />
+            app:tint="#F15D5D" />
 
         <ImageButton
             android:id="@+id/chartBtn"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginStart="20dp"
+            android:layout_width="40dp"
+            android:layout_marginBottom="-10dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="30dp"
             android:layout_marginEnd="15dp"
             android:background="@android:color/transparent"
             android:contentDescription="@string/app_name"
@@ -115,7 +115,7 @@
                 android:layout_margin="8dp"
                 android:contentDescription="@string/app_name"
                 android:padding="8dp"
-                android:src="@drawable/le" />
+                android:src="@drawable/equipment" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -148,7 +148,9 @@
                 android:layout_margin="8dp"
                 android:contentDescription="@string/app_name"
                 android:padding="8dp"
-                android:src="@drawable/cart" />
+                android:src="@drawable/manager"
+                android:tint="@color/colorTrendingStart"
+                tools:ignore="UseAppTint" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -180,19 +182,20 @@
                 android:id="@+id/image"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:layout_centerInParent="true"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="8dp"
                 android:contentDescription="@string/app_name"
                 android:padding="8dp"
-                android:src="@drawable/rules" />
+                android:src="@drawable/schedule" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/image"
                 android:gravity="center"
+                android:layout_marginTop="116dp"
                 android:text="Hẹn mượn"
                 android:textColor="@color/colorAccent"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:textStyle="bold" />
 
         </RelativeLayout>
@@ -218,15 +221,15 @@
                 android:layout_margin="8dp"
                 android:contentDescription="@string/app_name"
                 android:padding="8dp"
-                android:src="@drawable/qa" />
+                android:src="@drawable/rule" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Rules"
+                android:text="Quy định"
                 android:textColor="@color/colorAccent"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:textStyle="bold" />
 
         </LinearLayout>
@@ -323,7 +326,7 @@
                 android:layout_height="wrap_content"
                 android:text="test"
                 android:textColor="@color/white"
-                android:textSize="20sp" />
+                android:textSize="14sp" />
         </ScrollView>
 
 

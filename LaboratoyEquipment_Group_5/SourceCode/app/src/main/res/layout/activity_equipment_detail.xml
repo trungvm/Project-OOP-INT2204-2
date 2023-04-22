@@ -252,7 +252,7 @@
            android:background="@color/design_default_color_on_primary"
            android:layout_alignParentBottom="true"
            android:drawableTop="@drawable/ic_favorite_border"
-           />
+            />
        <Button
            android:id="@+id/addCartBtn"
            android:layout_width="match_parent"
