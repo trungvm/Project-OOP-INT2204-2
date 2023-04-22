@@ -30,9 +30,9 @@ import com.google.android.gms.tasks.Task;
 
 import java.util.ArrayList;
 
-public class AdapterEquipmentFavorite extends RecyclerView.Adapter<AdapterEquipmentFavorite.HolderEquipmentFavorite>{
-    private Context context;
-    private ArrayList<ModelEquipment> equipmentArrayList;
+public class AdapterEquipmentFavorite extends RecyclerView.Adapter<AdapterEquipmentFavorite.HolderEquipmentFavorite> {
+    private final Context context;
+    private final ArrayList<ModelEquipment> equipmentArrayList;
 
     // view binding
     private RowEquipmentsFavoriteBinding binding;
@@ -83,14 +83,14 @@ public class AdapterEquipmentFavorite extends RecyclerView.Adapter<AdapterEquipm
         holder.dateTv.setText(date);
         holder.titleTv.setText(title);
         holder.descriptionTv.setText(description);
-        holder.quantityTv.setText(""+quantity);
+        holder.quantityTv.setText("" + quantity);
 
 
         ModelCategory modelCategory = new ModelCategory();
         modelCategory.getDataFromFireBase(model.getCategoryId()).addOnCompleteListener(new OnCompleteListener<ModelCategory>() {
             @Override
             public void onComplete(@NonNull Task<ModelCategory> task) {
-                if(task.isSuccessful()){
+                if (task.isSuccessful()) {
                     ModelCategory newModelCategory = task.getResult();
                     holder.categoryTv.setText(newModelCategory.getTitle());
                 }
@@ -122,7 +122,7 @@ public class AdapterEquipmentFavorite extends RecyclerView.Adapter<AdapterEquipm
         return equipmentArrayList.size();
     }
 
-    class HolderEquipmentFavorite extends RecyclerView.ViewHolder{
+    class HolderEquipmentFavorite extends RecyclerView.ViewHolder {
         ProgressBar progressBar;
         TextView titleTv;
         TextView descriptionTv;

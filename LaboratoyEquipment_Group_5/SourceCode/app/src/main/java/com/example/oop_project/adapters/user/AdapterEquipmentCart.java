@@ -38,12 +38,11 @@ import com.google.android.gms.tasks.Task;
 import java.util.ArrayList;
 
 public class AdapterEquipmentCart extends RecyclerView.Adapter<AdapterEquipmentCart.HolderEquipmentCart> {
-    private Context context;
-    private ArrayList<ModelEquipment> equipmentArrayList;
+    private final Context context;
+    private final ArrayList<ModelEquipment> equipmentArrayList;
     private RowEquipmentsCartBinding binding;
-    private ArrayList<Integer> quantityBorrow;
-    private ArrayList<Boolean> isChecked;
-
+    private final ArrayList<Integer> quantityBorrow;
+    private final ArrayList<Boolean> isChecked;
 
 
     public AdapterEquipmentCart(Context context, ArrayList<ModelEquipment> equipmentArrayList) {
@@ -51,17 +50,19 @@ public class AdapterEquipmentCart extends RecyclerView.Adapter<AdapterEquipmentC
         this.equipmentArrayList = equipmentArrayList;
         quantityBorrow = new ArrayList<>();
         isChecked = new ArrayList<>();
-        for(int i = 0; i < 10000; i++){
+        for (int i = 0; i < 10000; i++) {
             quantityBorrow.add(0);
             isChecked.add(false);
         }
     }
+
     @NonNull
     @Override
     public HolderEquipmentCart onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         binding = RowEquipmentsCartBinding.inflate(LayoutInflater.from(context), parent, false);
         return new HolderEquipmentCart(binding.getRoot());
     }
+
     @Override
     public void onBindViewHolder(@NonNull HolderEquipmentCart holder, @SuppressLint("RecyclerView") int position) {
         ModelEquipment modelEquipment = equipmentArrayList.get(position);
@@ -85,7 +86,8 @@ public class AdapterEquipmentCart extends RecyclerView.Adapter<AdapterEquipmentC
                             public void onClick(DialogInterface dialog, int which) {
                                 // begin delete;
                                 Toast.makeText(context, "Removing...", Toast.LENGTH_SHORT).show();
-                                MyApplication.removeFromCart(context, modelEquipment.getId());                            }
+                                MyApplication.removeFromCart(context, modelEquipment.getId());
+                            }
                         })
                         .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                             @Override
@@ -100,44 +102,44 @@ public class AdapterEquipmentCart extends RecyclerView.Adapter<AdapterEquipmentC
         holder.minus_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(quantityBorrow.get(position) == 0){
+                if (quantityBorrow.get(position) == 0) {
                     quantityBorrow.set(position, 0);
-                }else{
+                } else {
                     int x = quantityBorrow.get(position);
                     x--;
                     quantityBorrow.set(position, x);
                 }
-                holder.quantity_text_choose.setText(""+quantityBorrow.get(position));
+                holder.quantity_text_choose.setText("" + quantityBorrow.get(position));
                 modelEquipment.setQuantityBorrow(quantityBorrow.get(position));
                 long timestamp = System.currentTimeMillis();
                 Intent intent = new Intent("ACTION_GET_DATA");
                 intent.putExtra("equipmentId", modelEquipment.getId());
-                intent.putExtra("quantityBorrowed", ""+quantityBorrow.get(position));
+                intent.putExtra("quantityBorrowed", "" + quantityBorrow.get(position));
                 intent.putExtra("equipmentName", modelEquipment.getTitle());
-                intent.putExtra("timestamp", ""+timestamp);
-                intent.putExtra("isChecked", ""+isChecked.get(position));
+                intent.putExtra("timestamp", "" + timestamp);
+                intent.putExtra("isChecked", "" + isChecked.get(position));
                 LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
             }
         });
         holder.plus_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(quantityBorrow.get(position) < modelEquipment.getQuantity()){
+                if (quantityBorrow.get(position) < modelEquipment.getQuantity()) {
                     int x = quantityBorrow.get(position);
                     x++;
                     quantityBorrow.set(position, x);
-                }else{
+                } else {
                     quantityBorrow.set(position, modelEquipment.getQuantity());
                 }
-                holder.quantity_text_choose.setText(""+quantityBorrow.get(position));
+                holder.quantity_text_choose.setText("" + quantityBorrow.get(position));
                 modelEquipment.setQuantityBorrow(quantityBorrow.get(position));
                 long timestamp = System.currentTimeMillis();
                 Intent intent = new Intent("ACTION_GET_DATA");
                 intent.putExtra("equipmentId", modelEquipment.getId());
-                intent.putExtra("quantityBorrowed", ""+quantityBorrow.get(position));
+                intent.putExtra("quantityBorrowed", "" + quantityBorrow.get(position));
                 intent.putExtra("equipmentName", modelEquipment.getTitle());
-                intent.putExtra("timestamp", ""+timestamp);
-                intent.putExtra("isChecked", ""+isChecked.get(position));
+                intent.putExtra("timestamp", "" + timestamp);
+                intent.putExtra("isChecked", "" + isChecked.get(position));
                 LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
             }
         });
@@ -153,16 +155,17 @@ public class AdapterEquipmentCart extends RecyclerView.Adapter<AdapterEquipmentC
                 long timestamp = System.currentTimeMillis();
                 Intent intent = new Intent("ACTION_GET_DATA");
                 intent.putExtra("equipmentId", modelEquipment.getId());
-                intent.putExtra("quantityBorrowed", ""+quantityBorrow.get(position));
+                intent.putExtra("quantityBorrowed", "" + quantityBorrow.get(position));
                 intent.putExtra("equipmentName", modelEquipment.getTitle());
-                intent.putExtra("timestamp", ""+timestamp);
-                intent.putExtra("isChecked", ""+isChecked.get(position));
+                intent.putExtra("timestamp", "" + timestamp);
+                intent.putExtra("isChecked", "" + isChecked.get(position));
                 LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
             }
         });
 
 
     }
+
     private void loadEquipmentDetails(ModelEquipment model, HolderEquipmentCart holder) {
         String equipmentId = model.getId();
         String title = model.getTitle();
@@ -174,15 +177,15 @@ public class AdapterEquipmentCart extends RecyclerView.Adapter<AdapterEquipmentC
         holder.dateTv.setText(date);
         holder.titleTv.setText(title);
         holder.descriptionTv.setText(description);
-        holder.quantityTv.setText(""+quantity);
+        holder.quantityTv.setText("" + quantity);
         String categoryId = model.getCategoryId();
-        binding.quantityTextChoose.setText(""+0);
+        binding.quantityTextChoose.setText("" + 0);
 
         ModelCategory modelCategory = new ModelCategory();
         modelCategory.getDataFromFireBase(categoryId).addOnCompleteListener(new OnCompleteListener<ModelCategory>() {
             @Override
             public void onComplete(@NonNull Task<ModelCategory> task) {
-                if(task.isSuccessful()){
+                if (task.isSuccessful()) {
                     ModelCategory newModelCategory = task.getResult();
                     holder.categoryTv.setText(newModelCategory.getTitle());
                 }
@@ -208,13 +211,14 @@ public class AdapterEquipmentCart extends RecyclerView.Adapter<AdapterEquipmentC
                 })
                 .into(binding.imageView);
     }
+
     @Override
     public int getItemCount() {
         return equipmentArrayList.size();
     }
 
 
-    class HolderEquipmentCart extends RecyclerView.ViewHolder{
+    class HolderEquipmentCart extends RecyclerView.ViewHolder {
         ProgressBar progressBar;
         ImageView imageView;
         TextView titleTv, descriptionTv, quantityTv, dateTv, categoryTv;

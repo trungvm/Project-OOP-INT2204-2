@@ -1,8 +1,5 @@
 package com.example.oop_project.activities.user;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -16,6 +13,9 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.PopupMenu;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.oop_project.databinding.ActivityOrderBinding;
 import com.example.oop_project.models.User;
@@ -126,7 +126,7 @@ public class OrderActivity extends AppCompatActivity {
             public void onClick(View v) {
                 validateData();
 
-                if(flag == true){
+                if (flag == true) {
                     sendMail();
                     return;
                 }
@@ -287,18 +287,19 @@ public class OrderActivity extends AppCompatActivity {
         }
 
     }
-    private void sendMail(){
-        for(int i = 0; i < listOfTitleEquipment.size(); i++){
+
+    private void sendMail() {
+        for (int i = 0; i < listOfTitleEquipment.size(); i++) {
             titleEquipment += listOfTitleEquipment.get(i) + "\n";
         }
         User user = new User();
         String subject = "Mượn thiết bị thành công!";
         user.setFullName(fullName);
         String message = "Chúc mừng " + fullName + " đã mượn thành công thiết bị từ chúng tôi!" +
-                "\n" + "Danh sách thiết bị gồm: "+ "\n"
-                + titleEquipment  + "Báo cáo về thiết bị lúc mượn: " + report
-                +"\n" + "Chúc bạn hoàn thành tốt công việc";
-        user.sendMail(OrderActivity.this, firebaseAuth.getUid(),subject, message);
+                "\n" + "Danh sách thiết bị gồm: " + "\n"
+                + titleEquipment + "Báo cáo về thiết bị lúc mượn: " + report
+                + "\n" + "Chúc bạn hoàn thành tốt công việc";
+        user.sendMail(OrderActivity.this, firebaseAuth.getUid(), subject, message);
     }
 
     private void showMenuGender() {

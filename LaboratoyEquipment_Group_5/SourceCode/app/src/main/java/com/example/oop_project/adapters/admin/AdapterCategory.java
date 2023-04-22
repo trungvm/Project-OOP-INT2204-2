@@ -18,8 +18,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.oop_project.activities.admin.EquipmentListAdminActivity;
 import com.example.oop_project.databinding.RowCategoryBinding;
-import com.example.oop_project.models.ModelCategory;
 import com.example.oop_project.filters.admin.FilterCategory;
+import com.example.oop_project.models.ModelCategory;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -30,9 +30,8 @@ import java.util.ArrayList;
 
 public class AdapterCategory extends RecyclerView.Adapter<AdapterCategory.HolderCategory> implements Filterable {
 
-    private Context context;
     public ArrayList<ModelCategory> categoryArrayList, filterList;
-
+    private final Context context;
     // view binding
     private RowCategoryBinding binding;
     private FilterCategory filter;
@@ -61,7 +60,6 @@ public class AdapterCategory extends RecyclerView.Adapter<AdapterCategory.Holder
         long timestamp = category.getTimestamp();
 
 
-
         //set data
         holder.categoryTv.setText(title);
 
@@ -75,7 +73,7 @@ public class AdapterCategory extends RecyclerView.Adapter<AdapterCategory.Holder
                         .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                    // begin delete;
+                                // begin delete;
                                 Toast.makeText(context, "Deleting...", Toast.LENGTH_SHORT).show();
                                 deleteCategory(category, holder);
                             }
@@ -83,13 +81,13 @@ public class AdapterCategory extends RecyclerView.Adapter<AdapterCategory.Holder
                         .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                             dialog.dismiss();
+                                dialog.dismiss();
                             }
                         })
                         .show();
             }
         });
-            // handle item click, go ListEquipmentAdmin
+        // handle item click, go ListEquipmentAdmin
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -114,20 +112,20 @@ public class AdapterCategory extends RecyclerView.Adapter<AdapterCategory.Holder
                         reference.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                for(DataSnapshot ds : snapshot.getChildren()){
-                                    if((""+ds.child("categoryId").getValue()).equals(id)){
+                                for (DataSnapshot ds : snapshot.getChildren()) {
+                                    if (("" + ds.child("categoryId").getValue()).equals(id)) {
                                         ds.getRef().child("status").setValue("deleted");
                                         String equipmentId = "" + ds.child("timestamp").getValue();
                                         DatabaseReference ref1 = FirebaseDatabase.getInstance().getReference("Users");
                                         ref1.addListenerForSingleValueEvent(new ValueEventListener() {
                                             @Override
                                             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                                for(DataSnapshot ds : snapshot.getChildren()){
-                                                    if(ds.hasChild("Carts")){
+                                                for (DataSnapshot ds : snapshot.getChildren()) {
+                                                    if (ds.hasChild("Carts")) {
                                                         DatabaseReference ref2 = ds.child("Carts").getRef();
                                                         ref2.child(equipmentId).removeValue();
                                                     }
-                                                    if(ds.hasChild("Favorites")){
+                                                    if (ds.hasChild("Favorites")) {
                                                         DatabaseReference ref2 = ds.child("Favorites").getRef();
                                                         ref2.child(equipmentId).removeValue();
                                                     }
@@ -166,18 +164,19 @@ public class AdapterCategory extends RecyclerView.Adapter<AdapterCategory.Holder
 
     @Override
     public Filter getFilter() {
-        if(filter == null){
+        if (filter == null) {
             filter = new FilterCategory(filterList, this);
         }
         return filter;
     }
 
     // View holder class to hold UI views for row_category
-    class HolderCategory extends RecyclerView.ViewHolder{
+    class HolderCategory extends RecyclerView.ViewHolder {
 
         // ui views of row_category.xml
         TextView categoryTv;
         ImageButton deleteBtn;
+
         public HolderCategory(@NonNull View itemView) {
             super(itemView);
             categoryTv = binding.categoryTv;

@@ -1,12 +1,8 @@
 package com.example.oop_project.activities.user;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -18,6 +14,9 @@ import android.widget.DatePicker;
 import android.widget.PopupMenu;
 import android.widget.TimePicker;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.oop_project.databinding.ActivityOrderScheduleBinding;
 import com.example.oop_project.models.User;
@@ -38,6 +37,10 @@ import java.util.Date;
 import java.util.HashMap;
 
 public class OrderScheduleActivity extends AppCompatActivity {
+    String fullName, email, mobile, address, birthday, gender, otherInfor = "", report = "";
+    String profileImage;
+    String quantityBorrowed = "";
+    String startDate, endDate;
     private ActivityOrderScheduleBinding binding;
     private FirebaseAuth firebaseAuth;
     private ArrayList<String> listOfKey;
@@ -45,10 +48,6 @@ public class OrderScheduleActivity extends AppCompatActivity {
     private ArrayList<String> listOfEquipmentId;
     private ArrayList<String> listOfTitleEquipment;
     private String titleEquipment = "";
-    String fullName, email, mobile, address, birthday, gender, otherInfor = "", report = "";
-    String profileImage;
-    String quantityBorrowed = "";
-    String startDate, endDate;
 
     @Override
     protected void onDestroy() {
@@ -342,7 +341,7 @@ public class OrderScheduleActivity extends AppCompatActivity {
     }
 
     private void sendMail() {
-        for(int i = 0; i < listOfTitleEquipment.size(); i++){
+        for (int i = 0; i < listOfTitleEquipment.size(); i++) {
             titleEquipment += listOfTitleEquipment.get(i) + "\n";
         }
         User user = new User();

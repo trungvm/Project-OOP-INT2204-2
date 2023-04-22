@@ -1,14 +1,5 @@
 package com.example.oop_project.activities.admin;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-import androidx.viewpager.widget.ViewPager;
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -19,6 +10,15 @@ import android.util.Pair;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.viewpager.widget.ViewPager;
 
 import com.example.oop_project.ScheduleAdminFragment;
 import com.example.oop_project.activities.common.SuccessActivity;
@@ -36,10 +36,58 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class ScheduleAdminActivity extends AppCompatActivity {
-    private ActivityScheduleAdminBinding binding;
     public ArrayList<ModelCategory> categoryArrayList;
     public ViewPagerAdapter viewPagerAdapter;
+    String reportRefuse;
+    boolean flag = true;
+    private ActivityScheduleAdminBinding binding;
     private ArrayList<Pair<Pair<String, String>, String>> listIdChecked;
+    public BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String equipmentId = intent.getStringExtra("equipmentId");
+            String timestamp = intent.getStringExtra("timestamp");
+            String key = intent.getStringExtra("key");
+            String adminStatus = intent.getStringExtra("adminStatus");
+            ModelEquipment model = new ModelEquipment();
+            model.setId(equipmentId);
+//            model.setTimestamp(Long.parseLong(timestamp));
+            String isChecked = intent.getStringExtra("isChecked");
+            boolean flag = true;
+            int index = -1;
+            if (isChecked.equals("true")) {
+                for (int i = 0; i < listIdChecked.size(); i++) {
+                    if (listIdChecked.get(i).first.equals(equipmentId)) {
+                        flag = false;
+                        index = i;
+                        break;
+                    }
+                }
+                if (flag == false) {
+                    Pair<String, String> p = new Pair<>(equipmentId, key);
+                    Pair<Pair<String, String>, String> p1 = new Pair<>(p, adminStatus);
+                    listIdChecked.set(index, p1);
+                } else {
+                    Pair<String, String> p = new Pair<>(equipmentId, key);
+                    Pair<Pair<String, String>, String> p1 = new Pair<>(p, adminStatus);
+                    listIdChecked.add(p1);
+                }
+
+            } else {
+                for (int i = 0; i < listIdChecked.size(); i++) {
+                    if (listIdChecked.get(i).first.equals(equipmentId)) {
+                        flag = false;
+                        index = i;
+                        break;
+                    }
+                }
+                if (flag == false) {
+                    listIdChecked.remove(index);
+                }
+            }
+
+        }
+    };
     private int cntRefuse;
     private int cntAccpet;
     private ArrayList<String> listKeyRefuse;
@@ -147,9 +195,6 @@ public class ScheduleAdminActivity extends AppCompatActivity {
         });
     }
 
-    String reportRefuse;
-    boolean flag = true;
-
     private void counting() {
         cntRefuse = 0;
         cntAccpet = 0;
@@ -160,9 +205,6 @@ public class ScheduleAdminActivity extends AppCompatActivity {
             } else cntAccpet++;
         }
     }
-
-
-
 
     private void validateRefuseData() {
         reportRefuse = binding.reportEt.getText().toString().trim();
@@ -199,7 +241,6 @@ public class ScheduleAdminActivity extends AppCompatActivity {
                                         childUpdates.put("timestampAdminSchedule", timestamp);
                                         snapshot.getRef().updateChildren(childUpdates);
                                     }
-                                    ;
                                     snapshot.getRef().child("status").setValue("Refuse");
                                     String uid = "" + snapshot.child("uid").getValue();
                                     DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
@@ -309,53 +350,6 @@ public class ScheduleAdminActivity extends AppCompatActivity {
 
     }
 
-    public BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String equipmentId = intent.getStringExtra("equipmentId");
-            String timestamp = intent.getStringExtra("timestamp");
-            String key = intent.getStringExtra("key");
-            String adminStatus = intent.getStringExtra("adminStatus");
-            ModelEquipment model = new ModelEquipment();
-            model.setId(equipmentId);
-//            model.setTimestamp(Long.parseLong(timestamp));
-            String isChecked = intent.getStringExtra("isChecked");
-            boolean flag = true;
-            int index = -1;
-            if (isChecked.equals("true")) {
-                for (int i = 0; i < listIdChecked.size(); i++) {
-                    if (listIdChecked.get(i).first.equals(equipmentId)) {
-                        flag = false;
-                        index = i;
-                        break;
-                    }
-                }
-                if (flag == false) {
-                    Pair<String, String> p = new Pair<>(equipmentId, key);
-                    Pair<Pair<String, String>, String> p1 = new Pair<>(p, adminStatus);
-                    listIdChecked.set(index, p1);
-                } else {
-                    Pair<String, String> p = new Pair<>(equipmentId, key);
-                    Pair<Pair<String, String>, String> p1 = new Pair<>(p, adminStatus);
-                    listIdChecked.add(p1);
-                }
-
-            } else {
-                for (int i = 0; i < listIdChecked.size(); i++) {
-                    if (listIdChecked.get(i).first.equals(equipmentId)) {
-                        flag = false;
-                        index = i;
-                        break;
-                    }
-                }
-                if (flag == false) {
-                    listIdChecked.remove(index);
-                }
-            }
-
-        }
-    };
-
     private void setupViewPagerAdapter(ViewPager viewPager) {
 
         viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT, this);
@@ -390,8 +384,8 @@ public class ScheduleAdminActivity extends AppCompatActivity {
 
 
     public class ViewPagerAdapter extends FragmentPagerAdapter {
-        private ArrayList<ScheduleAdminFragment> fragmentList = new ArrayList<>();
-        private ArrayList<String> fragmentTitleList = new ArrayList<>();
+        private final ArrayList<ScheduleAdminFragment> fragmentList = new ArrayList<>();
+        private final ArrayList<String> fragmentTitleList = new ArrayList<>();
         private Context context;
 
 

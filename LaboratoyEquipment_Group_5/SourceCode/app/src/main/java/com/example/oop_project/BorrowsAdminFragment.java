@@ -2,15 +2,14 @@ package com.example.oop_project;
 
 import android.content.Context;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 
 import com.example.oop_project.adapters.admin.AdapterBorrowsAdmin;
 import com.example.oop_project.databinding.FragmentBorrowsAdminBinding;
@@ -27,7 +26,6 @@ import java.util.ArrayList;
 public class BorrowsAdminFragment extends Fragment {
 
 
-
     private String categoryId;
     private String title;
     private String uid;
@@ -38,13 +36,22 @@ public class BorrowsAdminFragment extends Fragment {
     private AdapterBorrowsAdmin adapterBorrowsAdmin;
     private ArrayList<ModelEquipment> getEquipmentArrayListRefuse;
     private ArrayList<ModelEquipment> equipmentArrayListAccept;
+    private String equipmentId;
+
     public BorrowsAdminFragment() {
         // Required empty public constructor
     }
-    interface MyCallback {
-        void onSuccess(String title);
-        void onError(DatabaseError error);
+
+    public static BorrowsAdminFragment newInstance(String categoryId, String title, String uid) {
+        BorrowsAdminFragment fragment = new BorrowsAdminFragment();
+        Bundle args = new Bundle();
+        args.putString("categoryId", categoryId);
+        args.putString("categoryTitle", title);
+        args.putString("uid", uid);
+        fragment.setArguments(args);
+        return fragment;
     }
+
     void fetchDataFromFirebase(String equipmentId, MyCallback callback) {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Equipments");
         ref.child(equipmentId).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -61,15 +68,6 @@ public class BorrowsAdminFragment extends Fragment {
         });
     }
 
-    public static BorrowsAdminFragment newInstance(String categoryId, String title, String uid) {
-        BorrowsAdminFragment fragment = new BorrowsAdminFragment();
-        Bundle args = new Bundle();
-        args.putString("categoryId", categoryId);
-        args.putString("categoryTitle", title);
-        args.putString("uid", uid);
-        fragment.setArguments(args);
-        return fragment;
-    }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,7 +91,7 @@ public class BorrowsAdminFragment extends Fragment {
             // hidden report layout + button
             loadBorrowedEquipments();
 
-        }else if (categoryId.equals("03")){
+        } else if (categoryId.equals("03")) {
             loadRefuseEquipments();
         }
         binding.searchEt.addTextChangedListener(new TextWatcher() {
@@ -104,9 +102,9 @@ public class BorrowsAdminFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                try{
+                try {
                     adapterBorrowsAdmin.getFilter().filter(s);
-                }catch (Exception e){
+                } catch (Exception e) {
 
                 }
             }
@@ -118,10 +116,10 @@ public class BorrowsAdminFragment extends Fragment {
         });
         return binding.getRoot();
     }
-    private String equipmentId;
+
     private void loadBorrowingEquipments() {
         equipmentArrayListBorrowing = new ArrayList<>();
-        if(equipmentArrayListBorrowing.size() != 0){
+        if (equipmentArrayListBorrowing.size() != 0) {
             equipmentArrayListBorrowing.clear();
         }
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("EquipmentsBorrowed");
@@ -129,15 +127,15 @@ public class BorrowsAdminFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 equipmentArrayListBorrowing.clear();
-                for(DataSnapshot ds: snapshot.getChildren()){
-                    if((""+ds.child("status").getValue()).equals("Borrowed")){
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    if (("" + ds.child("status").getValue()).equals("Borrowed")) {
                         String key = ds.getKey();
                         String uid = "" + ds.child("uid").getValue();
                         ModelEquipment model = snapshot.getValue(ModelEquipment.class);
                         String equipmentId = "" + ds.child("equipmentId").getValue();
                         String title = "" + ds.child("title").getValue();
                         String preStatus = "";
-                        if(ds.hasChild("preStatus")){
+                        if (ds.hasChild("preStatus")) {
                             preStatus = "" + ds.child("preStatus").getValue();
                         }
                         model.setTitle(title);
@@ -149,13 +147,12 @@ public class BorrowsAdminFragment extends Fragment {
                         equipmentArrayListBorrowing.add(model);
 
 
-
                     }
                 }
 
-                    adapterBorrowsAdmin = new AdapterBorrowsAdmin(getContext(), equipmentArrayListBorrowing);
-                    adapterBorrowsAdmin.notifyDataSetChanged();
-                    binding.equipmentRv.setAdapter(adapterBorrowsAdmin);
+                adapterBorrowsAdmin = new AdapterBorrowsAdmin(getContext(), equipmentArrayListBorrowing);
+                adapterBorrowsAdmin.notifyDataSetChanged();
+                binding.equipmentRv.setAdapter(adapterBorrowsAdmin);
 
 
             }
@@ -171,7 +168,7 @@ public class BorrowsAdminFragment extends Fragment {
 
     private void loadBorrowedEquipments() {
         equipmentArrayListBorrowed = new ArrayList<>();
-        if(equipmentArrayListBorrowed.size() != 0){
+        if (equipmentArrayListBorrowed.size() != 0) {
             equipmentArrayListBorrowed.clear();
         }
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("EquipmentsBorrowed");
@@ -179,15 +176,15 @@ public class BorrowsAdminFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 equipmentArrayListBorrowed.clear();
-                for(DataSnapshot ds: snapshot.getChildren()){
-                    if((""+ds.child("status").getValue()).equals("History")){
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    if (("" + ds.child("status").getValue()).equals("History")) {
                         String key = ds.getKey();
                         String uid = "" + ds.child("uid").getValue();
                         ModelEquipment model = snapshot.getValue(ModelEquipment.class);
                         String equipmentId = "" + ds.child("equipmentId").getValue();
                         String title = "" + ds.child("title").getValue();
                         String preStatus = "";
-                        if(ds.hasChild("preStatus")){
+                        if (ds.hasChild("preStatus")) {
                             preStatus = "" + ds.child("preStatus").getValue();
                         }
                         model.setTitle(title);
@@ -200,9 +197,9 @@ public class BorrowsAdminFragment extends Fragment {
                         equipmentArrayListBorrowed.add(model);
                     }
                 }
-                    adapterBorrowsAdmin = new AdapterBorrowsAdmin(getContext(), equipmentArrayListBorrowed);
-                    adapterBorrowsAdmin.notifyDataSetChanged();
-                    binding.equipmentRv.setAdapter(adapterBorrowsAdmin);
+                adapterBorrowsAdmin = new AdapterBorrowsAdmin(getContext(), equipmentArrayListBorrowed);
+                adapterBorrowsAdmin.notifyDataSetChanged();
+                binding.equipmentRv.setAdapter(adapterBorrowsAdmin);
 
             }
 
@@ -213,9 +210,10 @@ public class BorrowsAdminFragment extends Fragment {
         });
 
     }
-    private  void loadRefuseEquipments(){
+
+    private void loadRefuseEquipments() {
         getEquipmentArrayListRefuse = new ArrayList<>();
-        if(getEquipmentArrayListRefuse.size() != 0){
+        if (getEquipmentArrayListRefuse.size() != 0) {
             getEquipmentArrayListRefuse.clear();
         }
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("EquipmentsBorrowed");
@@ -223,8 +221,8 @@ public class BorrowsAdminFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 getEquipmentArrayListRefuse.clear();
-                for(DataSnapshot ds: snapshot.getChildren()){
-                    if((""+ds.child("status").getValue()).equals("Refuse")){
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    if (("" + ds.child("status").getValue()).equals("Refuse")) {
                         String key = ds.getKey();
                         String uid = "" + ds.child("uid").getValue();
                         ModelEquipment model = snapshot.getValue(ModelEquipment.class);
@@ -237,7 +235,6 @@ public class BorrowsAdminFragment extends Fragment {
                         model.setUid(uid);
                         model.setStatus("Refuse");
                         getEquipmentArrayListRefuse.add(model);
-
 
 
                     }
@@ -256,6 +253,12 @@ public class BorrowsAdminFragment extends Fragment {
             }
         });
 
+    }
+
+    interface MyCallback {
+        void onSuccess(String title);
+
+        void onError(DatabaseError error);
     }
 
 }

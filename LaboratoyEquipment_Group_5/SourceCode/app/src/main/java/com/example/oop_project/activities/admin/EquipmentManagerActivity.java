@@ -1,13 +1,13 @@
 package com.example.oop_project.activities.admin;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.oop_project.adapters.admin.AdapterCategory;
 import com.example.oop_project.databinding.ActivityEquipmentManagerBinding;
@@ -22,8 +22,8 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 public class EquipmentManagerActivity extends AppCompatActivity {
-    private FirebaseAuth firebaseAuth;
     public ActivityEquipmentManagerBinding binding;
+    private FirebaseAuth firebaseAuth;
     private ArrayList<ModelCategory> categoryArrayList;
     private AdapterCategory adapterCategory;
 
@@ -38,7 +38,7 @@ public class EquipmentManagerActivity extends AppCompatActivity {
         binding.backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               onBackPressed();
+                onBackPressed();
             }
         });
 
@@ -88,12 +88,12 @@ public class EquipmentManagerActivity extends AppCompatActivity {
                 // clear all arraylist before, recall
                 categoryArrayList.clear();
                 for (DataSnapshot ds : snapshot.getChildren()) {
-                    if(ds.hasChild("status")){
-                       if((""+ds.child("status").getValue()).equals("use")){
-                           ModelCategory category = ds.getValue(ModelCategory.class);
-                           categoryArrayList.add(category);
-                       }
-                    }else{
+                    if (ds.hasChild("status")) {
+                        if (("" + ds.child("status").getValue()).equals("use")) {
+                            ModelCategory category = ds.getValue(ModelCategory.class);
+                            categoryArrayList.add(category);
+                        }
+                    } else {
                         ds.getRef().child("status").setValue("use");
                     }
                 }

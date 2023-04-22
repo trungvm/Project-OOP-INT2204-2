@@ -4,25 +4,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.user.EquipmentUserShowActivity"
     android:background="@drawable/back01"
-    >
+    tools:context=".activities.user.EquipmentUserShowActivity">
+
     <RelativeLayout
         android:id="@+id/toolbarRl"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
-        android:background="@drawable/shape_toolbar"
-        >
+        android:background="@drawable/shape_toolbar">
+
         <ImageButton
             android:id="@+id/backBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_back_white"
             android:layout_centerVertical="true"
-            android:padding="10dp"
             android:layout_marginStart="10dp"
             android:background="@android:color/transparent"
-            />
+            android:padding="10dp"
+            android:src="@drawable/ic_back_white" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -55,7 +54,6 @@
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tabLayout"
-        />
+        android:layout_below="@id/tabLayout" />
 </RelativeLayout>
 

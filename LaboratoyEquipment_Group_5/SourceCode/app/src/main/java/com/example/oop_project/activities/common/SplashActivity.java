@@ -1,11 +1,11 @@
 package com.example.oop_project.activities.common;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.oop_project.R;
 import com.example.oop_project.activities.admin.DashboardAdminActivity;
@@ -20,6 +20,7 @@ import com.google.firebase.database.ValueEventListener;
 
 public class SplashActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,18 +34,17 @@ public class SplashActivity extends AppCompatActivity {
             public void run() {
                 startActivity(new Intent(SplashActivity.this, MainActivity.class));
                 finish();
-               checkUser();
+                checkUser();
             }
         }, 2000);
     }
 
     private void checkUser() {
         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-        if(firebaseUser == null){
+        if (firebaseUser == null) {
             startActivity(new Intent(SplashActivity.this, MainActivity.class));
             finish();
-        }
-        else{
+        } else {
             DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
             ref.child(firebaseUser.getUid())
                     .addListenerForSingleValueEvent(new ValueEventListener() {
@@ -52,10 +52,10 @@ public class SplashActivity extends AppCompatActivity {
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             // get User type
                             String userType = "" + snapshot.child("accountType").getValue();
-                            if(userType.equals("user")){
+                            if (userType.equals("user")) {
                                 startActivity(new Intent(SplashActivity.this, DashboardUserActivity.class));
                                 finish();
-                            }else if(userType.equals("admin")){
+                            } else if (userType.equals("admin")) {
                                 startActivity(new Intent(SplashActivity.this, DashboardAdminActivity.class));
                                 finish();
                             }

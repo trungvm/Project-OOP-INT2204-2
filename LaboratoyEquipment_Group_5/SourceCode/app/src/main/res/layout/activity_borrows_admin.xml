@@ -5,12 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activities.admin.BorrowsAdminActivity">
+
     <RelativeLayout
         android:id="@+id/toolbarRl"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
-        android:background="@drawable/shape_toolbar"
-        >
+        android:background="@drawable/shape_toolbar">
+
         <ImageButton
             android:id="@+id/backBtn"
             android:layout_width="wrap_content"
@@ -18,27 +19,28 @@
             android:layout_alignParentTop="true"
             android:layout_marginStart="10dp"
             android:layout_marginTop="8dp"
-            android:padding="10dp"
             android:background="@android:color/transparent"
+            android:padding="10dp"
             android:src="@drawable/ic_back_white" />
 
         <TextView
-            android:focusableInTouchMode="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
+            android:focusableInTouchMode="true"
             android:text="Thiết bị mượn"
             android:textColor="@color/white"
             android:textSize="20sp"
             android:textStyle="bold" />
     </RelativeLayout>
+
     <com.google.android.material.tabs.TabLayout
-        android:layout_marginTop="4dp"
         android:id="@+id/tabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/toolbarRl"
         android:layout_marginStart="5dp"
+        android:layout_marginTop="4dp"
         android:layout_marginEnd="5dp"
         android:layout_marginBottom="5dp"
         android:background="@android:color/transparent"
@@ -53,8 +55,7 @@
         android:id="@+id/viewPagerBorrowed"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tabLayout"
-        />
+        android:layout_below="@id/tabLayout" />
 
 
 </RelativeLayout>

@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.common.ProfileEditActivity"
     android:focusableInTouchMode="true"
-    >
+    tools:context=".activities.common.ProfileEditActivity">
+
     <View
         android:id="@+id/topBackground"
         android:layout_width="match_parent"
         android:layout_height="220dp"
-        android:background="@drawable/top_background"/>
+        android:background="@drawable/top_background" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -27,24 +27,27 @@
 
     <ImageButton
         android:id="@+id/backBtn"
-        android:elevation="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_back_white"
         android:background="@android:color/transparent"
+        android:elevation="10dp"
         android:padding="20dp"
-        />
+        android:src="@drawable/ic_back_white" />
+
     <View
-        android:layout_marginTop="120dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/shape_rec01"/>
+        android:layout_marginTop="120dp"
+        android:background="@drawable/shape_rec01" />
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/profileTv"
                 android:layout_width="120dp"
@@ -52,148 +55,146 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="60dp"
                 android:background="@color/white"
-                app:shapeAppearance="@style/styleRoundCornersImage"
                 android:src="@drawable/ic_person_gray"
-                />
+                app:shapeAppearance="@style/styleRoundCornersImage" />
+
             <RelativeLayout
                 android:id="@+id/inforContent"
-                android:layout_below="@id/profileTv"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_below="@id/profileTv">
+
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/nameTil"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:hintEnabled="false"
                     android:layout_marginStart="30dp"
                     android:layout_marginEnd="30dp"
-                    >
+                    app:hintEnabled="false">
+
                     <EditText
                         android:id="@+id/nameEt"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:background="@drawable/shape_editext01"
                         android:drawableStart="@drawable/ic_person_gray"
                         android:drawablePadding="10dp"
-                        android:background="@drawable/shape_editext01"
                         android:hint="Họ và tên"
                         android:inputType="textPersonName|textCapWords|textMultiLine"
                         android:padding="10dp"
                         android:textColor="@color/black"
                         android:textColorHint="@color/gray01"
-                        android:textSize="16sp"
-                        />
+                        android:textSize="16sp" />
                 </com.google.android.material.textfield.TextInputLayout>
+
                 <com.google.android.material.textfield.TextInputLayout
-                    android:layout_below="@id/nameTil"
                     android:id="@+id/mobileTil"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:hintEnabled="false"
+                    android:layout_below="@id/nameTil"
                     android:layout_marginStart="30dp"
                     android:layout_marginEnd="30dp"
-                    >
+                    app:hintEnabled="false">
+
                     <EditText
                         android:id="@+id/mobileEt"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:background="@drawable/shape_editext01"
                         android:drawableStart="@drawable/ic_mobile_gray"
                         android:drawablePadding="10dp"
-                        android:background="@drawable/shape_editext01"
                         android:hint="Số điện thoại"
                         android:inputType="text|numberDecimal"
                         android:padding="10dp"
                         android:textColor="@color/black"
                         android:textColorHint="@color/gray01"
-                        android:textSize="16sp"
-                        />
+                        android:textSize="16sp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/addressTil"
-                    android:layout_below="@id/mobileTil"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:hintEnabled="false"
+                    android:layout_below="@id/mobileTil"
                     android:layout_marginStart="30dp"
                     android:layout_marginEnd="30dp"
-                    >
+                    app:hintEnabled="false">
+
                     <EditText
                         android:id="@+id/addressEt"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:background="@drawable/shape_editext01"
                         android:drawableStart="@drawable/ic_location_edit_gray"
                         android:drawablePadding="10dp"
-                        android:background="@drawable/shape_editext01"
                         android:hint="Địa chỉ"
                         android:inputType="textPostalAddress|textMultiLine"
                         android:padding="10dp"
                         android:textColor="@color/black"
                         android:textColorHint="@color/gray01"
-                        android:textSize="16sp"
-                        />
+                        android:textSize="16sp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/otherInforTil"
                     android:layout_width="match_parent"
-                    android:layout_below="@id/addressTil"
                     android:layout_height="wrap_content"
-                    app:hintEnabled="false"
+                    android:layout_below="@id/addressTil"
                     android:layout_marginStart="30dp"
                     android:layout_marginEnd="30dp"
-                    >
+                    app:hintEnabled="false">
+
                     <EditText
                         android:id="@+id/otherInforEt"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:background="@drawable/shape_editext01"
                         android:drawableStart="@drawable/ic_edit_gray"
                         android:drawablePadding="10dp"
-                        android:background="@drawable/shape_editext01"
                         android:hint="Thông tin khác"
                         android:inputType="textPersonName|textCapWords|textMultiLine"
                         android:padding="10dp"
                         android:textColor="@color/black"
                         android:textColorHint="@color/gray01"
-                        android:textSize="16sp"
-                        />
+                        android:textSize="16sp" />
                 </com.google.android.material.textfield.TextInputLayout>
+
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/birthdayTil"
                     android:layout_width="match_parent"
-                    android:layout_below="@id/otherInforTil"
                     android:layout_height="wrap_content"
-                    app:hintEnabled="false"
+                    android:layout_below="@id/otherInforTil"
                     android:layout_marginStart="30dp"
                     android:layout_marginEnd="30dp"
-                    >
+                    app:hintEnabled="false">
+
                     <EditText
                         android:id="@+id/birthdayEt"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:background="@drawable/shape_editext01"
+                        android:clickable="true"
                         android:drawableStart="@drawable/ic_birthday_gray"
                         android:drawablePadding="10dp"
-                        android:background="@drawable/shape_editext01"
+                        android:focusable="false"
                         android:hint="Ngày sinh"
                         android:inputType="none"
                         android:padding="10dp"
                         android:textColor="@color/black"
                         android:textColorHint="@color/gray01"
-                        android:textSize="16sp"
-                        android:focusable="false"
-                        android:clickable="true"
-                        />
+                        android:textSize="16sp" />
                 </com.google.android.material.textfield.TextInputLayout>
+
                 <RadioGroup
-                    android:layout_below="@id/birthdayTil"
                     android:id="@+id/gender_radio_group"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_below="@id/birthdayTil"
                     android:layout_marginStart="30dp"
+                    android:layout_marginTop="10dp"
                     android:layout_marginEnd="30dp"
                     android:gravity="center"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="10dp"
-                    >
+                    android:orientation="horizontal">
 
                     <RadioButton
                         android:id="@+id/male_radio_button"
@@ -212,18 +213,18 @@
 
 
             </RelativeLayout>
+
             <Button
                 android:id="@+id/submitBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/inforContent"
                 android:layout_marginStart="30dp"
-                android:layout_marginEnd="30dp"
                 android:layout_marginTop="10dp"
+                android:layout_marginEnd="30dp"
                 android:background="@drawable/shape_button01"
                 android:text="Thay đổi"
-                android:layout_below="@id/inforContent"
-                android:textColor="@color/white"
-                />
+                android:textColor="@color/white" />
 
         </RelativeLayout>
     </ScrollView>

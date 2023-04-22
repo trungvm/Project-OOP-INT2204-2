@@ -2,13 +2,12 @@ package com.example.oop_project.adapters.admin;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
-
-import android.content.Context;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
@@ -22,16 +21,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
-import com.example.oop_project.activities.common.EquipmentDetailActivity;
-import com.example.oop_project.activities.admin.EquipmentEditActivity;
 import com.example.oop_project.MyApplication;
+import com.example.oop_project.activities.admin.EquipmentEditActivity;
+import com.example.oop_project.activities.common.EquipmentDetailActivity;
 import com.example.oop_project.databinding.RowEquipmentsAdminBinding;
 import com.example.oop_project.filters.admin.FilterEquipment;
 import com.example.oop_project.models.ModelCategory;
@@ -44,15 +41,17 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+
 
 public class AdapterEquipmentAdmin extends RecyclerView.Adapter<AdapterEquipmentAdmin.HolderEquipmentAdmin> implements Filterable {
-    // context
-    private Context context;
     public ArrayList<ModelEquipment> equipmentArraylist, filterList;
+    // context
+    private final Context context;
     private RowEquipmentsAdminBinding binding;
     private FilterEquipment filter;
 
-    private ProgressDialog progressDialog;
+    private final ProgressDialog progressDialog;
 
     public AdapterEquipmentAdmin(Context context, ArrayList<ModelEquipment> equipmentArraylist) {
         this.context = context;
@@ -85,7 +84,7 @@ public class AdapterEquipmentAdmin extends RecyclerView.Adapter<AdapterEquipment
         holder.titleTv.setText(title);
         holder.descriptionTv.setText(description);
         holder.dateTv.setText(formattedDate);
-        holder.quantityTv.setText(""+quantity);
+        holder.quantityTv.setText("" + quantity);
         loadCategory(model, holder);
         // handle Click, show option 1: Edit, 2 Delete
         holder.moreBtn.setOnClickListener(new View.OnClickListener() {
@@ -100,7 +99,7 @@ public class AdapterEquipmentAdmin extends RecyclerView.Adapter<AdapterEquipment
                 Intent intent = new Intent(context, EquipmentDetailActivity.class);
                 intent.putExtra("personI4", "admin");
                 intent.putExtra("equipmentId", model.getId());
-                if(model.getIsUsedBy().equals("admin")){
+                if (model.getIsUsedBy().equals("admin")) {
                     intent.putExtra("role", model.getIsUsedBy());
                 }
                 context.startActivity(intent);
@@ -139,7 +138,7 @@ public class AdapterEquipmentAdmin extends RecyclerView.Adapter<AdapterEquipment
                         if (which == 0) {
                             // Edit clicked
                             Intent intent = new Intent(context, EquipmentEditActivity.class);
-                            intent.putExtra("equipmentId",equipmentId);
+                            intent.putExtra("equipmentId", equipmentId);
                             context.startActivity(intent);
                         } else if (which == 1) {
                             // Delete clicked
@@ -183,12 +182,12 @@ public class AdapterEquipmentAdmin extends RecyclerView.Adapter<AdapterEquipment
                 ref1.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        for(DataSnapshot ds : snapshot.getChildren()){
-                            if(ds.hasChild("Carts")){
+                        for (DataSnapshot ds : snapshot.getChildren()) {
+                            if (ds.hasChild("Carts")) {
                                 DatabaseReference ref2 = ds.child("Carts").getRef();
                                 ref2.child(equipmentId).removeValue();
                             }
-                            if(ds.hasChild("Favorites")){
+                            if (ds.hasChild("Favorites")) {
                                 DatabaseReference ref2 = ds.child("Favorites").getRef();
                                 ref2.child(equipmentId).removeValue();
                             }
@@ -218,7 +217,7 @@ public class AdapterEquipmentAdmin extends RecyclerView.Adapter<AdapterEquipment
         modelCategory.getDataFromFireBase(categoryId).addOnCompleteListener(new OnCompleteListener<ModelCategory>() {
             @Override
             public void onComplete(@NonNull Task<ModelCategory> task) {
-                if(task.isSuccessful()){
+                if (task.isSuccessful()) {
                     ModelCategory newModelCategory = task.getResult();
                     holder.categoryTv.setText(newModelCategory.getTitle());
                 }
@@ -248,6 +247,7 @@ public class AdapterEquipmentAdmin extends RecyclerView.Adapter<AdapterEquipment
         ImageButton moreBtn;
         TextView quantityTv;
         ImageView imageView;
+
         public HolderEquipmentAdmin(@NonNull View itemView) {
             super(itemView);
 

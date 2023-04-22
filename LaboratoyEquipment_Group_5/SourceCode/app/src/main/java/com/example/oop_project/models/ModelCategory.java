@@ -80,7 +80,8 @@ public class ModelCategory {
     public void setId(String id) {
         this.id = id;
     }
-    public Task<ModelCategory> getDataFromFireBase(String categoryId){
+
+    public Task<ModelCategory> getDataFromFireBase(String categoryId) {
         TaskCompletionSource<ModelCategory> taskCompletionSource = new TaskCompletionSource<>();
         ModelCategory modelCategory = new ModelCategory();
         modelCategory.setId(categoryId);
@@ -88,19 +89,19 @@ public class ModelCategory {
         ref.child(categoryId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.hasChild("status")){
-                    status =  "" + snapshot.child("status").getValue();
+                if (snapshot.hasChild("status")) {
+                    status = "" + snapshot.child("status").getValue();
                 }
-                if(snapshot.hasChild("timestamp")){
+                if (snapshot.hasChild("timestamp")) {
                     timestamp = Long.parseLong("" + snapshot.child("timestamp").getValue());
                 }
-                if(snapshot.hasChild("title")){
+                if (snapshot.hasChild("title")) {
                     title = "" + snapshot.child("title").getValue();
                 }
-                if(snapshot.hasChild("uid")){
+                if (snapshot.hasChild("uid")) {
                     uid = "" + snapshot.child("uid").getValue();
                 }
-                if(snapshot.hasChild("position")){
+                if (snapshot.hasChild("position")) {
                     position = "" + snapshot.child("position").getValue();
                 }
                 modelCategory.setPosition(position);

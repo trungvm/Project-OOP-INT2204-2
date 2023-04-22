@@ -1,19 +1,17 @@
 package com.example.oop_project.activities.user;
 
+import android.content.Context;
+import android.os.Bundle;
+import android.view.View;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
-import android.content.Context;
-import android.os.Bundle;
-import android.view.View;
-
-import com.example.oop_project.EquipmentBorrowedFragment;
 import com.example.oop_project.EquipmentUserFragment;
 import com.example.oop_project.databinding.ActivityEquipmentUserShowBinding;
 import com.example.oop_project.models.ModelCategory;
@@ -31,6 +29,7 @@ public class EquipmentUserShowActivity extends AppCompatActivity {
     public ArrayList<ModelCategory> categoryArrayList;
     public ViewPagerAdapter viewPagerAdapter;
     private ActivityEquipmentUserShowBinding binding;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,7 +48,8 @@ public class EquipmentUserShowActivity extends AppCompatActivity {
 
 
     }
-    private void setupViewPagerAdapter(ViewPager viewPager){
+
+    private void setupViewPagerAdapter(ViewPager viewPager) {
         viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT, this);
         categoryArrayList = new ArrayList<>();
 
@@ -69,34 +69,34 @@ public class EquipmentUserShowActivity extends AppCompatActivity {
 
                 viewPagerAdapter.addFragment(EquipmentUserFragment.newInstance(
                         "" + modelAll.getId(),
-                        ""+ modelAll.getTitle(),
+                        "" + modelAll.getTitle(),
                         "" + modelAll.getUid()
                 ), modelAll.getTitle());
 
                 viewPagerAdapter.addFragment(EquipmentUserFragment.newInstance(
                         "" + modelMostViewed.getId(),
-                        ""+ modelMostViewed.getTitle(),
+                        "" + modelMostViewed.getTitle(),
                         "" + modelMostViewed.getUid()
                 ), modelMostViewed.getTitle());
 
                 viewPagerAdapter.addFragment(EquipmentUserFragment.newInstance(
                         "" + modelMostBorrowed.getId(),
-                        ""+ modelMostBorrowed.getTitle(),
+                        "" + modelMostBorrowed.getTitle(),
                         "" + modelMostBorrowed.getUid()
                 ), modelMostBorrowed.getTitle());
 
                 // refresh list
                 viewPagerAdapter.notifyDataSetChanged();
 
-                for(DataSnapshot ds: snapshot.getChildren()){
-                    if(("" + ds.child("status").getValue()).equals("use")){
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    if (("" + ds.child("status").getValue()).equals("use")) {
                         ModelCategory model = ds.getValue(ModelCategory.class);
                         categoryArrayList.add(model);
 
                         viewPagerAdapter.addFragment(EquipmentUserFragment.newInstance(
-                                ""+model.getId(),
-                                ""+ model.getTitle(),
-                                ""+model.getUid()), model.getTitle());
+                                "" + model.getId(),
+                                "" + model.getTitle(),
+                                "" + model.getUid()), model.getTitle());
                         viewPagerAdapter.notifyDataSetChanged();
                     }
                 }
@@ -112,9 +112,10 @@ public class EquipmentUserShowActivity extends AppCompatActivity {
         viewPager.setAdapter(viewPagerAdapter);
 
     }
+
     public static class ViewPagerAdapter extends FragmentPagerAdapter {
-        private ArrayList<EquipmentUserFragment> fragmentList = new ArrayList<>();
-        private ArrayList<String> fragmentTitleList = new ArrayList<>();
+        private final ArrayList<EquipmentUserFragment> fragmentList = new ArrayList<>();
+        private final ArrayList<String> fragmentTitleList = new ArrayList<>();
         private Context context;
 
 
@@ -138,7 +139,8 @@ public class EquipmentUserShowActivity extends AppCompatActivity {
         public int getCount() {
             return fragmentList.size();
         }
-        private void addFragment(EquipmentUserFragment fragment, String title){
+
+        private void addFragment(EquipmentUserFragment fragment, String title) {
             fragmentList.add(fragment);
             fragmentTitleList.add(title);
 

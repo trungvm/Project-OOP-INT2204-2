@@ -2,17 +2,16 @@ package com.example.oop_project;
 
 import android.content.Context;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.viewpager.widget.ViewPager;
-
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.ViewPager;
 
 import com.example.oop_project.adapters.user.AdapterEquipmentBorrowed;
 import com.example.oop_project.databinding.FragmentEquipmentBorrowedBinding;
@@ -26,7 +25,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class EquipmentBorrowedFragment extends Fragment  implements ViewPager.OnPageChangeListener {
+public class EquipmentBorrowedFragment extends Fragment implements ViewPager.OnPageChangeListener {
     private String categoryId;
     private String title;
     private String uid;
@@ -37,14 +36,15 @@ public class EquipmentBorrowedFragment extends Fragment  implements ViewPager.On
     private ArrayList<ModelEquipment> equipmentArrayListWaiting;
 
     private FragmentEquipmentBorrowedBinding binding;
-    private FirebaseAuth  firebaseAuth;
+    private FirebaseAuth firebaseAuth;
     private String preStatus = "";
+    private String equipmentId;
+
 
     //
     public EquipmentBorrowedFragment() {
         // Required empty public constructor
     }
-
 
     public static EquipmentBorrowedFragment newInstance(String categoryId, String title, String uid) {
         EquipmentBorrowedFragment fragment = new EquipmentBorrowedFragment();
@@ -55,7 +55,6 @@ public class EquipmentBorrowedFragment extends Fragment  implements ViewPager.On
         fragment.setArguments(args);
         return fragment;
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -80,13 +79,14 @@ public class EquipmentBorrowedFragment extends Fragment  implements ViewPager.On
                 // hidden report layout + button
                 loadBorrowedEquipments();
 
-            }else if(categoryId.equals("03")){
+            } else if (categoryId.equals("03")) {
                 loadWaitingEquipments();
             }
         } else {
             // Fragment được ẩn đi
         }
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -100,9 +100,9 @@ public class EquipmentBorrowedFragment extends Fragment  implements ViewPager.On
             // hidden report layout + button
             loadBorrowedEquipments();
 
-        }else if (categoryId.equals("03")){
+        } else if (categoryId.equals("03")) {
             loadWaitingEquipments();
-        }else if (categoryId.equals("04")){
+        } else if (categoryId.equals("04")) {
             loadRefuseEquipments();
         }
 
@@ -115,9 +115,9 @@ public class EquipmentBorrowedFragment extends Fragment  implements ViewPager.On
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                try{
+                try {
                     adapterEquipmentBorrowed.getFilter().filter(s);
-                }catch (Exception e){
+                } catch (Exception e) {
 
                 }
             }
@@ -130,12 +130,10 @@ public class EquipmentBorrowedFragment extends Fragment  implements ViewPager.On
         return binding.getRoot();
     }
 
-
-    private String equipmentId;
     private void loadBorrowingEquipments() {
         firebaseAuth = FirebaseAuth.getInstance();
         equipmentArrayListBorrowing = new ArrayList<>();
-        if(equipmentArrayListBorrowing.size() != 0){
+        if (equipmentArrayListBorrowing.size() != 0) {
             equipmentArrayListBorrowing.clear();
         }
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
@@ -145,8 +143,8 @@ public class EquipmentBorrowedFragment extends Fragment  implements ViewPager.On
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         equipmentArrayListBorrowing.clear();
-                        for(DataSnapshot ds : snapshot.getChildren()){
-                            if((""+ds.child("status").getValue()).equals("Borrowed")){
+                        for (DataSnapshot ds : snapshot.getChildren()) {
+                            if (("" + ds.child("status").getValue()).equals("Borrowed")) {
                                 String key = ds.getKey();
                                 preStatus = "";
                                 equipmentId = "" + ds.child("equipmentId").getValue();
@@ -157,7 +155,7 @@ public class EquipmentBorrowedFragment extends Fragment  implements ViewPager.On
                                         ModelEquipment model = snapshot.getValue(ModelEquipment.class);
                                         model.setKey(key);
                                         model.setStatus("Borrowed");
-                                        if(ds.hasChild("preStatus")){
+                                        if (ds.hasChild("preStatus")) {
                                             preStatus = "" + ds.child("preStatus").getValue();
                                         }
                                         model.setPreStatus(preStatus);
@@ -194,7 +192,7 @@ public class EquipmentBorrowedFragment extends Fragment  implements ViewPager.On
     private void loadBorrowedEquipments() {
         firebaseAuth = FirebaseAuth.getInstance();
         equipmentArrayListBorrowed = new ArrayList<>();
-        if(equipmentArrayListBorrowed.size() != 0 ){
+        if (equipmentArrayListBorrowed.size() != 0) {
             equipmentArrayListBorrowed.clear();
         }
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
@@ -204,8 +202,8 @@ public class EquipmentBorrowedFragment extends Fragment  implements ViewPager.On
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         equipmentArrayListBorrowed.clear();
-                        for(DataSnapshot ds : snapshot.getChildren()){
-                            if((""+ds.child("status").getValue()).equals("History")){
+                        for (DataSnapshot ds : snapshot.getChildren()) {
+                            if (("" + ds.child("status").getValue()).equals("History")) {
                                 String key = ds.getKey();
                                 equipmentId = "" + ds.child("equipmentId").getValue();
                                 DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Equipments");
@@ -216,7 +214,7 @@ public class EquipmentBorrowedFragment extends Fragment  implements ViewPager.On
                                         ModelEquipment model = snapshot.getValue(ModelEquipment.class);
                                         model.setStatus("History");
                                         model.setKey(key);
-                                        if(ds.hasChild("preStatus")){
+                                        if (ds.hasChild("preStatus")) {
                                             preStatus = "" + ds.child("preStatus").getValue();
                                         }
                                         model.setPreStatus(preStatus);
@@ -253,10 +251,11 @@ public class EquipmentBorrowedFragment extends Fragment  implements ViewPager.On
 
 
     }
-    private void loadWaitingEquipments(){
+
+    private void loadWaitingEquipments() {
         firebaseAuth = FirebaseAuth.getInstance();
         equipmentArrayListWaiting = new ArrayList<>();
-        if(equipmentArrayListWaiting.size() != 0){
+        if (equipmentArrayListWaiting.size() != 0) {
             equipmentArrayListWaiting.clear();
         }
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
@@ -266,8 +265,8 @@ public class EquipmentBorrowedFragment extends Fragment  implements ViewPager.On
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         equipmentArrayListWaiting.clear();
-                        for(DataSnapshot ds : snapshot.getChildren()){
-                            if((""+ds.child("status").getValue()).equals("Waiting")){
+                        for (DataSnapshot ds : snapshot.getChildren()) {
+                            if (("" + ds.child("status").getValue()).equals("Waiting")) {
                                 String key = ds.getKey();
                                 equipmentId = "" + ds.child("equipmentId").getValue();
                                 DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Equipments");
@@ -305,10 +304,11 @@ public class EquipmentBorrowedFragment extends Fragment  implements ViewPager.On
                 });
 
     }
-    private  void loadRefuseEquipments(){
+
+    private void loadRefuseEquipments() {
         firebaseAuth = FirebaseAuth.getInstance();
         equipmentArrayListWaiting = new ArrayList<>();
-        if(equipmentArrayListWaiting.size() != 0){
+        if (equipmentArrayListWaiting.size() != 0) {
             equipmentArrayListWaiting.clear();
         }
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
@@ -318,8 +318,8 @@ public class EquipmentBorrowedFragment extends Fragment  implements ViewPager.On
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         equipmentArrayListWaiting.clear();
-                        for(DataSnapshot ds : snapshot.getChildren()){
-                            if((""+ds.child("status").getValue()).equals("Refuse")){
+                        for (DataSnapshot ds : snapshot.getChildren()) {
+                            if (("" + ds.child("status").getValue()).equals("Refuse")) {
                                 String key = ds.getKey();
                                 equipmentId = "" + ds.child("equipmentId").getValue();
                                 DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Equipments");

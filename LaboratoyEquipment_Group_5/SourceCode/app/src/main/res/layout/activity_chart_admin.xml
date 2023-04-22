@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activities.admin.ChartAdminActivity">
+
     <RelativeLayout
         android:id="@+id/toolbarRl"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
-        android:background="@drawable/shape_toolbar"
-        >
+        android:background="@drawable/shape_toolbar">
+
         <ImageButton
             android:id="@+id/backBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:background="@android:color/transparent"
+            android:contentDescription="TODO"
             android:padding="5dp"
-            android:src="@drawable/ic_back_white"
-            android:contentDescription="TODO" />
+            android:src="@drawable/ic_back_white" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -31,30 +31,29 @@
             android:textStyle="bold" />
     </RelativeLayout>
 
-   <RelativeLayout
-       android:id="@+id/tabLayout"
-       android:layout_width="match_parent"
-       android:layout_height="wrap_content"
-       android:layout_below="@id/toolbarRl"
-       android:layout_marginTop="4dp"
-       >
-       <TextView
-           android:id="@+id/label"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:text="Viewed"
-           android:gravity="center"
-           android:layout_alignParentEnd="true"
-           android:layout_marginEnd="60dp"
-           android:background="@drawable/edittext_report_gray"
-           android:layout_centerVertical="true"
-           android:drawableStart="@drawable/ic_down_gray"
-           android:paddingLeft="10dp"
-           android:paddingRight="10dp"
-           android:textColor="@color/black"
-           android:textStyle="bold"
-           />
-   </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/tabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbarRl"
+        android:layout_marginTop="4dp">
+
+        <TextView
+            android:id="@+id/label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="60dp"
+            android:background="@drawable/edittext_report_gray"
+            android:drawableStart="@drawable/ic_down_gray"
+            android:gravity="center"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="Viewed"
+            android:textColor="@color/black"
+            android:textStyle="bold" />
+    </RelativeLayout>
 
     <com.github.mikephil.charting.charts.BarChart
         android:id="@+id/barChart"

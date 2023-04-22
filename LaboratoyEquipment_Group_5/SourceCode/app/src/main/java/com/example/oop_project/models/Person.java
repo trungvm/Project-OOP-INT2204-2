@@ -4,7 +4,6 @@ import android.content.Context;
 
 import androidx.annotation.NonNull;
 
-import com.example.oop_project.MyApplication;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.TaskCompletionSource;
 import com.google.firebase.database.DataSnapshot;
@@ -19,6 +18,8 @@ public class Person {
     protected String fullName, mobile, dOB, otherInfor, address;
     protected int gender;
     protected String birthday;
+    private String accountType;
+
     public Person(String accountType) {
         this.accountType = accountType;
         this.email = "";
@@ -108,8 +109,6 @@ public class Person {
         this.accountType = accountType;
     }
 
-    private String accountType;
-
     public String getUid() {
         return uid;
     }
@@ -151,11 +150,12 @@ public class Person {
     public void setPassword(String password) {
         this.password = password;
     }
-    protected  void sendMail(Context context, String uid, String subject, String message){
 
-    };
+    protected void sendMail(Context context, String uid, String subject, String message) {
 
-    public Task<Person> getDataFromFireBase(String uid){
+    }
+
+    public Task<Person> getDataFromFireBase(String uid) {
         TaskCompletionSource<Person> taskCompletionSource = new TaskCompletionSource<>();
         Person person = new Person(this.accountType);
         person.setUid(uid);
@@ -163,32 +163,32 @@ public class Person {
         ref.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.hasChild("email")){
+                if (snapshot.hasChild("email")) {
                     email = "" + snapshot.child("email").getValue();
                 }
-                if(snapshot.hasChild("fullName")){
+                if (snapshot.hasChild("fullName")) {
                     fullName = "" + snapshot.child("fullName").getValue();
                 }
-                if(snapshot.hasChild("profileImage")){
+                if (snapshot.hasChild("profileImage")) {
                     profileImage = "" + snapshot.child("profileImage").getValue();
                 }
-                if(snapshot.hasChild("accountType")){
+                if (snapshot.hasChild("accountType")) {
                     accountType = "" + snapshot.child("accountType").getValue();
                 }
-                if(snapshot.hasChild("mobile")){
+                if (snapshot.hasChild("mobile")) {
                     mobile = "" + snapshot.child("mobile").getValue();
                 }
-                if(snapshot.hasChild("address")){
+                if (snapshot.hasChild("address")) {
                     address = "" + snapshot.child("address").getValue();
                 }
-                if(snapshot.hasChild("otherInfor")){
+                if (snapshot.hasChild("otherInfor")) {
                     otherInfor = "" + snapshot.child("otherInfor").getValue();
                 }
-                if(snapshot.hasChild("birthday")){
+                if (snapshot.hasChild("birthday")) {
                     birthday = "" + snapshot.child("birthday").getValue();
                 }
-                if(snapshot.hasChild("gender")){
-                    gender =Integer.parseInt("" + snapshot.child("gender").getValue());
+                if (snapshot.hasChild("gender")) {
+                    gender = Integer.parseInt("" + snapshot.child("gender").getValue());
                 }
                 person.setEmail(email);
                 person.setFullName(fullName);

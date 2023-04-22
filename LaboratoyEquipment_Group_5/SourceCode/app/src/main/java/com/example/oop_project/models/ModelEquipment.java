@@ -196,9 +196,9 @@ public class ModelEquipment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 String fullName = "" + snapshot.child("title").getValue();
-                if(fullName.equals("null")){
+                if (fullName.equals("null")) {
                     taskCompletionSource.setException(new Exception("Chưa có tên"));
-                }else{
+                } else {
                     taskCompletionSource.setResult(fullName);
                 }
             }
@@ -211,7 +211,8 @@ public class ModelEquipment {
 
         return taskCompletionSource.getTask();
     }
-    public Task<ModelEquipment> getDataFromFireBase(String equipmentId){
+
+    public Task<ModelEquipment> getDataFromFireBase(String equipmentId) {
         TaskCompletionSource<ModelEquipment> taskCompletionSource = new TaskCompletionSource<>();
         ModelEquipment modelEquipment = new ModelEquipment();
         modelEquipment.setId(equipmentId);
@@ -228,22 +229,22 @@ public class ModelEquipment {
                 if (snapshot.hasChild("equipmentImage")) {
                     equipmentImage = "" + snapshot.child("equipmentImage").getValue();
                 }
-                if(snapshot.hasChild("manual")){
+                if (snapshot.hasChild("manual")) {
                     manual = "" + snapshot.child("manual").getValue();
                 }
-                if(snapshot.hasChild("quantity")){
+                if (snapshot.hasChild("quantity")) {
                     quantity = Integer.parseInt("" + snapshot.child("quantity").getValue());
                 }
-                if(snapshot.hasChild("status")){
+                if (snapshot.hasChild("status")) {
                     status = "" + snapshot.child("status").getValue();
                 }
-                if(snapshot.hasChild("timestamp")){
+                if (snapshot.hasChild("timestamp")) {
                     timestamp = Long.parseLong("" + snapshot.child("timestamp").getValue());
                 }
-                if(snapshot.hasChild("title")){
+                if (snapshot.hasChild("title")) {
                     title = "" + snapshot.child("title").getValue();
                 }
-                if(snapshot.hasChild("uid")){
+                if (snapshot.hasChild("uid")) {
                     uid = "" + snapshot.child("uid").getValue();
                 }
                 modelEquipment.setCategoryId(categoryId);

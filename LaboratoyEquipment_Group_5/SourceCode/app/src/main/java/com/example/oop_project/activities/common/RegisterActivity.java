@@ -1,8 +1,5 @@
 package com.example.oop_project.activities.common;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +7,9 @@ import android.text.TextUtils;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.oop_project.activities.user.DashboardUserActivity;
 import com.example.oop_project.databinding.ActivityRegisterBinding;
@@ -31,6 +31,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     // progress dialog
     private ProgressDialog progressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,7 +53,7 @@ public class RegisterActivity extends AppCompatActivity {
                 startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
             }
         });
-         User user = new User();
+        User user = new User();
         binding.registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -62,14 +63,14 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
 
-
-    private void getData(User user){
+    private void getData(User user) {
         String email = "", password = "";
         email = binding.email.getText().toString().trim();
         password = binding.password.getText().toString().trim();
         user.setEmail(email);
         user.setPassword(password);
     }
+
     private void validateData(User user) {
         getData(user);
         // before creating, need validate data
@@ -80,10 +81,9 @@ public class RegisterActivity extends AppCompatActivity {
             Toast.makeText(this, "Enter password...!", Toast.LENGTH_SHORT).show();
         } else if (TextUtils.isEmpty(confirmPassword)) {
             Toast.makeText(this, "Enter confirm password...!", Toast.LENGTH_SHORT).show();
-        }
-        else if(!user.getPassword().equals(confirmPassword)){
+        } else if (!user.getPassword().equals(confirmPassword)) {
             Toast.makeText(this, "Confirm password doesn't match...!", Toast.LENGTH_SHORT).show();
-        }else{
+        } else {
             createUserAccount(user);
         }
     }

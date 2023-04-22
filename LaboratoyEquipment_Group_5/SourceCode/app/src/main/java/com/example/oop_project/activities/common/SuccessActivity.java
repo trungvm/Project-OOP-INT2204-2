@@ -1,10 +1,10 @@
 package com.example.oop_project.activities.common;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.oop_project.activities.admin.AddRulesAdminActivity;
 import com.example.oop_project.activities.admin.ScheduleAdminActivity;
@@ -20,9 +20,9 @@ public class SuccessActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivitySuccessBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        if(getIntent().getStringExtra("status") != null){
+        if (getIntent().getStringExtra("status") != null) {
             status = getIntent().getStringExtra("status");
-            if(status.equals("True")){
+            if (status.equals("True")) {
                 binding.textV.setText("Xác nhận thành công");
                 new Handler().postDelayed(new Runnable() {
                     @Override
@@ -31,7 +31,7 @@ public class SuccessActivity extends AppCompatActivity {
                         finish();
                     }
                 }, 2000);
-            }else if(status.equals("ScheduleRefuse")){
+            } else if (status.equals("ScheduleRefuse")) {
                 binding.textV.setText("Xác nhận hủy thành công");
                 new Handler().postDelayed(new Runnable() {
                     @Override
@@ -40,7 +40,7 @@ public class SuccessActivity extends AppCompatActivity {
                         finish();
                     }
                 }, 2000);
-            }else if(status.equals("ScheduleAccept")){
+            } else if (status.equals("ScheduleAccept")) {
                 binding.textV.setText("Xác nhận cho mượn thành công");
                 new Handler().postDelayed(new Runnable() {
                     @Override
@@ -50,7 +50,7 @@ public class SuccessActivity extends AppCompatActivity {
                     }
                 }, 2000);
             }
-        }else{
+        } else {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {

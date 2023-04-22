@@ -5,7 +5,6 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 
 import com.example.oop_project.MyApplication;
-import com.example.oop_project.models.Person;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.TaskCompletionSource;
 import com.google.firebase.database.DataSnapshot;
@@ -14,18 +13,17 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
 public class User extends Person {
-    public User(){
+    public User() {
         super("user");
     }
-    public User(String email, String password, long timestamp, String profileImage, String uid){
-        super("user",email, password, timestamp, profileImage, uid);
+
+    public User(String email, String password, long timestamp, String profileImage, String uid) {
+        super("user", email, password, timestamp, profileImage, uid);
     }
+
     @Override
-    public void sendMail(Context context, String uid, String subject, String message){
+    public void sendMail(Context context, String uid, String subject, String message) {
         this.uid = uid;
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
         ref.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -41,6 +39,7 @@ public class User extends Person {
             }
         });
     }
+
     public Task<Integer> getAmountOfBorrowed(String uid, String key) {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
         TaskCompletionSource<Integer> taskCompletionSource = new TaskCompletionSource<>();
@@ -49,7 +48,7 @@ public class User extends Person {
                 .child(key).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        Integer quantityBorrowed = Integer.parseInt(""+snapshot.child("quantityBorrowed").getValue());
+                        Integer quantityBorrowed = Integer.parseInt("" + snapshot.child("quantityBorrowed").getValue());
                         if (quantityBorrowed != null) {
                             taskCompletionSource.setResult(quantityBorrowed);
                         } else {
@@ -67,6 +66,7 @@ public class User extends Person {
 
         return taskCompletionSource.getTask();
     }
+
     public Task<String> getFullName(String uid) {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
         TaskCompletionSource<String> taskCompletionSource = new TaskCompletionSource<>();
@@ -74,9 +74,9 @@ public class User extends Person {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 String fullName = "" + snapshot.child("fullName").getValue();
-                if(fullName.equals("null")){
+                if (fullName.equals("null")) {
                     taskCompletionSource.setException(new Exception("Chưa có tên"));
-                }else{
+                } else {
                     taskCompletionSource.setResult(fullName);
                 }
             }

@@ -1,14 +1,14 @@
 package com.example.oop_project.activities.admin;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.oop_project.adapters.admin.AdapterEquipmentAdmin;
 import com.example.oop_project.databinding.ActivityEquipmentListAdminBinding;
@@ -22,12 +22,12 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 public class EquipmentListAdminActivity extends AppCompatActivity {
+    private static final String TAG = "EQUIPMENT_LIST_TAG";
     private ActivityEquipmentListAdminBinding binding;
     private ArrayList<ModelEquipment> equipmentArrayList;
     private AdapterEquipmentAdmin adapterEquipmentAdmin;
     private String categoryId, categoryTitle;
 
-    private static final String TAG = "EQUIPMENT_LIST_TAG";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,7 +54,7 @@ public class EquipmentListAdminActivity extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 try {
                     adapterEquipmentAdmin.getFilter().filter(s);
-                }catch (Exception e){
+                } catch (Exception e) {
                     Log.d(TAG, "ontextchange:" + e.getMessage());
                 }
             }
@@ -81,8 +81,8 @@ public class EquipmentListAdminActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         equipmentArrayList.clear();
-                        for(DataSnapshot ds : snapshot.getChildren()){
-                                if((""+ds.child("status").getValue()).equals("use")){
+                        for (DataSnapshot ds : snapshot.getChildren()) {
+                            if (("" + ds.child("status").getValue()).equals("use")) {
                                 ModelEquipment model = ds.getValue(ModelEquipment.class);
                                 model.setIsUsedBy("admin");
                                 equipmentArrayList.add(model);

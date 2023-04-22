@@ -1,8 +1,5 @@
 package com.example.oop_project.activities.common;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +8,9 @@ import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.oop_project.activities.admin.DashboardAdminActivity;
 import com.example.oop_project.activities.user.DashboardUserActivity;
@@ -31,6 +31,7 @@ public class LoginActivity extends AppCompatActivity {
     private ActivityLoginBinding binding;
     private FirebaseAuth firebaseAuth;
     private ProgressDialog progressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,22 +71,24 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
-    private  void getData(User user){
+
+    private void getData(User user) {
         String email = "", password = "";
         email = binding.email.getText().toString().trim();
         password = binding.password.getText().toString().trim();
         user.setEmail(email);
         user.setPassword(password);
     }
+
     private void validateData(User user) {
         getData(user);
-        if(TextUtils.isEmpty(user.getEmail())){
+        if (TextUtils.isEmpty(user.getEmail())) {
             Toast.makeText(this, "Vui lòng nhập email...!", Toast.LENGTH_SHORT).show();
         } else if (!Patterns.EMAIL_ADDRESS.matcher(user.getEmail()).matches()) {
             Toast.makeText(this, "Lỗi email...!", Toast.LENGTH_SHORT).show();
         } else if (TextUtils.isEmpty(user.getPassword())) {
             Toast.makeText(this, "Vui lòng nhập mật khẩu..!", Toast.LENGTH_SHORT).show();
-        }else{
+        } else {
             loginUser(user);
         }
     }
@@ -107,11 +110,12 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         progressDialog.dismiss();
-                        Toast.makeText(LoginActivity.this, ""+ e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
     }
-    private void checkUser(){
+
+    private void checkUser() {
         progressDialog.setMessage("......");
 
         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
@@ -123,12 +127,12 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         // get User type
-                        String userType = ""+snapshot.child("accountType").getValue();
+                        String userType = "" + snapshot.child("accountType").getValue();
                         Log.i("test", userType);
-                        if(userType.equals("user")){
+                        if (userType.equals("user")) {
                             startActivity(new Intent(LoginActivity.this, DashboardUserActivity.class).putExtra("WITHOUT_LOGIN", 0));
                             finish();
-                        }else if(userType.equals("admin")){
+                        } else if (userType.equals("admin")) {
                             startActivity(new Intent(LoginActivity.this, DashboardAdminActivity.class));
                             finish();
                         }

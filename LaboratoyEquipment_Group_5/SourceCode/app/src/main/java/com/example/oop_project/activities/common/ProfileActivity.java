@@ -1,15 +1,15 @@
 package com.example.oop_project.activities.common;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.bumptech.glide.Glide;
 import com.example.oop_project.MyApplication;
@@ -31,6 +31,7 @@ public class ProfileActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private int favoriteCount = 0;
     private String role = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,16 +45,16 @@ public class ProfileActivity extends AppCompatActivity {
         binding.bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()){
+                switch (item.getItemId()) {
                     case R.id.menuHome:
-                        if(role.equals("user")){
+                        if (role.equals("user")) {
                             Intent intent = new Intent(ProfileActivity.this, DashboardUserActivity.class);
                             intent.putExtra("CURRENT_TAB", 0);
                             startActivity(intent);
                             item.setChecked(true);
                             finish(); // optional, để đóng MainActivity khi chuyển sang HomeActivity
                             return true;
-                        }else if(role.equals("admin")){
+                        } else if (role.equals("admin")) {
                             Intent intent = new Intent(ProfileActivity.this, DashboardAdminActivity.class);
                             intent.putExtra("CURRENT_TAB", 0);
                             startActivity(intent);
@@ -110,29 +111,29 @@ public class ProfileActivity extends AppCompatActivity {
                         String gender = "" + snapshot.child("gender").getValue();
                         role = "" + snapshot.child("accountType").getValue();
                         String sex = "N/A";
-                        if(gender.equals("1")){
+                        if (gender.equals("1")) {
                             sex = "Nam";
-                        }else if(gender.equals("2")){
+                        } else if (gender.equals("2")) {
                             sex = "Nữ";
                         }
                         String formattedDate = MyApplication.formatTimestamp(Long.parseLong(timestamp));
                         // set data to ui
-                        binding.emailTv.setText(email == ""? "N/A" : email);
+                        binding.emailTv.setText(email == "" ? "N/A" : email);
                         binding.nameTv.setText(fullName.equals("null") || fullName.equals("") ? "N/A" : fullName);
                         binding.memberTv.setText(formattedDate);
                         binding.accountTv.setText(accountType);
                         binding.mobileTv.setText(mobile.equals("null") || mobile.equals("") ? "N/A" : mobile);
-                        binding.addressTv.setText(address.equals("null") || address.equals("") ? "N/A" :address);
+                        binding.addressTv.setText(address.equals("null") || address.equals("") ? "N/A" : address);
                         binding.otherInfo.setText(otherInfor.equals("null") ? "N/A" : otherInfor);
                         binding.genderTv.setText(sex);
-                        if(!profileImage.equals("null") && !isDestroyed()){
+                        if (!profileImage.equals("null") && !isDestroyed()) {
                             Glide.with(ProfileActivity.this)
                                     .load(profileImage)
                                     .placeholder(R.drawable.ic_person_gray)
                                     .into(binding.profileTv);
                         }
                         binding.birthdayTv.setText(birthday.equals("null") || birthday.equals("") ? "N/A" : birthday);
-                        if(accountType.equals("admin")) {
+                        if (accountType.equals("admin")) {
                             binding.bottomNavigationView.getMenu().findItem(R.id.menuFavorite).setVisible(false);
                         }
 
@@ -142,9 +143,9 @@ public class ProfileActivity extends AppCompatActivity {
                                 .addValueEventListener(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                       for(DataSnapshot ds : snapshot.getChildren()){
-                                           favoriteCount++;
-                                       }
+                                        for (DataSnapshot ds : snapshot.getChildren()) {
+                                            favoriteCount++;
+                                        }
                                         binding.favoriteTv.setText("" + favoriteCount);
 
                                     }

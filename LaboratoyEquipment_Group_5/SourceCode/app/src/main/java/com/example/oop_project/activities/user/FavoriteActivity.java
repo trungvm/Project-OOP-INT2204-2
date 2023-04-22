@@ -1,11 +1,11 @@
 package com.example.oop_project.activities.user;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.oop_project.R;
 import com.example.oop_project.activities.common.ProfileActivity;
@@ -27,7 +27,7 @@ public class FavoriteActivity extends AppCompatActivity {
     private ActivityFavoriteBinding binding;
     private ArrayList<ModelEquipment> equipmentArrayList;
     private AdapterEquipmentFavorite adapterEquipmentFavorite;
-    private FirebaseAuth  firebaseAuth;
+    private FirebaseAuth firebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +40,7 @@ public class FavoriteActivity extends AppCompatActivity {
         binding.bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()){
+                switch (item.getItemId()) {
                     case R.id.menuHome:
                         Intent intent = new Intent(FavoriteActivity.this, DashboardUserActivity.class);
                         intent.putExtra("CURRENT_TAB", 0);
@@ -76,8 +76,8 @@ public class FavoriteActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         equipmentArrayList.clear();
-                        for(DataSnapshot ds: snapshot.getChildren()){
-                            String equipmentId = ""+ds.child("equipmentId").getValue();
+                        for (DataSnapshot ds : snapshot.getChildren()) {
+                            String equipmentId = "" + ds.child("equipmentId").getValue();
                             DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Equipments");
                             reference.child(equipmentId)
                                     .addListenerForSingleValueEvent(new ValueEventListener() {

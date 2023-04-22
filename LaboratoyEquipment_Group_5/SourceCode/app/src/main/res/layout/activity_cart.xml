@@ -5,51 +5,52 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activities.user.CartActivity">
+
     <RelativeLayout
         android:id="@+id/toolbarRl"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
-        android:background="@drawable/shape_toolbar"
-        >
+        android:background="@drawable/shape_toolbar">
+
         <ImageButton
-        android:id="@+id/backBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="8dp"
-        android:padding="10dp"
-        android:background="@android:color/transparent"
-        android:src="@drawable/ic_back_white" />
+            android:id="@+id/backBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="8dp"
+            android:background="@android:color/transparent"
+            android:padding="10dp"
+            android:src="@drawable/ic_back_white" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Giỏ đồ mượn"
             android:layout_centerInParent="true"
-            android:textStyle="bold"
+            android:text="Giỏ đồ mượn"
             android:textColor="@color/white"
             android:textSize="20sp"
-            />
+            android:textStyle="bold" />
     </RelativeLayout>
+
     <androidx.recyclerview.widget.RecyclerView
-        android:layout_marginTop="5dp"
         android:id="@+id/cartRv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/toolbarRl"
-        tools:listitem="@layout/row_equipments_cart"
+        android:layout_marginTop="5dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        />
+        tools:listitem="@layout/row_equipments_cart" />
+
     <Button
         android:id="@+id/borrowBtn"
-        android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:layout_marginTop="20dp"
         android:background="@drawable/shape_button_03"
         android:text="Mượn"
-        android:textColor="@color/white"
-        />
+        android:textColor="@color/white" />
 
 
 </RelativeLayout>

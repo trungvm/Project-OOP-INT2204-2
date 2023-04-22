@@ -1,15 +1,14 @@
-
 package com.example.oop_project.activities.common;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
@@ -31,16 +30,17 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 public class EquipmentDetailActivity extends AppCompatActivity {
-    private ActivityEquipmentDetailBinding binding;
     public FirebaseAuth firebaseAuth;
     String equipmentId;
     boolean isInMyFavorite = false;
-    private String quantity = "";
     String status = "";
     String key = "";
     String role = "";
     String personI4 = "";
     String preStatus = "";
+    private ActivityEquipmentDetailBinding binding;
+    private String quantity = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,23 +48,23 @@ public class EquipmentDetailActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         Intent intent = getIntent();
         equipmentId = intent.getStringExtra("equipmentId");
-        if(intent.getStringExtra("status") != null){
+        if (intent.getStringExtra("status") != null) {
             status = intent.getStringExtra("status");
         }
-        if(intent.getStringExtra("key") != null){
+        if (intent.getStringExtra("key") != null) {
             key = intent.getStringExtra("key");
         }
-        if(intent.getStringExtra("role") != null){
+        if (intent.getStringExtra("role") != null) {
             role = intent.getStringExtra("role");
         }
-        if(intent.getStringExtra("personI4") != null){
+        if (intent.getStringExtra("personI4") != null) {
             personI4 = intent.getStringExtra("personI4");
         }
-        if(intent.getStringExtra("preStatus") != null){
+        if (intent.getStringExtra("preStatus") != null) {
             preStatus = intent.getStringExtra("preStatus");
         }
         firebaseAuth = FirebaseAuth.getInstance();
-        if(!role.equals("admin") && firebaseAuth.getCurrentUser() != null){
+        if (!role.equals("admin") && firebaseAuth.getCurrentUser() != null) {
             checkIsFavorite();
         }
 
@@ -83,7 +83,7 @@ public class EquipmentDetailActivity extends AppCompatActivity {
             }
         });
 
-        if(role.equals("admin")){
+        if (role.equals("admin")) {
             binding.favoriteBtn.setVisibility(View.GONE);
             binding.addCartBtn.setVisibility(View.GONE);
         }
@@ -91,18 +91,18 @@ public class EquipmentDetailActivity extends AppCompatActivity {
 
     private void checkEquipmentQuantity() {
         int quantityInStock = Integer.parseInt(quantity);
-        if(quantityInStock == 0){
+        if (quantityInStock == 0) {
             Toast.makeText(this, "Thiết bị đã bị mượn hết", Toast.LENGTH_SHORT).show();
-        }else{
+        } else {
             // Thêm sản phẩm vào trong cart;
             DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
             ref.child(firebaseAuth.getUid()).child("Carts").addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot){
-                    if(snapshot.hasChild(equipmentId)){
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (snapshot.hasChild(equipmentId)) {
                         Toast.makeText(EquipmentDetailActivity.this, "Đã có thiết bị trong giỏ hàng!", Toast.LENGTH_SHORT).show();
                         return;
-                    }else{
+                    } else {
                         MyApplication.addToCart(EquipmentDetailActivity.this, equipmentId);
                     }
                 }
@@ -121,31 +121,31 @@ public class EquipmentDetailActivity extends AppCompatActivity {
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        String title = ""+snapshot.child("title").getValue();
-                        String description = ""+snapshot.child("description").getValue();
-                        String timestamp = ""+snapshot.child("timestamp").getValue();
-                        quantity = ""+snapshot.child("quantity").getValue();
-                        String manual = ""+snapshot.child("manual").getValue();
-                        String categoryId = ""+snapshot.child("categoryId").getValue();
+                        String title = "" + snapshot.child("title").getValue();
+                        String description = "" + snapshot.child("description").getValue();
+                        String timestamp = "" + snapshot.child("timestamp").getValue();
+                        quantity = "" + snapshot.child("quantity").getValue();
+                        String manual = "" + snapshot.child("manual").getValue();
+                        String categoryId = "" + snapshot.child("categoryId").getValue();
                         String date = MyApplication.formatTimestamp(Long.parseLong(timestamp));
-                        String viewed = ""+snapshot.child("viewed").getValue();
+                        String viewed = "" + snapshot.child("viewed").getValue();
                         String equipmentImage = "" + snapshot.child("equipmentImage").getValue();
                         String numberOfBorrowings = "0";
-                        if(snapshot.hasChild("numberOfBorrowings")){
+                        if (snapshot.hasChild("numberOfBorrowings")) {
                             numberOfBorrowings = "" + snapshot.child("numberOfBorrowings").getValue();
                         }
                         ModelCategory modelCategory = new ModelCategory();
                         modelCategory.getDataFromFireBase(categoryId).addOnCompleteListener(new OnCompleteListener<ModelCategory>() {
                             @Override
                             public void onComplete(@NonNull Task<ModelCategory> task) {
-                                if(task.isSuccessful()){
+                                if (task.isSuccessful()) {
                                     ModelCategory newModelCategory = task.getResult();
                                     binding.categoryTv.setText(newModelCategory.getTitle());
                                     binding.position.setText(newModelCategory.getPosition());
                                 }
                             }
                         });
-                        if(!personI4.equals("admin")){
+                        if (!personI4.equals("admin")) {
                             int viewede = Integer.parseInt(viewed) + 1;
                             DatabaseReference ref1 = FirebaseDatabase.getInstance().getReference("Equipments");
                             ref1.child(equipmentId).child("viewed")
@@ -161,7 +161,7 @@ public class EquipmentDetailActivity extends AppCompatActivity {
                         binding.dateTv.setText(date);
                         binding.numberOfBorrowings.setText(numberOfBorrowings);
                         binding.quantityTv.setText(quantity);
-                        if(status.equals("Borrowed") && personI4.equals("admin") && preStatus.equals("Waiting")){
+                        if (status.equals("Borrowed") && personI4.equals("admin") && preStatus.equals("Waiting")) {
                             DatabaseReference ref = FirebaseDatabase.getInstance().getReference("EquipmentsBorrowed");
                             ref.child(key)
                                     .addListenerForSingleValueEvent(new ValueEventListener() {
@@ -179,13 +179,13 @@ public class EquipmentDetailActivity extends AppCompatActivity {
                                             String startDate = "" + snapshot.child("startDate").getValue();
                                             String endDate = "" + snapshot.child("endDate").getValue();
                                             String date = MyApplication.formatTimestampToDetailTime(Long.parseLong(timestamp));
-                                            binding.descriptionTv.setText("Thời gian xác nhận : " +  date
-                                                    +"\n" + "Thời gian dự kiến mượn : " + startDate
-                                                    +"\n" + "Thời gian dự kiến trả : " + endDate
+                                            binding.descriptionTv.setText("Thời gian xác nhận : " + date
+                                                    + "\n" + "Thời gian dự kiến mượn : " + startDate
+                                                    + "\n" + "Thời gian dự kiến trả : " + endDate
                                             );
                                             binding.manualTv.setText("Báo cáo về thiết bị lúc mượn: " + (report.equals("null") ? "" : report)
                                                     + "\n" + "Họ và tên: " + fullName
-                                                    + "\n" + "Email: " +email
+                                                    + "\n" + "Email: " + email
                                                     + "\n" + "Địa chỉ: " + address
                                                     + "\n" + "Ngày sinh: " + birthday
                                                     + "\n" + "Số điện thoại: " + mobile
@@ -199,7 +199,7 @@ public class EquipmentDetailActivity extends AppCompatActivity {
 
                                         }
                                     });
-                        }else if(status.equals("History") && personI4.equals("admin") && preStatus.equals("Waiting")){
+                        } else if (status.equals("History") && personI4.equals("admin") && preStatus.equals("Waiting")) {
                             DatabaseReference ref = FirebaseDatabase.getInstance().getReference("EquipmentsBorrowed");
                             ref.child(key)
                                     .addListenerForSingleValueEvent(new ValueEventListener() {
@@ -218,14 +218,14 @@ public class EquipmentDetailActivity extends AppCompatActivity {
                                             String endDate = "" + snapshot.child("endDate").getValue();
                                             String date = MyApplication.formatTimestampToDetailTime(Long.parseLong(timestamp));
                                             String reportHistory = "" + snapshot.child("reportHistory").getValue();
-                                            binding.descriptionTv.setText("Thời gian xác nhận : " +  date
-                                                    +"\n" + "Thời gian dự kiến mượn : " + startDate
-                                                    +"\n" + "Thời gian dự kiến trả : " + endDate
+                                            binding.descriptionTv.setText("Thời gian xác nhận : " + date
+                                                    + "\n" + "Thời gian dự kiến mượn : " + startDate
+                                                    + "\n" + "Thời gian dự kiến trả : " + endDate
                                             );
                                             binding.manualTv.setText("Báo cáo về thiết bị lúc mượn: " + (report.equals("null") ? "" : report)
                                                     + "\n" + "Báo cáo về thiết bị lúc trả : " + reportHistory
                                                     + "\n" + "Họ và tên: " + fullName
-                                                    + "\n" + "Email: " +email
+                                                    + "\n" + "Email: " + email
                                                     + "\n" + "Địa chỉ: " + address
                                                     + "\n" + "Ngày sinh: " + birthday
                                                     + "\n" + "Số điện thoại: " + mobile
@@ -239,8 +239,7 @@ public class EquipmentDetailActivity extends AppCompatActivity {
 
                                         }
                                     });
-                        }
-                        else if(status.equals("Refuse") && personI4.equals("admin")){
+                        } else if (status.equals("Refuse") && personI4.equals("admin")) {
                             DatabaseReference ref = FirebaseDatabase.getInstance().getReference("EquipmentsBorrowed");
                             ref.child(key)
                                     .addListenerForSingleValueEvent(new ValueEventListener() {
@@ -259,14 +258,14 @@ public class EquipmentDetailActivity extends AppCompatActivity {
                                             String startDate = "" + snapshot.child("startDate").getValue();
                                             String endDate = "" + snapshot.child("endDate").getValue();
                                             String date = MyApplication.formatTimestampToDetailTime(Long.parseLong(timestamp));
-                                            binding.descriptionTv.setText("Thời gian xác nhận : " +  date
-                                            +"\n" + "Thời gian dự kiến mượn : " + startDate
-                                            +"\n" + "Thời gian dự kiến trả : " + endDate
-                                            +"\n" + "Lí do hủy : " + reportRefuse
+                                            binding.descriptionTv.setText("Thời gian xác nhận : " + date
+                                                    + "\n" + "Thời gian dự kiến mượn : " + startDate
+                                                    + "\n" + "Thời gian dự kiến trả : " + endDate
+                                                    + "\n" + "Lí do hủy : " + reportRefuse
                                             );
                                             binding.manualTv.setText("Báo cáo về thiết bị lúc mượn: " + (report.equals("null") ? "" : report)
                                                     + "\n" + "Họ và tên: " + fullName
-                                                    + "\n" + "Email: " +email
+                                                    + "\n" + "Email: " + email
                                                     + "\n" + "Địa chỉ: " + address
                                                     + "\n" + "Ngày sinh: " + birthday
                                                     + "\n" + "Số điện thoại: " + mobile
@@ -280,7 +279,7 @@ public class EquipmentDetailActivity extends AppCompatActivity {
 
                                         }
                                     });
-                        }else if((status.equals("Borrowed") && personI4.equals("admin") )||(status.equals("Waiting") && personI4.equals("admin")) ){
+                        } else if ((status.equals("Borrowed") && personI4.equals("admin")) || (status.equals("Waiting") && personI4.equals("admin"))) {
                             DatabaseReference ref = FirebaseDatabase.getInstance().getReference("EquipmentsBorrowed");
                             ref.child(key)
                                     .addListenerForSingleValueEvent(new ValueEventListener() {
@@ -297,10 +296,10 @@ public class EquipmentDetailActivity extends AppCompatActivity {
                                             String otherInfor = "" + snapshot.child("otherInfor").getValue();
 
                                             String date = MyApplication.formatTimestampToDetailTime(Long.parseLong(timestamp));
-                                            binding.descriptionTv.setText("Thời gian mượn : " +  date);
+                                            binding.descriptionTv.setText("Thời gian mượn : " + date);
                                             binding.manualTv.setText("Báo cáo về thiết bị lúc mượn: " + (report.equals("null") ? "" : report)
                                                     + "\n" + "Họ và tên: " + fullName
-                                                    + "\n" + "Email: " +email
+                                                    + "\n" + "Email: " + email
                                                     + "\n" + "Địa chỉ: " + address
                                                     + "\n" + "Ngày sinh: " + birthday
                                                     + "\n" + "Số điện thoại: " + mobile
@@ -314,14 +313,14 @@ public class EquipmentDetailActivity extends AppCompatActivity {
 
                                         }
                                     });
-                        }else if(status.equals("History") && personI4.equals("admin")){
+                        } else if (status.equals("History") && personI4.equals("admin")) {
                             DatabaseReference ref = FirebaseDatabase.getInstance().getReference("EquipmentsBorrowed");
                             ref.child(key)
                                     .addListenerForSingleValueEvent(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                                             String timestamp = "" + snapshot.child("timestamp").getValue();
-                                            String timestampReturn = ""+ snapshot.child("timestampReturn").getValue();
+                                            String timestampReturn = "" + snapshot.child("timestampReturn").getValue();
                                             String report = "" + snapshot.child("report").getValue();
                                             String reportHistory = "" + snapshot.child("reportHistory").getValue();
                                             String date = "";
@@ -334,15 +333,15 @@ public class EquipmentDetailActivity extends AppCompatActivity {
                                             String mobile = "" + snapshot.child("mobile").getValue();
                                             String gender = "" + snapshot.child("gender").getValue();
                                             String otherInfor = "" + snapshot.child("otherInfor").getValue();
-                                            if(!timestamp.equals("null") && !timestampReturn.equals("null")){
+                                            if (!timestamp.equals("null") && !timestampReturn.equals("null")) {
                                                 date = MyApplication.formatTimestampToDetailTime(Long.parseLong(timestamp));
                                                 dateReturn = MyApplication.formatTimestampToDetailTime(Long.parseLong(timestampReturn));
                                             }
-                                            binding.descriptionTv.setText("Thời gian mượn: " +  date + " - Thời gian trả : " + dateReturn);
+                                            binding.descriptionTv.setText("Thời gian mượn: " + date + " - Thời gian trả : " + dateReturn);
                                             binding.manualTv.setText("Báo cáo về thiết bị lúc mượn: " + (report.equals("null") ? "" : report)
                                                     + "\n" + "Báo cáo về thiết bị lúc trả: " + (reportHistory.equals("null") ? "" : reportHistory)
                                                     + "\n" + "Họ và tên: " + fullName
-                                                    + "\n" + "Email: " +email
+                                                    + "\n" + "Email: " + email
                                                     + "\n" + "Địa chỉ: " + address
                                                     + "\n" + "Ngày sinh: " + birthday
                                                     + "\n" + "Số điện thoại: " + mobile
@@ -358,7 +357,7 @@ public class EquipmentDetailActivity extends AppCompatActivity {
                                         }
                                     });
 
-                        }else if(status.equals("Borrowed") && preStatus.equals("Waiting")){
+                        } else if (status.equals("Borrowed") && preStatus.equals("Waiting")) {
                             DatabaseReference ref = FirebaseDatabase.getInstance().getReference("EquipmentsBorrowed");
                             ref.child(key)
                                     .addListenerForSingleValueEvent(new ValueEventListener() {
@@ -372,9 +371,9 @@ public class EquipmentDetailActivity extends AppCompatActivity {
                                             String endDate = "" + snapshot.child("endDate").getValue();
 
                                             String date = MyApplication.formatTimestampToDetailTime(Long.parseLong(timestamp));
-                                            binding.descriptionTv.setText("Thời gian mượn : " +  date
-                                                + "\n" + "Thời gian xác nhận : " + dateSchedule
-                                                    +"\n" + "Thời gian dự kiến mượn : " + startDate
+                                            binding.descriptionTv.setText("Thời gian mượn : " + date
+                                                    + "\n" + "Thời gian xác nhận : " + dateSchedule
+                                                    + "\n" + "Thời gian dự kiến mượn : " + startDate
                                                     + "\n" + "Thời gian dự kiến trả : " + endDate
                                             );
                                             binding.manualTv.setText("Báo cáo về thiết bị lúc mượn: " + (report.equals("null") ? "" : report)
@@ -386,8 +385,7 @@ public class EquipmentDetailActivity extends AppCompatActivity {
 
                                         }
                                     });
-                        }
-                        else if(status.equals("History") && preStatus.equals("Waiting")){
+                        } else if (status.equals("History") && preStatus.equals("Waiting")) {
                             DatabaseReference ref = FirebaseDatabase.getInstance().getReference("EquipmentsBorrowed");
                             ref.child(key)
                                     .addListenerForSingleValueEvent(new ValueEventListener() {
@@ -401,17 +399,17 @@ public class EquipmentDetailActivity extends AppCompatActivity {
                                             String endDate = "" + snapshot.child("endDate").getValue();
                                             String timeReturn = "" + snapshot.child("timestampReturn").getValue();
                                             String dateReturn = MyApplication.formatTimestampToDetailTime(Long.parseLong(timeReturn));
-                                            String reportHistory  = "" + snapshot.child("reportHistory").getValue();
+                                            String reportHistory = "" + snapshot.child("reportHistory").getValue();
                                             String date = MyApplication.formatTimestampToDetailTime(Long.parseLong(timestamp));
-                                            binding.descriptionTv.setText("Thời gian mượn : " +  date
+                                            binding.descriptionTv.setText("Thời gian mượn : " + date
                                                     + "\n" + "Thời gian xác nhận : " + dateSchedule
-                                                    +"\n" + "Thời gian dự kiến mượn : " + startDate
+                                                    + "\n" + "Thời gian dự kiến mượn : " + startDate
                                                     + "\n" + "Thời gian dự kiến trả : " + endDate
-                                                    +"\n" + "Thời gian trả : " + dateReturn
+                                                    + "\n" + "Thời gian trả : " + dateReturn
 
                                             );
                                             binding.manualTv.setText("Báo cáo về thiết bị lúc mượn: " + (report.equals("null") ? "" : report)
-                                                    +"\n" + "Báo cáo về thiết bị lúc trả : " + reportHistory
+                                                    + "\n" + "Báo cáo về thiết bị lúc trả : " + reportHistory
                                             );
                                         }
 
@@ -420,8 +418,7 @@ public class EquipmentDetailActivity extends AppCompatActivity {
 
                                         }
                                     });
-                        }
-                        else if(status.equals("Borrowed")){
+                        } else if (status.equals("Borrowed")) {
                             DatabaseReference ref = FirebaseDatabase.getInstance().getReference("EquipmentsBorrowed");
                             ref.child(key)
                                     .addListenerForSingleValueEvent(new ValueEventListener() {
@@ -431,7 +428,7 @@ public class EquipmentDetailActivity extends AppCompatActivity {
                                             String report = "" + snapshot.child("report").getValue();
 
                                             String date = MyApplication.formatTimestampToDetailTime(Long.parseLong(timestamp));
-                                            binding.descriptionTv.setText("Thời gian mượn : " +  date);
+                                            binding.descriptionTv.setText("Thời gian mượn : " + date);
                                             binding.manualTv.setText("Báo cáo về thiết bị lúc mượn: " + (report.equals("null") ? "" : report)
                                             );
                                         }
@@ -441,25 +438,25 @@ public class EquipmentDetailActivity extends AppCompatActivity {
 
                                         }
                                     });
-                        }else if(status.equals("History")){
+                        } else if (status.equals("History")) {
                             DatabaseReference ref = FirebaseDatabase.getInstance().getReference("EquipmentsBorrowed");
                             ref.child(key)
                                     .addListenerForSingleValueEvent(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                                             String timestamp = "" + snapshot.child("timestamp").getValue();
-                                            String timestampReturn = ""+ snapshot.child("timestampReturn").getValue();
+                                            String timestampReturn = "" + snapshot.child("timestampReturn").getValue();
                                             String report = "" + snapshot.child("report").getValue();
                                             String reportHistory = "" + snapshot.child("reportHistory").getValue();
                                             String date = "";
                                             String dateReturn = "";
-                                            if(!timestamp.equals("null") && !timestampReturn.equals("null")){
+                                            if (!timestamp.equals("null") && !timestampReturn.equals("null")) {
                                                 date = MyApplication.formatTimestampToDetailTime(Long.parseLong(timestamp));
                                                 dateReturn = MyApplication.formatTimestampToDetailTime(Long.parseLong(timestampReturn));
                                             }
-                                            binding.descriptionTv.setText("Thời gian mượn: " +  date + " - Thời gian trả : " + dateReturn);
+                                            binding.descriptionTv.setText("Thời gian mượn: " + date + " - Thời gian trả : " + dateReturn);
                                             binding.manualTv.setText("Báo cáo về thiết bị lúc mượn: " + (report.equals("null") ? "" : report)
-                                            + "\n" + "Báo cáo về thiết bị lúc trả : " + reportHistory
+                                                    + "\n" + "Báo cáo về thiết bị lúc trả : " + reportHistory
                                             );
                                         }
 
@@ -468,7 +465,7 @@ public class EquipmentDetailActivity extends AppCompatActivity {
 
                                         }
                                     });
-                        }else if(status.equals("Waiting")){
+                        } else if (status.equals("Waiting")) {
                             DatabaseReference ref = FirebaseDatabase.getInstance().getReference("EquipmentsBorrowed");
                             ref.child(key)
                                     .addListenerForSingleValueEvent(new ValueEventListener() {
@@ -490,7 +487,7 @@ public class EquipmentDetailActivity extends AppCompatActivity {
                                         }
                                     });
 
-                        }else if(status.equals("Refuse")){
+                        } else if (status.equals("Refuse")) {
                             DatabaseReference ref = FirebaseDatabase.getInstance().getReference("EquipmentsBorrowed");
                             ref.child(key)
                                     .addListenerForSingleValueEvent(new ValueEventListener() {
@@ -502,10 +499,10 @@ public class EquipmentDetailActivity extends AppCompatActivity {
                                             String date = MyApplication.formatTimestampToDetailTime(Long.parseLong(timestamp));
                                             String startDate = "" + snapshot.child("startDate").getValue();
                                             String endDate = "" + snapshot.child("endDate").getValue();
-                                            binding.descriptionTv.setText("Thời gian xác nhận : " +  date
-                                                    +"\n" + "Thời gian dự kiến mượn : " + startDate
-                                                    +"\n" + "Thời gian dự kiến trả : " + endDate
-                                                    +"\n" + "Lí do hủy : " + reportRefuse
+                                            binding.descriptionTv.setText("Thời gian xác nhận : " + date
+                                                    + "\n" + "Thời gian dự kiến mượn : " + startDate
+                                                    + "\n" + "Thời gian dự kiến trả : " + endDate
+                                                    + "\n" + "Lí do hủy : " + reportRefuse
                                             );
                                             binding.manualTv.setText("Báo cáo về thiết bị lúc mượn: " + (report.equals("null") ? "" : report));
                                         }
@@ -516,9 +513,7 @@ public class EquipmentDetailActivity extends AppCompatActivity {
                                         }
                                     });
 
-                        }
-
-                        else{
+                        } else {
                             binding.descriptionTv.setText(description);
                             binding.manualTv.setText(manual);
                         }
@@ -551,30 +546,31 @@ public class EquipmentDetailActivity extends AppCompatActivity {
         binding.favoriteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(firebaseAuth.getCurrentUser() == null){
+                if (firebaseAuth.getCurrentUser() == null) {
                     Toast.makeText(EquipmentDetailActivity.this, "You're not logged in", Toast.LENGTH_SHORT).show();
-                }else{
-                    if(isInMyFavorite){
+                } else {
+                    if (isInMyFavorite) {
                         MyApplication.removeFromFavorite(EquipmentDetailActivity.this, equipmentId);
-                    }else{
+                    } else {
                         MyApplication.addToFavorite(EquipmentDetailActivity.this, equipmentId);
                     }
                 }
             }
         });
     }
-    private void checkIsFavorite(){
-        if(firebaseAuth.getUid() != null){
+
+    private void checkIsFavorite() {
+        if (firebaseAuth.getUid() != null) {
             DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
             ref.child(firebaseAuth.getUid()).child("Favorites").child(equipmentId)
                     .addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             isInMyFavorite = snapshot.exists();
-                            if(isInMyFavorite){
+                            if (isInMyFavorite) {
                                 binding.favoriteBtn.setCompoundDrawablesRelativeWithIntrinsicBounds(0, R.drawable.ic_favorite_white, 0, 0);
                                 binding.favoriteBtn.setText("Remove Favorite");
-                            }else{
+                            } else {
                                 binding.favoriteBtn.setCompoundDrawablesRelativeWithIntrinsicBounds(0, R.drawable.ic_favorite_border, 0, 0);
                                 binding.favoriteBtn.setText("Add Favorite");
                             }

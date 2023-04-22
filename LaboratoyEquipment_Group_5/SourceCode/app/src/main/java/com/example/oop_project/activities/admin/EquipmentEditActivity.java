@@ -1,8 +1,5 @@
 package com.example.oop_project.activities.admin;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -10,6 +7,9 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.oop_project.databinding.ActivityEquipmentEditBinding;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -24,11 +24,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class EquipmentEditActivity extends AppCompatActivity {
+    String title = "", description = "", manual = "";
+    int quantity = 0;
     private ActivityEquipmentEditBinding binding;
     private String equipmentId;
     private ProgressDialog progressDialog;
     private ArrayList<String> categoryTitleArraylist;
     private ArrayList<String> categoryIdArraylist;
+    private String selectedCategoryId = "", selectedCategoryTitle = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,7 +43,7 @@ public class EquipmentEditActivity extends AppCompatActivity {
         progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("Please waitl!");
         progressDialog.setCanceledOnTouchOutside(false);
-        
+
         loadCategories();
         loadEquipmentInfo();
 
@@ -64,12 +68,9 @@ public class EquipmentEditActivity extends AppCompatActivity {
             }
         });
 
-         
-
 
     }
-    String title = "", description = "", manual = "";
-    int quantity = 0;
+
     private void validateData() {
         title = binding.titleE.getText().toString().trim();
         description = binding.descriptionE.getText().toString().trim();
@@ -77,17 +78,17 @@ public class EquipmentEditActivity extends AppCompatActivity {
         String sQuantity = binding.quantityE.getText().toString().trim();
         quantity = Integer.parseInt(sQuantity);
 
-        if(TextUtils.isEmpty(title)){
+        if (TextUtils.isEmpty(title)) {
             Toast.makeText(this, "Enter Title", Toast.LENGTH_SHORT).show();
-        }else if (TextUtils.isEmpty(description)){
+        } else if (TextUtils.isEmpty(description)) {
             Toast.makeText(this, "Enter Description", Toast.LENGTH_SHORT).show();
-        }else if(TextUtils.isEmpty(selectedCategoryTitle)){
+        } else if (TextUtils.isEmpty(selectedCategoryTitle)) {
             Toast.makeText(this, "Chose Category", Toast.LENGTH_SHORT).show();
-        }else if(TextUtils.isEmpty(manual)){
+        } else if (TextUtils.isEmpty(manual)) {
             Toast.makeText(this, "Enter Manual", Toast.LENGTH_SHORT).show();
-        }else if(TextUtils.isEmpty(sQuantity)){
+        } else if (TextUtils.isEmpty(sQuantity)) {
             Toast.makeText(this, "Enter Quantity", Toast.LENGTH_SHORT).show();
-        }else{
+        } else {
             uploadToFirebase();
         }
     }
@@ -97,10 +98,10 @@ public class EquipmentEditActivity extends AppCompatActivity {
         progressDialog.show();
 
         HashMap<String, Object> hashMap = new HashMap<>();
-        hashMap.put("title", ""+title);
-        hashMap.put("description", ""+description);
-        hashMap.put("categoryId", ""+selectedCategoryId);
-        hashMap.put("manual", ""+manual);
+        hashMap.put("title", "" + title);
+        hashMap.put("description", "" + description);
+        hashMap.put("categoryId", "" + selectedCategoryId);
+        hashMap.put("manual", "" + manual);
         hashMap.put("quantity", quantity);
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Equipments");
         ref.child(equipmentId)
@@ -115,8 +116,8 @@ public class EquipmentEditActivity extends AppCompatActivity {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                progressDialog.dismiss();
-                        Toast.makeText(EquipmentEditActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                        progressDialog.dismiss();
+                        Toast.makeText(EquipmentEditActivity.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -127,16 +128,16 @@ public class EquipmentEditActivity extends AppCompatActivity {
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        selectedCategoryId = ""+snapshot.child("categoryId").getValue();
+                        selectedCategoryId = "" + snapshot.child("categoryId").getValue();
                         String description = "" + snapshot.child("description").getValue();
-                        String manual = ""+snapshot.child("manual").getValue();
-                        String title = ""+snapshot.child("title").getValue();
-                        int quantity =  Integer.parseInt(""+snapshot.child("quantity").getValue());
+                        String manual = "" + snapshot.child("manual").getValue();
+                        String title = "" + snapshot.child("title").getValue();
+                        int quantity = Integer.parseInt("" + snapshot.child("quantity").getValue());
 
                         //
                         binding.titleE.setText(title);
                         binding.manualE.setText(manual);
-                        binding.quantityE.setText(""+quantity);
+                        binding.quantityE.setText("" + quantity);
                         binding.descriptionE.setText(description);
 
                         DatabaseReference refEquipmentCategory = FirebaseDatabase.getInstance().getReference("Categories");
@@ -144,7 +145,7 @@ public class EquipmentEditActivity extends AppCompatActivity {
                                 .addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                        String category =""+snapshot.child("title").getValue();
+                                        String category = "" + snapshot.child("title").getValue();
                                         binding.categoryTv.setText(category);
 
                                     }
@@ -163,10 +164,9 @@ public class EquipmentEditActivity extends AppCompatActivity {
                 });
     }
 
-    private String selectedCategoryId = "", selectedCategoryTitle = "";
-    private void categoryDialog(){
+    private void categoryDialog() {
         String[] categoriesArray = new String[categoryTitleArraylist.size()];
-        for(int i = 0; i < categoryTitleArraylist.size(); i++){
+        for (int i = 0; i < categoryTitleArraylist.size(); i++) {
             categoriesArray[i] = categoryTitleArraylist.get(i);
         }
 
@@ -182,6 +182,7 @@ public class EquipmentEditActivity extends AppCompatActivity {
                     }
                 }).show();
     }
+
     private void loadCategories() {
         categoryTitleArraylist = new ArrayList<>();
         categoryIdArraylist = new ArrayList<>();
@@ -191,9 +192,9 @@ public class EquipmentEditActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 categoryTitleArraylist.clear();
                 categoryIdArraylist.clear();
-                for(DataSnapshot ds : snapshot.getChildren()){
-                    String id = ""+ds.child("id").getValue();
-                    String category = ""+ds.child("title").getValue();
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    String id = "" + ds.child("id").getValue();
+                    String category = "" + ds.child("title").getValue();
                     categoryIdArraylist.add(id);
                     categoryTitleArraylist.add(category);
                 }

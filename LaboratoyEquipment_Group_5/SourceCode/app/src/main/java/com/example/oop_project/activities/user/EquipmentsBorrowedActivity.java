@@ -1,14 +1,5 @@
 package com.example.oop_project.activities.user;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-import androidx.viewpager.widget.ViewPager;
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -17,6 +8,15 @@ import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.viewpager.widget.ViewPager;
 
 import com.example.oop_project.EquipmentBorrowedFragment;
 import com.example.oop_project.activities.common.SuccessActivity;
@@ -39,12 +39,32 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class EquipmentsBorrowedActivity extends AppCompatActivity{
+public class EquipmentsBorrowedActivity extends AppCompatActivity {
     public ArrayList<ModelCategory> categoryArrayList;
     public EquipmentsBorrowedActivity.ViewPagerAdapter viewPagerAdapter;
     private ActivityEquipmentsBorrowedBinding binding;
     private FirebaseAuth firebaseAuth;
     private ArrayList<String> equipmentKeyArrayList;
+    public BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String equipmentId = intent.getStringExtra("equipmentId");
+            String uid = intent.getStringExtra("uid");
+            String isChecked = intent.getStringExtra("isChecked");
+            String key = intent.getStringExtra("key");
+            if (isChecked.equals("true")) {
+                equipmentKeyArrayList.add(key);
+            } else {
+                int index = equipmentKeyArrayList.indexOf(key);
+                if (index != -1) {
+                    equipmentKeyArrayList.remove(index);
+
+                }
+            }
+
+
+        }
+    };
     private long timestamp;
     private String reportHistory;
     private String titleEquipment = "";
@@ -63,13 +83,12 @@ public class EquipmentsBorrowedActivity extends AppCompatActivity{
         equipmentIdArrayList = new ArrayList<>();
 
 
-
         setupViewPagerAdapter(binding.viewPagerBorrowed);
         binding.tabLayout.setupWithViewPager(binding.viewPagerBorrowed);
         binding.backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               onBackPressed();
+                onBackPressed();
 
             }
         });
@@ -77,7 +96,7 @@ public class EquipmentsBorrowedActivity extends AppCompatActivity{
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 int position = tab.getPosition();
-                switch (position){
+                switch (position) {
                     case 0:
                         binding.reportLayout.setVisibility(View.VISIBLE);
                         binding.submitBtn.setVisibility(View.VISIBLE);
@@ -120,91 +139,89 @@ public class EquipmentsBorrowedActivity extends AppCompatActivity{
         });
 
 
-
     }
-
-
 
     private void validateData() {
         // cài đặt lại logic, chọn cái nào thì update cái đó trong database và reload lại thiết bị
-        if(equipmentKeyArrayList.size() == 0){
+        if (equipmentKeyArrayList.size() == 0) {
             Toast.makeText(this, "Vui lòng chọn thiết bị!", Toast.LENGTH_SHORT).show();
-        }else{
+        } else {
             timestamp = System.currentTimeMillis();
             reportHistory = binding.reportEt.getText().toString().trim();
-            for(int i = 0; i < equipmentKeyArrayList.size(); i++){
-                    String key = equipmentKeyArrayList.get(i);
-                    DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
-                    ref.child(firebaseAuth.getUid())
-                            .child("Borrowed")
-                            .child(key)
-                            .addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                    DatabaseReference reference = snapshot.child("status").getRef();
-                                    reference.setValue("History");
-                                    String equipmentId = "" + snapshot.child("equipmentId").getValue();
-                                    equipmentIdArrayList.add(equipmentId);
-                                    int quantityBorrowed = Integer.parseInt(""+snapshot.child("quantityBorrowed").getValue());
-                                    DatabaseReference refE = FirebaseDatabase.getInstance().getReference("Equipments");
-                                    refE.child(equipmentId)
-                                            .addListenerForSingleValueEvent(new ValueEventListener() {
-                                                @Override
-                                                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                                    int quantity = Integer.parseInt("" + snapshot.child("quantity").getValue());
-                                                    DatabaseReference refQ = snapshot.child("quantity").getRef();
-                                                    refQ.setValue(quantity + quantityBorrowed);
-                                                    String title = "" + snapshot.child("title").getValue();
-                                                    titleEquipment += title + "\n";
+            for (int i = 0; i < equipmentKeyArrayList.size(); i++) {
+                String key = equipmentKeyArrayList.get(i);
+                DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
+                ref.child(firebaseAuth.getUid())
+                        .child("Borrowed")
+                        .child(key)
+                        .addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                DatabaseReference reference = snapshot.child("status").getRef();
+                                reference.setValue("History");
+                                String equipmentId = "" + snapshot.child("equipmentId").getValue();
+                                equipmentIdArrayList.add(equipmentId);
+                                int quantityBorrowed = Integer.parseInt("" + snapshot.child("quantityBorrowed").getValue());
+                                DatabaseReference refE = FirebaseDatabase.getInstance().getReference("Equipments");
+                                refE.child(equipmentId)
+                                        .addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                int quantity = Integer.parseInt("" + snapshot.child("quantity").getValue());
+                                                DatabaseReference refQ = snapshot.child("quantity").getRef();
+                                                refQ.setValue(quantity + quantityBorrowed);
+                                                String title = "" + snapshot.child("title").getValue();
+                                                titleEquipment += title + "\n";
 
 
-                                                }
+                                            }
 
-                                                @Override
-                                                public void onCancelled(@NonNull DatabaseError error) {
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError error) {
 
-                                                }
-                                            });
-                                }
+                                            }
+                                        });
+                            }
 
                             @Override
                             public void onCancelled(@NonNull DatabaseError error) {
 
                             }
                         });
-                    HashMap<String, Object> hashMap = new HashMap<>();
-                    hashMap.put("reportHistory", reportHistory);
-                    hashMap.put("timestampReturn", timestamp);
-                    hashMap.put("status", "History");
-                    DatabaseReference refEquipmentBorrowed = FirebaseDatabase.getInstance().getReference("EquipmentsBorrowed");
-                    refEquipmentBorrowed.child(key)
-                            .updateChildren(hashMap)
-                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void unused) {
+                HashMap<String, Object> hashMap = new HashMap<>();
+                hashMap.put("reportHistory", reportHistory);
+                hashMap.put("timestampReturn", timestamp);
+                hashMap.put("status", "History");
+                DatabaseReference refEquipmentBorrowed = FirebaseDatabase.getInstance().getReference("EquipmentsBorrowed");
+                refEquipmentBorrowed.child(key)
+                        .updateChildren(hashMap)
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {
 
 
-                                }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
 
-                                }
-                            });
+                            }
+                        });
             }
 
-            }
+        }
     }
-    private void sendMail(){
+
+    private void sendMail() {
         ModelEquipment model = new ModelEquipment();
-        for(int i = 0; i < equipmentIdArrayList.size(); i++){
+        for (int i = 0; i < equipmentIdArrayList.size(); i++) {
             model.getTitle(equipmentIdArrayList.get(i)).addOnCompleteListener(new OnCompleteListener<String>() {
                 @Override
                 public void onComplete(@NonNull Task<String> task) {
-                    if(task.isSuccessful()){
+                    if (task.isSuccessful()) {
                         titleEquipment += task.getResult();
-                    }else{
+                    } else {
                         Exception exception = task.getException();
                     }
                 }
@@ -215,14 +232,14 @@ public class EquipmentsBorrowedActivity extends AppCompatActivity{
             @Override
             public void onComplete(@NonNull Task<String> task) {
                 if (task.isSuccessful()) {
-                    String  fullName = task.getResult();
+                    String fullName = task.getResult();
                     String subject = "Trả thiết bị thành công!";
                     user.setFullName(fullName);
                     String message = "Chúc mừng " + fullName + " đã trả thành công thiết bị từ chúng tôi!" +
-                            "\n" + "Danh sách thiết bị gồm: "+ "\n"
-                            + titleEquipment  + "Báo cáo về thiết bị lúc trả: " + reportHistory
-                            +"\n" + "Chúc bạn hoàn thành tốt công việc";
-                    user.sendMail(EquipmentsBorrowedActivity.this, firebaseAuth.getUid(),subject, message);
+                            "\n" + "Danh sách thiết bị gồm: " + "\n"
+                            + titleEquipment + "Báo cáo về thiết bị lúc trả: " + reportHistory
+                            + "\n" + "Chúc bạn hoàn thành tốt công việc";
+                    user.sendMail(EquipmentsBorrowedActivity.this, firebaseAuth.getUid(), subject, message);
                 } else {
                     Exception exception = task.getException();
                     // Xử lý lỗi ở đây
@@ -231,27 +248,7 @@ public class EquipmentsBorrowedActivity extends AppCompatActivity{
         });
     }
 
-    public BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-           String equipmentId = intent.getStringExtra("equipmentId");
-           String uid = intent.getStringExtra("uid");
-           String isChecked = intent.getStringExtra("isChecked");
-           String key = intent.getStringExtra("key");
-           if(isChecked.equals("true")){
-                equipmentKeyArrayList.add(key);
-           }else{
-               int index = equipmentKeyArrayList.indexOf(key);
-               if(index != -1){
-                   equipmentKeyArrayList.remove(index);
-
-               }
-           }
-
-
-        }
-    };
-    private void setupViewPagerAdapter(ViewPager viewPager){
+    private void setupViewPagerAdapter(ViewPager viewPager) {
 
         viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT, this);
         categoryArrayList = new ArrayList<>();
@@ -268,23 +265,23 @@ public class EquipmentsBorrowedActivity extends AppCompatActivity{
         categoryArrayList.add(modelRefuse);
         viewPagerAdapter.addFragment(EquipmentBorrowedFragment.newInstance(
                 "" + modelBorrowing.getId(),
-                ""+ modelBorrowing.getTitle(),
+                "" + modelBorrowing.getTitle(),
                 "" + modelBorrowing.getUid()
         ), modelBorrowing.getTitle());
 
         viewPagerAdapter.addFragment(EquipmentBorrowedFragment.newInstance(
                 "" + modelBorrowed.getId(),
-                ""+ modelBorrowed.getTitle(),
+                "" + modelBorrowed.getTitle(),
                 "" + modelBorrowed.getUid()
         ), modelBorrowed.getTitle());
         viewPagerAdapter.addFragment(EquipmentBorrowedFragment.newInstance(
                 "" + modelWaiting.getId(),
-                ""+ modelWaiting.getTitle(),
+                "" + modelWaiting.getTitle(),
                 "" + modelWaiting.getUid()
         ), modelWaiting.getTitle());
         viewPagerAdapter.addFragment(EquipmentBorrowedFragment.newInstance(
                 "" + modelRefuse.getId(),
-                ""+ modelRefuse.getTitle(),
+                "" + modelRefuse.getTitle(),
                 "" + modelRefuse.getUid()
         ), modelRefuse.getTitle());
 
@@ -297,8 +294,8 @@ public class EquipmentsBorrowedActivity extends AppCompatActivity{
 
 
     public class ViewPagerAdapter extends FragmentPagerAdapter {
-        private ArrayList<EquipmentBorrowedFragment> fragmentList = new ArrayList<>();
-        private ArrayList<String> fragmentTitleList = new ArrayList<>();
+        private final ArrayList<EquipmentBorrowedFragment> fragmentList = new ArrayList<>();
+        private final ArrayList<String> fragmentTitleList = new ArrayList<>();
         private Context context;
 
 
@@ -322,7 +319,8 @@ public class EquipmentsBorrowedActivity extends AppCompatActivity{
         public int getCount() {
             return fragmentList.size();
         }
-        private void addFragment(EquipmentBorrowedFragment fragment, String title){
+
+        private void addFragment(EquipmentBorrowedFragment fragment, String title) {
             fragmentList.add(fragment);
             fragmentTitleList.add(title);
 

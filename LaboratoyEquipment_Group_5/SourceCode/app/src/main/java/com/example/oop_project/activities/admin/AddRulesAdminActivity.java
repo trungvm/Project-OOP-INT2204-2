@@ -1,11 +1,11 @@
 package com.example.oop_project.activities.admin;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.oop_project.MyApplication;
 import com.example.oop_project.activities.common.SuccessActivity;
@@ -27,21 +27,21 @@ public class AddRulesAdminActivity extends AppCompatActivity {
         binding.backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               onBackPressed();
+                onBackPressed();
             }
         });
 
         loadContent();
-       binding.submitBtn.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View v) {
-               String text = binding.editText.getText().toString();
-               MyApplication.ConvertMarkDown(AddRulesAdminActivity.this, text);
-               Intent intent = new Intent(AddRulesAdminActivity.this, SuccessActivity.class);
-               intent.putExtra("status", "True");
-               startActivity(intent);
-           }
-       });
+        binding.submitBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String text = binding.editText.getText().toString();
+                MyApplication.ConvertMarkDown(AddRulesAdminActivity.this, text);
+                Intent intent = new Intent(AddRulesAdminActivity.this, SuccessActivity.class);
+                intent.putExtra("status", "True");
+                startActivity(intent);
+            }
+        });
 
     }
 

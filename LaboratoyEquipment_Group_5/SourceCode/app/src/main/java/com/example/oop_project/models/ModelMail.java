@@ -1,12 +1,12 @@
 package com.example.oop_project.models;
-import android.app.ProgressDialog;
+
 import android.content.Context;
 import android.os.AsyncTask;
-import android.widget.Toast;
 
 import com.example.oop_project.Utils;
 
 import java.util.Properties;
+
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
@@ -16,7 +16,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 
-public class ModelMail extends AsyncTask<Void,Void,Void>  {
+public class ModelMail extends AsyncTask<Void, Void, Void> {
 
     //Add those line in dependencies
     //implementation files('libs/activation.jar')
@@ -26,12 +26,12 @@ public class ModelMail extends AsyncTask<Void,Void,Void>  {
     //Need INTERNET permission
 
     //Variables
-    private Context mContext;
+    private final Context mContext;
     private Session mSession;
 
-    private String mEmail;
-    private String mSubject;
-    private String mMessage;
+    private final String mEmail;
+    private final String mSubject;
+    private final String mMessage;
 
 //    private ProgressDialog mProgressDialog;
 

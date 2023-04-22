@@ -2,15 +2,14 @@ package com.example.oop_project;
 
 import android.content.Context;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 
 import com.example.oop_project.adapters.admin.AdapterScheduleAdmin;
 import com.example.oop_project.databinding.FragmentScheduleAdminBinding;
@@ -40,6 +39,7 @@ public class ScheduleAdminFragment extends Fragment {
     private ArrayList<ModelEquipment> equipmentArrayListAccept;
     private ArrayList<ModelEquipment> equipmentArrayListRefuse;
     private AdapterScheduleAdmin adapterScheduleAdmin;
+
     public ScheduleAdminFragment() {
         // Required empty public constructor
     }
@@ -86,9 +86,9 @@ public class ScheduleAdminFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                try{
+                try {
                     adapterScheduleAdmin.getFilter().filter(s);
-                }catch (Exception e){
+                } catch (Exception e) {
 
                 }
             }
@@ -103,7 +103,7 @@ public class ScheduleAdminFragment extends Fragment {
 
     public void loadAcceptEquipments() {
         equipmentArrayListAccept = new ArrayList<>();
-        if(equipmentArrayListAccept.size() != 0){
+        if (equipmentArrayListAccept.size() != 0) {
             equipmentArrayListAccept.clear();
         }
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("EquipmentsBorrowed");
@@ -111,8 +111,8 @@ public class ScheduleAdminFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 equipmentArrayListAccept.clear();
-                for(DataSnapshot ds: snapshot.getChildren()){
-                    if((""+ds.child("status").getValue()).equals("Waiting")){
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    if (("" + ds.child("status").getValue()).equals("Waiting")) {
                         String key = ds.getKey();
                         String uid = "" + ds.child("uid").getValue();
                         ModelEquipment model = snapshot.getValue(ModelEquipment.class);
@@ -159,7 +159,7 @@ public class ScheduleAdminFragment extends Fragment {
 
     public void loadRefuseEquipments() {
         equipmentArrayListRefuse = new ArrayList<>();
-        if(equipmentArrayListRefuse.size() != 0){
+        if (equipmentArrayListRefuse.size() != 0) {
             equipmentArrayListRefuse.clear();
         }
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("EquipmentsBorrowed");
@@ -167,8 +167,8 @@ public class ScheduleAdminFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 equipmentArrayListRefuse.clear();
-                for(DataSnapshot ds: snapshot.getChildren()){
-                    if((""+ds.child("status").getValue()).equals("Waiting")){
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    if (("" + ds.child("status").getValue()).equals("Waiting")) {
                         String key = ds.getKey();
                         String uid = "" + ds.child("uid").getValue();
                         ModelEquipment model = snapshot.getValue(ModelEquipment.class);
@@ -183,7 +183,6 @@ public class ScheduleAdminFragment extends Fragment {
                         model.setStatus("Waiting");
                         model.setAdminStatus("Refuse");
                         equipmentArrayListRefuse.add(model);
-
 
 
                     }

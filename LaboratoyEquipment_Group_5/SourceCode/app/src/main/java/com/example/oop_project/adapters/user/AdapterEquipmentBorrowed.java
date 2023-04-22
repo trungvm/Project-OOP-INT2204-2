@@ -39,13 +39,13 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class AdapterEquipmentBorrowed extends  RecyclerView.Adapter<AdapterEquipmentBorrowed.HolderEquipmentBorrowed> implements Filterable {
-    private Context context;
+public class AdapterEquipmentBorrowed extends RecyclerView.Adapter<AdapterEquipmentBorrowed.HolderEquipmentBorrowed> implements Filterable {
     public ArrayList<ModelEquipment> equipmentArrayList, filterList;
+    private final Context context;
     private RowEquipmentsBorrowedBinding binding;
-    private FirebaseAuth firebaseAuth;
+    private final FirebaseAuth firebaseAuth;
     private FilterEquipmentBorrowed filter;
-    private ArrayList<Boolean> isChecked;
+    private final ArrayList<Boolean> isChecked;
 
     public AdapterEquipmentBorrowed(Context context, ArrayList<ModelEquipment> equipmentArrayList) {
         firebaseAuth = FirebaseAuth.getInstance();
@@ -53,7 +53,7 @@ public class AdapterEquipmentBorrowed extends  RecyclerView.Adapter<AdapterEquip
         this.equipmentArrayList = equipmentArrayList;
         filterList = equipmentArrayList;
         isChecked = new ArrayList<>();
-        for(int i = 0; i < 1000; i++){
+        for (int i = 0; i < 1000; i++) {
             isChecked.add(false);
         }
 
@@ -64,13 +64,15 @@ public class AdapterEquipmentBorrowed extends  RecyclerView.Adapter<AdapterEquip
         equipmentArrayList.clear();
         notifyDataSetChanged();
     }
-    public int checkSize(){
+
+    public int checkSize() {
         return equipmentArrayList.size();
     }
+
     @NonNull
     @Override
     public HolderEquipmentBorrowed onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-       binding = RowEquipmentsBorrowedBinding.inflate(LayoutInflater.from(context), parent, false);
+        binding = RowEquipmentsBorrowedBinding.inflate(LayoutInflater.from(context), parent, false);
         return new HolderEquipmentBorrowed(binding.getRoot());
     }
 
@@ -83,9 +85,9 @@ public class AdapterEquipmentBorrowed extends  RecyclerView.Adapter<AdapterEquip
         String equipmentImage = model.getEquipmentImage();
         String key = model.getKey();
         String preStatus = model.getPreStatus();
-        if(model.getStatus().equals("Borrowed")){
+        if (model.getStatus().equals("Borrowed")) {
             binding.checkBox.setVisibility(View.VISIBLE);
-        }else if(model.getStatus().equals("History") || model.getStatus().equals("Waiting") || model.getStatus().equals("Refuse")){
+        } else if (model.getStatus().equals("History") || model.getStatus().equals("Waiting") || model.getStatus().equals("Refuse")) {
             binding.checkBox.setVisibility(View.GONE);
         }
         binding.textDate.setText("Thời gian mượn: ");
@@ -105,11 +107,11 @@ public class AdapterEquipmentBorrowed extends  RecyclerView.Adapter<AdapterEquip
         });
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
         reference.child(firebaseAuth.getUid())
-                    .child("Borrowed")
-                            .child(key).addListenerForSingleValueEvent(new ValueEventListener() {
+                .child("Borrowed")
+                .child(key).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        String quantityBorrowed  = "" + snapshot.child("quantityBorrowed").getValue();
+                        String quantityBorrowed = "" + snapshot.child("quantityBorrowed").getValue();
 
                         holder.quantityTv.setText(quantityBorrowed);
 
@@ -163,10 +165,10 @@ public class AdapterEquipmentBorrowed extends  RecyclerView.Adapter<AdapterEquip
                 equipmentArrayList.set(position, model);
                 Intent intent = new Intent("ACTION_GET_DATA");
                 intent.putExtra("equipmentId", model.getId());
-                intent.putExtra("uid", ""+firebaseAuth.getUid());
+                intent.putExtra("uid", "" + firebaseAuth.getUid());
                 intent.putExtra("key", equipmentArrayList.get(position).getKey());
 
-                intent.putExtra("isChecked", ""+isChecked.get(position));
+                intent.putExtra("isChecked", "" + isChecked.get(position));
                 LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
             }
         });
@@ -174,24 +176,25 @@ public class AdapterEquipmentBorrowed extends  RecyclerView.Adapter<AdapterEquip
 
     @Override
     public int getItemCount() {
-        if(equipmentArrayList == null){
+        if (equipmentArrayList == null) {
             return 0;
-        }else return equipmentArrayList.size();
+        } else return equipmentArrayList.size();
     }
 
     @Override
     public Filter getFilter() {
-        if(filter == null){
+        if (filter == null) {
             filter = new FilterEquipmentBorrowed(filterList, this);
         }
         return filter;
     }
 
-    class HolderEquipmentBorrowed extends RecyclerView.ViewHolder{
+    class HolderEquipmentBorrowed extends RecyclerView.ViewHolder {
         TextView titleTv, categoryTv, quantityTv, descriptionTv, dateTv;
         ProgressBar progressBar;
         ImageView imageView;
         RadioButton checkIs;
+
         public HolderEquipmentBorrowed(@NonNull View itemView) {
             super(itemView);
             titleTv = binding.titleTv;

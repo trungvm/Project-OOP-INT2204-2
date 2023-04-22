@@ -1,13 +1,5 @@
 package com.example.oop_project.activities.admin;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
@@ -23,6 +15,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.PopupMenu;
 import android.widget.Toast;
+
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.oop_project.databinding.ActivityEquipmentAddBinding;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -42,12 +42,49 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class EquipmentAddActivity extends AppCompatActivity {
+    private static final String TAG = "ADD_IMAGE_TAG";
+    String title = "", description = "", manual = "";
+    int quantity = 0;
+    int viewed = 0;
     private ActivityEquipmentAddBinding binding;
     private FirebaseAuth firebaseAuth;
-    private static final String TAG = "ADD_IMAGE_TAG";
     private ArrayList<String> categoryTitleArrayList, categoryIdArraylist;
     private ProgressDialog progressDialog;
     private Uri imageUri;
+    private final ActivityResultLauncher<Intent> cameraActivityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        Intent data = result.getData();
+                        binding.equipmentImage.setImageURI(imageUri);
+
+                    } else {
+                        Toast.makeText(EquipmentAddActivity.this, "Cancelled", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+    );
+    private final ActivityResultLauncher<Intent> galleryActivityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        Intent data = result.getData();
+                        imageUri = data.getData();
+                        binding.equipmentImage.setImageURI(imageUri);
+
+                    } else {
+                        Toast.makeText(EquipmentAddActivity.this, "Cancelled", Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+            }
+    );
+    private String selectedCategoryId, selectedCategoryTitle;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,8 +96,6 @@ public class EquipmentAddActivity extends AppCompatActivity {
         progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("Please wait!");
         progressDialog.setCanceledOnTouchOutside(false);
-
-
 
 
         // handlo click, go to previous
@@ -103,10 +138,10 @@ public class EquipmentAddActivity extends AppCompatActivity {
             public boolean onMenuItemClick(MenuItem item) {
                 // get id of item clicked
                 int which = item.getItemId();
-                if(which == 0){
+                if (which == 0) {
                     // camera clicked
                     pickImageCamera();
-                }else if(which == 1){
+                } else if (which == 1) {
                     // gallery clicked
                     pickImageGallery();
                 }
@@ -131,81 +166,44 @@ public class EquipmentAddActivity extends AppCompatActivity {
         intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
         cameraActivityResultLauncher.launch(intent);
     }
-    private ActivityResultLauncher<Intent> cameraActivityResultLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            new ActivityResultCallback<ActivityResult>() {
-                @Override
-                public void onActivityResult(ActivityResult result) {
-                    if(result.getResultCode() == Activity.RESULT_OK){
-                        Intent data = result.getData();
-                        binding.equipmentImage.setImageURI(imageUri);
 
-                    }else{
-                        Toast.makeText(EquipmentAddActivity.this, "Cancelled", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }
-    );
-    private ActivityResultLauncher<Intent> galleryActivityResultLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            new ActivityResultCallback<ActivityResult>() {
-                @Override
-                public void onActivityResult(ActivityResult result) {
-                    if(result.getResultCode() == Activity.RESULT_OK){
-                        Intent data = result.getData();
-                        imageUri = data.getData();
-                        binding.equipmentImage.setImageURI(imageUri);
-
-                    }else{
-                        Toast.makeText(EquipmentAddActivity.this, "Cancelled", Toast.LENGTH_SHORT).show();
-                    }
-
-                }
-            }
-    );
-
-    String title = "", description = "",manual = "";
-    int quantity = 0;
-    int viewed = 0;
     private void validateData() {
         title = binding.titleE.getText().toString().trim();
         description = binding.descriptionE.getText().toString().trim();
         quantity = Integer.parseInt(binding.quantityE.getText().toString().trim());
         String quantityStr = binding.quantityE.getText().toString().trim();
         manual = binding.manualE.getText().toString().trim();
-        if(TextUtils.isEmpty(title)){
+        if (TextUtils.isEmpty(title)) {
             Toast.makeText(this, "Enter Title", Toast.LENGTH_SHORT).show();
-        }else if (TextUtils.isEmpty(description)){
+        } else if (TextUtils.isEmpty(description)) {
             Toast.makeText(this, "Enter Description", Toast.LENGTH_SHORT).show();
-        }else if(TextUtils.isEmpty(selectedCategoryTitle)){
+        } else if (TextUtils.isEmpty(selectedCategoryTitle)) {
             Toast.makeText(this, "Chose Category", Toast.LENGTH_SHORT).show();
-        }else if(TextUtils.isEmpty(manual)){
+        } else if (TextUtils.isEmpty(manual)) {
             Toast.makeText(this, "Enter Manual", Toast.LENGTH_SHORT).show();
-        }else if(TextUtils.isEmpty(quantityStr)){
+        } else if (TextUtils.isEmpty(quantityStr)) {
             Toast.makeText(this, "Enter Quantity", Toast.LENGTH_SHORT).show();
-        }else
-            if(imageUri == null){
-                // need to update without image
-                uploadEquipment("");
-            }else{
-                uploadImage();
-            }
+        } else if (imageUri == null) {
+            // need to update without image
+            uploadEquipment("");
+        } else {
+            uploadImage();
         }
+    }
 
-
-    private void uploadImage(){
+    private void uploadImage() {
         progressDialog.setMessage("Updating equipment image");
         progressDialog.show();
 
-        String filePathAndName =  "EquipmentImages/" + firebaseAuth.getUid();
+        String filePathAndName = "EquipmentImages/" + firebaseAuth.getUid();
         StorageReference ref = FirebaseStorage.getInstance().getReference(filePathAndName);
         ref.putFile(imageUri)
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                         Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
-                        while(!uriTask.isSuccessful());
-                        String uploadedImageUrl=  String.valueOf(uriTask.getResult());
+                        while (!uriTask.isSuccessful()) ;
+                        String uploadedImageUrl = String.valueOf(uriTask.getResult());
                         uploadEquipment(uploadedImageUrl);
 
                     }
@@ -219,6 +217,7 @@ public class EquipmentAddActivity extends AppCompatActivity {
                     }
                 });
     }
+
     private void uploadEquipment(String imageUrl) {
         progressDialog.setMessage("Uploading...");
         progressDialog.show();
@@ -237,8 +236,8 @@ public class EquipmentAddActivity extends AppCompatActivity {
         hashMap.put("viewed", viewed);
         hashMap.put("numberOfBorrowings", 0);
         hashMap.put("status", "use");
-        if(imageUri != null){
-            hashMap.put("equipmentImage", ""+imageUrl);
+        if (imageUri != null) {
+            hashMap.put("equipmentImage", "" + imageUrl);
         }
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Equipments");
         ref.child("" + timestamp)
@@ -273,14 +272,14 @@ public class EquipmentAddActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 categoryTitleArrayList.clear();
                 categoryIdArraylist.clear();
-                for(DataSnapshot ds: snapshot.getChildren()){
-                  if(!(""+ ds.child("status").getValue()).equals("deleted")){
-                      String categoryId = (String) ds.child("id").getValue();
-                      String categoryTitle = (String) ds.child("title").getValue();
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    if (!("" + ds.child("status").getValue()).equals("deleted")) {
+                        String categoryId = (String) ds.child("id").getValue();
+                        String categoryTitle = (String) ds.child("title").getValue();
 
-                      categoryTitleArrayList.add(categoryTitle);
-                      categoryIdArraylist.add(categoryId);
-                  }
+                        categoryTitleArrayList.add(categoryTitle);
+                        categoryIdArraylist.add(categoryId);
+                    }
 
                 }
             }
@@ -293,16 +292,15 @@ public class EquipmentAddActivity extends AppCompatActivity {
     }
 
     private void imagePickIntent() {
-        Log.d(TAG, "imagePickIntent: starting pick image" );
+        Log.d(TAG, "imagePickIntent: starting pick image");
 
         Intent intent = new Intent();
         intent.setType("image");
     }
 
-    private String selectedCategoryId, selectedCategoryTitle;
     private void categoryPickDialog() {
         String[] categoriesArray = new String[categoryTitleArrayList.size()];
-        for(int i = 0; i < categoryTitleArrayList.size(); i++){
+        for (int i = 0; i < categoryTitleArrayList.size(); i++) {
             categoriesArray[i] = categoryTitleArrayList.get(i);
         }
         AlertDialog.Builder builder = new AlertDialog.Builder(this);

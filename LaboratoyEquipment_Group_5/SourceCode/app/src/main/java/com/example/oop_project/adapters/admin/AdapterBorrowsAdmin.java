@@ -36,8 +36,8 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 public class AdapterBorrowsAdmin extends RecyclerView.Adapter<AdapterBorrowsAdmin.HolderBorrowsAdmin> implements Filterable {
-    private Context context;
     public ArrayList<ModelEquipment> equipmentArrayList, filterList;
+    private final Context context;
     private FilterBorrowsAdmin filter;
     private RowBorrowsAdminBinding binding;
 
@@ -85,32 +85,24 @@ public class AdapterBorrowsAdmin extends RecyclerView.Adapter<AdapterBorrowsAdmi
                 });
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
         reference.child(uid)
-                        .child("Borrowed").child(key)
+                .child("Borrowed").child(key)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        String equipmentId = "" + snapshot.child("equipmentId").getValue();
+                        String quantityBorrowed = "" + snapshot.child("quantityBorrowed").getValue();
+                        holder.quantityTv.setText(quantityBorrowed);
+                        DatabaseReference ref1 = FirebaseDatabase.getInstance().getReference("Equipments");
+                        ref1.child(equipmentId)
                                 .addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
-                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                        String equipmentId = "" + snapshot.child("equipmentId").getValue();
-                                        String quantityBorrowed = "" + snapshot.child("quantityBorrowed").getValue();
-                                        holder.quantityTv.setText(quantityBorrowed);
-                                        DatabaseReference ref1 = FirebaseDatabase.getInstance().getReference("Equipments");
-                                        ref1.child(equipmentId)
-                                                .addListenerForSingleValueEvent(new ValueEventListener() {
-                                                    @Override
-                                                    public void onDataChange(@NonNull DataSnapshot snapshots) {
-                                                        String title = "" + snapshots.child("title").getValue();
-                                                        String description = "" + snapshots.child("description").getValue();
-                                                        holder.titleTv.setText(title);
+                                    public void onDataChange(@NonNull DataSnapshot snapshots) {
+                                        String title = "" + snapshots.child("title").getValue();
+                                        String description = "" + snapshots.child("description").getValue();
+                                        holder.titleTv.setText(title);
 //                                                        holder.descriptionTv.setText(description);
-                                                        String equipmentId = "" + snapshots.child("id").getValue();
-                                                        model.setId(equipmentId);
-
-                                                    }
-
-                                                    @Override
-                                                    public void onCancelled(@NonNull DatabaseError error) {
-
-                                                    }
-                                                });
+                                        String equipmentId = "" + snapshots.child("id").getValue();
+                                        model.setId(equipmentId);
 
                                     }
 
@@ -119,6 +111,14 @@ public class AdapterBorrowsAdmin extends RecyclerView.Adapter<AdapterBorrowsAdmi
 
                                     }
                                 });
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -139,23 +139,24 @@ public class AdapterBorrowsAdmin extends RecyclerView.Adapter<AdapterBorrowsAdmi
                 String equipmentImage = "" + snapshot.child("equipmentImage").getValue();
                 Log.d("equipmentImage", equipmentImage);
                 Glide.with(context)
-                            .load(equipmentImage)
-                            .centerCrop()
-                            .listener(new RequestListener<Drawable>() {
-                                @Override
-                                public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                        .load(equipmentImage)
+                        .centerCrop()
+                        .listener(new RequestListener<Drawable>() {
+                            @Override
+                            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
 
-                                    binding.imageView.setVisibility(View.VISIBLE);
-                                    return false;
-                                }
-                                @Override
-                                public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                                    binding.progressBar.setVisibility(View.VISIBLE);
-                                    return false;
-                                }
+                                binding.imageView.setVisibility(View.VISIBLE);
+                                return false;
+                            }
 
-                            })
-                            .into(binding.imageView);
+                            @Override
+                            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                                binding.progressBar.setVisibility(View.VISIBLE);
+                                return false;
+                            }
+
+                        })
+                        .into(binding.imageView);
             }
 
             @Override
@@ -173,16 +174,17 @@ public class AdapterBorrowsAdmin extends RecyclerView.Adapter<AdapterBorrowsAdmi
 
     @Override
     public Filter getFilter() {
-        if(filter == null){
+        if (filter == null) {
             filter = new FilterBorrowsAdmin(filterList, this);
         }
         return filter;
     }
 
-    class HolderBorrowsAdmin extends RecyclerView.ViewHolder{
+    class HolderBorrowsAdmin extends RecyclerView.ViewHolder {
         TextView titleTv, categoryTv, quantityTv, descriptionTv, dateTv;
         ProgressBar progressBar;
         ImageView imageView;
+
         public HolderBorrowsAdmin(@NonNull View itemView) {
             super(itemView);
             titleTv = binding.titleTv;

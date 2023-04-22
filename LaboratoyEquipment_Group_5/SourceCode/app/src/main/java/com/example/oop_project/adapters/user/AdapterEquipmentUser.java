@@ -28,16 +28,13 @@ import com.example.oop_project.filters.user.FilterEquipmentUser;
 import com.example.oop_project.models.ModelCategory;
 import com.example.oop_project.models.ModelEquipment;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
 public class AdapterEquipmentUser extends RecyclerView.Adapter<AdapterEquipmentUser.HolderEquipemntUser> implements Filterable {
-    private Context context;
     public ArrayList<ModelEquipment> equipmentArrayList, filterList;
+    private final Context context;
     private FilterEquipmentUser filter;
 
     private RowEquipmentsUserBinding binding;
@@ -75,14 +72,14 @@ public class AdapterEquipmentUser extends RecyclerView.Adapter<AdapterEquipmentU
 
         holder.titleTv.setText(title);
         holder.descriptionTv.setText(description);
-        holder.quantityTv.setText(""+quantity);
+        holder.quantityTv.setText("" + quantity);
         holder.dateTv.setText(date);
 
         ModelCategory modelCategory = new ModelCategory();
         modelCategory.getDataFromFireBase(categoryId).addOnCompleteListener(new OnCompleteListener<ModelCategory>() {
             @Override
             public void onComplete(@NonNull Task<ModelCategory> task) {
-                if(task.isSuccessful()){
+                if (task.isSuccessful()) {
                     ModelCategory newModelCategory = task.getResult();
                     holder.categoryTv.setText(newModelCategory.getTitle());
                 }
@@ -139,13 +136,13 @@ public class AdapterEquipmentUser extends RecyclerView.Adapter<AdapterEquipmentU
 
     @Override
     public Filter getFilter() {
-        if(filter == null){
+        if (filter == null) {
             filter = new FilterEquipmentUser(filterList, this);
         }
         return filter;
     }
 
-    class HolderEquipemntUser extends RecyclerView.ViewHolder{
+    class HolderEquipemntUser extends RecyclerView.ViewHolder {
         TextView titleTv;
         TextView categoryTv;
         TextView quantityTv;

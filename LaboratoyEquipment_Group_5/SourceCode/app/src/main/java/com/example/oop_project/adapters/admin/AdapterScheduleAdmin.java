@@ -41,23 +41,23 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 public class AdapterScheduleAdmin extends RecyclerView.Adapter<AdapterScheduleAdmin.HolderEquipmentsScheduleAdmin> implements Filterable {
-    private Context context;
     public ArrayList<ModelEquipment> equipmentArrayList, filterList;
+    private final Context context;
     private RowEquipmentsScheduleAdminBinding binding;
-    private ArrayList<Boolean> isChecked;
-    private ArrayList<String> startDate;
-    private ArrayList<String> endDate;
+    private final ArrayList<Boolean> isChecked;
+    private final ArrayList<String> startDate;
+    private final ArrayList<String> endDate;
     private FilterScheduleAdmin filter;
 
 
     public AdapterScheduleAdmin(Context context, ArrayList<ModelEquipment> equipmentArrayList) {
         this.context = context;
         this.equipmentArrayList = equipmentArrayList;
-        isChecked =  new ArrayList<>();
+        isChecked = new ArrayList<>();
         startDate = new ArrayList<>();
         endDate = new ArrayList<>();
         filterList = equipmentArrayList;
-        for(int i = 0; i < 10000; i++){
+        for (int i = 0; i < 10000; i++) {
             isChecked.add(false);
             startDate.add(" ");
             endDate.add(" ");
@@ -75,7 +75,7 @@ public class AdapterScheduleAdmin extends RecyclerView.Adapter<AdapterScheduleAd
     public void onBindViewHolder(@NonNull HolderEquipmentsScheduleAdmin holder, @SuppressLint("RecyclerView") int position) {
         ModelEquipment model = equipmentArrayList.get(position);
         String equipmentId = model.getId();
-        String key = model.getKey();;
+        String key = model.getKey();
         String uid = model.getUid();
         String adminStatus = model.getAdminStatus();
 
@@ -124,7 +124,7 @@ public class AdapterScheduleAdmin extends RecyclerView.Adapter<AdapterScheduleAd
                                         modelCategory.getDataFromFireBase(categoryId).addOnCompleteListener(new OnCompleteListener<ModelCategory>() {
                                             @Override
                                             public void onComplete(@NonNull Task<ModelCategory> task) {
-                                                if(task.isSuccessful()){
+                                                if (task.isSuccessful()) {
                                                     ModelCategory newModelCategory = task.getResult();
                                                     holder.categoryTv.setText(newModelCategory.getTitle());
                                                 }
@@ -174,6 +174,7 @@ public class AdapterScheduleAdmin extends RecyclerView.Adapter<AdapterScheduleAd
                                 binding.imageView.setVisibility(View.VISIBLE);
                                 return false;
                             }
+
                             @Override
                             public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
                                 binding.progressBar.setVisibility(View.VISIBLE);
@@ -201,8 +202,8 @@ public class AdapterScheduleAdmin extends RecyclerView.Adapter<AdapterScheduleAd
                 intent.putExtra("equipmentId", model.getId());
                 intent.putExtra("key", model.getKey());
                 intent.putExtra("adminStatus", adminStatus);
-                intent.putExtra("timestamp", ""+model.getTimestamp());
-                intent.putExtra("isChecked", ""+isChecked.get(position));
+                intent.putExtra("timestamp", "" + model.getTimestamp());
+                intent.putExtra("isChecked", "" + isChecked.get(position));
                 LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
             }
         });
@@ -217,13 +218,13 @@ public class AdapterScheduleAdmin extends RecyclerView.Adapter<AdapterScheduleAd
 
     @Override
     public Filter getFilter() {
-        if(filter == null){
+        if (filter == null) {
             filter = new FilterScheduleAdmin(filterList, this);
         }
         return filter;
     }
 
-    class HolderEquipmentsScheduleAdmin extends RecyclerView.ViewHolder{
+    class HolderEquipmentsScheduleAdmin extends RecyclerView.ViewHolder {
         ProgressBar progressBar;
         ImageView imageView;
         TextView titleTv, descriptionTv, quantityTv, categoryTv;
