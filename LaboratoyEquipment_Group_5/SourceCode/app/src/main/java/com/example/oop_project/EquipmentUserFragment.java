@@ -1,17 +1,16 @@
 package com.example.oop_project;
 
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.oop_project.adapters.AdapterEquipmentUser;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+
+import com.example.oop_project.adapters.user.AdapterEquipmentUser;
 import com.example.oop_project.databinding.FragmentEquipmentUserBinding;
 import com.example.oop_project.models.ModelEquipment;
 import com.google.firebase.database.DataSnapshot;
@@ -66,14 +65,14 @@ public class EquipmentUserFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = FragmentEquipmentUserBinding.inflate(LayoutInflater.from(getContext()), container, false);
-        if(title.equals("All")){
+        if (title.equals("All")) {
             // load add equipments
             loadAllEquipments();
-        }else if(title.equals("Most Viewed")){
+        } else if (title.equals("Most Viewed")) {
             loadMostViewedEquipments();
-        }else if(title.equals("Most Borrowed")){
+        } else if (title.equals("Most Borrowed")) {
             loadMostBorrowedEquipments();
-        }else{
+        } else {
             loadCategorizedEquipemnts();
         }
 
@@ -85,9 +84,9 @@ public class EquipmentUserFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                try{
+                try {
                     adapterEquipmentUser.getFilter().filter(s);
-                }catch (Exception e){
+                } catch (Exception e) {
 
                 }
             }
@@ -109,9 +108,16 @@ public class EquipmentUserFragment extends Fragment {
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         equipmentArrayList.clear();
                         for (DataSnapshot ds : snapshot.getChildren()) {
-                            ModelEquipment model = ds.getValue(ModelEquipment.class);
+                            if (ds.hasChild("status")) {
+                                if (("" + ds.child("status").getValue()).equals("use")) {
+                                    ModelEquipment model = ds.getValue(ModelEquipment.class);
 
-                            equipmentArrayList.add(model);
+                                    equipmentArrayList.add(model);
+                                }
+                            } else {
+                                ds.getRef().child("status").setValue("use");
+                            }
+
                         }
                         adapterEquipmentUser = new AdapterEquipmentUser(getContext(), equipmentArrayList);
                         binding.equipmentRv.setAdapter(adapterEquipmentUser);
@@ -132,11 +138,16 @@ public class EquipmentUserFragment extends Fragment {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         equipmentArrayList.clear();
-                        for(DataSnapshot ds: snapshot.getChildren()){
-                            ModelEquipment model = ds.getValue(ModelEquipment.class);
+                        for (DataSnapshot ds : snapshot.getChildren()) {
+                            if (ds.hasChild("status")) {
+                                if (("" + ds.child("status").getValue()).equals("use")) {
+                                    ModelEquipment model = ds.getValue(ModelEquipment.class);
 
-
-                            equipmentArrayList.add(model);
+                                    equipmentArrayList.add(model);
+                                }
+                            } else {
+                                ds.getRef().child("status").setValue("use");
+                            }
                         }
 
                         adapterEquipmentUser = new AdapterEquipmentUser(getContext(), equipmentArrayList);
@@ -148,7 +159,7 @@ public class EquipmentUserFragment extends Fragment {
 
                     }
                 });
-    
+
     }
 
     private void loadMostViewedEquipments() {
@@ -156,25 +167,30 @@ public class EquipmentUserFragment extends Fragment {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Equipments");
         ref.orderByChild("viewed").limitToLast(10)
                 .addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                equipmentArrayList.clear();
-                for(DataSnapshot ds: snapshot.getChildren()){
-                    ModelEquipment model = ds.getValue(ModelEquipment.class);
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        equipmentArrayList.clear();
+                        for (DataSnapshot ds : snapshot.getChildren()) {
+                            if (ds.hasChild("status")) {
+                                if (("" + ds.child("status").getValue()).equals("use")) {
+                                    ModelEquipment model = ds.getValue(ModelEquipment.class);
 
+                                    equipmentArrayList.add(model);
+                                }
+                            } else {
+                                ds.getRef().child("status").setValue("use");
+                            }
+                        }
 
-                    equipmentArrayList.add(model);
-                }
+                        adapterEquipmentUser = new AdapterEquipmentUser(getContext(), equipmentArrayList);
+                        binding.equipmentRv.setAdapter(adapterEquipmentUser);
+                    }
 
-                adapterEquipmentUser = new AdapterEquipmentUser(getContext(), equipmentArrayList);
-                binding.equipmentRv.setAdapter(adapterEquipmentUser);
-            }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
+                    }
+                });
     }
 
     private void loadAllEquipments() {
@@ -185,14 +201,21 @@ public class EquipmentUserFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 equipmentArrayList.clear();
-                for(DataSnapshot ds: snapshot.getChildren()){
-                    ModelEquipment model = ds.getValue(ModelEquipment.class);
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    if (ds.hasChild("status")) {
+                        if (("" + ds.child("status").getValue()).equals("use")) {
+                            ModelEquipment model = ds.getValue(ModelEquipment.class);
 
-                    equipmentArrayList.add(model);
+                            equipmentArrayList.add(model);
+                        }
+                    } else {
+                        ds.getRef().child("status").setValue("use");
+                    }
                 }
 
                 adapterEquipmentUser = new AdapterEquipmentUser(getContext(), equipmentArrayList);
                 binding.equipmentRv.setAdapter(adapterEquipmentUser);
+
             }
 
             @Override

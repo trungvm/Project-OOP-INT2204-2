@@ -4,16 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.FavoriteActivity"
     android:background="@drawable/back01"
-    >
+    tools:context=".activities.user.FavoriteActivity">
 
     <RelativeLayout
         android:id="@+id/toolbarRl"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
-        android:background="@drawable/shape_toolbar"
-        >
+        android:background="@drawable/shape_toolbar">
 
         <TextView
             android:layout_width="wrap_content"
@@ -24,16 +22,16 @@
             android:textSize="20sp"
             android:textStyle="bold" />
     </RelativeLayout>
+
     <androidx.recyclerview.widget.RecyclerView
-        android:layout_marginTop="5dp"
         android:id="@+id/favoriteRv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/toolbarRl"
         android:layout_above="@id/bottomNavigationView"
-        tools:listitem="@layout/row_equipments_favorite"
+        android:layout_below="@id/toolbarRl"
+        android:layout_marginTop="5dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        />
+        tools:listitem="@layout/row_equipments_favorite" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"
@@ -44,8 +42,7 @@
         android:backgroundTint="@color/white"
         app:itemIconSize="30dp"
         app:labelVisibilityMode="unlabeled"
-        app:menu="@menu/navigation_user_menu"
-        >
+        app:menu="@menu/navigation_user_menu">
 
     </com.google.android.material.bottomnavigation.BottomNavigationView>
 

@@ -4,48 +4,47 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.EquipmentListAdminActivity"
     android:background="@drawable/back01"
-    >
+    android:focusableInTouchMode="true"
+    tools:context=".activities.admin.EquipmentListAdminActivity">
 
     <!--Toolbar-->
     <RelativeLayout
         android:id="@+id/toolbarRl"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
-        android:background="@drawable/shape_toolbar"
-        >
+        android:background="@drawable/shape_toolbar">
+
         <ImageButton
             android:id="@+id/backBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_back_white"
             android:layout_centerVertical="true"
             android:layout_marginStart="10dp"
             android:background="@android:color/transparent"
-            />
+            android:src="@drawable/ic_back_white" />
+
         <TextView
             android:id="@+id/titleTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Equipments"
             android:layout_centerHorizontal="true"
-            android:textColor="@color/white"
             android:layout_marginTop="8dp"
+            android:text="Danh sách thiết bị"
+            android:textColor="@color/white"
             android:textSize="16sp"
-            android:textStyle="bold"
-            />
+            android:textStyle="bold" />
+
         <TextView
             android:id="@+id/subtitleTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@id/titleTv"
             android:layout_centerHorizontal="true"
             android:text="Category"
             android:textColor="@color/white"
-            android:layout_below="@id/titleTv"
             android:textSize="16sp"
-            android:textStyle="bold"
-            />
+            android:textStyle="bold" />
     </RelativeLayout>
 
     <!--search-->
@@ -54,18 +53,17 @@
         android:id="@+id/searchEt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/toolbarRl"
         android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
         android:layout_marginEnd="10dp"
         android:background="@color/white"
-        android:layout_below="@id/toolbarRl"
-        android:padding="10dp"
-        android:layout_marginTop="5dp"
-        android:hint="Search"
-        android:textColorHint="@color/gray02"
         android:drawableStart="@drawable/ic_search_gray"
         android:drawablePadding="10dp"
+        android:hint="Search"
+        android:padding="10dp"
         android:textColor="@color/black"
-        />
+        android:textColorHint="@color/gray02" />
 
     <!--list-->
     <androidx.recyclerview.widget.RecyclerView

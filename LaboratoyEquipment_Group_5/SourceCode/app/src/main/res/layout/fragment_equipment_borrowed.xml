@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    tools:context=".EquipmentBorrowedFragment"
-    >
+    tools:context=".EquipmentBorrowedFragment">
     <!--search-->
     <EditText
         android:id="@+id/searchEt"
@@ -17,9 +16,9 @@
         android:layout_marginEnd="10dp"
         android:background="@color/white"
         android:drawableStart="@drawable/ic_search_gray"
-        android:padding="10dp"
         android:hint="Search"
-        android:textColorHint="@color/gray01"/>
+        android:padding="10dp"
+        android:textColorHint="@color/gray01" />
 
     <!-- Recycle View-->
     <androidx.recyclerview.widget.RecyclerView

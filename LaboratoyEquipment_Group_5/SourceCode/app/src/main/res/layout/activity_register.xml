@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/back01"
-    tools:context=".activities.LoginActivity">
+    tools:context=".activities.common.LoginActivity">
 
     <RelativeLayout
         android:id="@+id/toolbarRl"
@@ -19,9 +19,7 @@
             android:id="@+id/texttopRegister"
             android:layout_width="221dp"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="92dp"
+            android:layout_centerInParent="true"
             android:layout_marginTop="52dp"
             android:background="@drawable/top_white_background"
             android:padding="4dp"
@@ -36,10 +34,10 @@
         android:id="@+id/loginLogo"
         android:layout_width="120dp"
         android:layout_height="120dp"
-        android:src="@drawable/login_logo"
         android:layout_below="@id/toolbarRl"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="-60dp"/>
+        android:layout_marginTop="-60dp"
+        android:src="@drawable/login_logo" />
 
     <TextView
         android:id="@+id/textEmailRegister"
@@ -60,28 +58,27 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_below="@id/textEmailRegister"
-        app:hintEnabled="false"
         android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="32dp"
         android:background="@drawable/edittext_green"
         app:boxBackgroundMode="none"
-        android:layout_marginTop="8dp"
-        >
+        app:hintEnabled="false">
+
         <EditText
             android:id="@+id/email"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:background="@drawable/edittext_green"
             android:drawableStart="@drawable/ic_lock_gray"
             android:drawablePadding="12dp"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="8dp"
             android:ems="15"
-            android:inputType="textEmailAddress"
             android:hint="Enter Your Email!"
-            android:textSize="16sp"
+            android:inputType="textEmailAddress"
+            android:padding="8dp"
             android:textColor="#a2a4b5"
             android:textColorHint="#C5C5C5"
-            />
+            android:textSize="16sp" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
@@ -103,29 +100,28 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_below="@id/textPasswordRegister"
-        app:hintEnabled="false"
-        app:passwordToggleEnabled="true"
         android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="32dp"
         android:background="@drawable/edittext_green"
         app:boxBackgroundMode="none"
-        android:layout_marginTop="8dp"
-        >
+        app:hintEnabled="false"
+        app:passwordToggleEnabled="true">
+
         <EditText
             android:id="@+id/password"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:background="@drawable/edittext_green"
             android:drawableStart="@drawable/ic_lock_gray"
             android:drawablePadding="12dp"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="8dp"
             android:ems="15"
-            android:inputType="textPassword"
             android:hint="Enter Your Password!"
-            android:textSize="16sp"
+            android:inputType="textPassword"
+            android:padding="8dp"
             android:textColor="#a2a4b5"
             android:textColorHint="#C5C5C5"
-            />
+            android:textSize="16sp" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
@@ -144,31 +140,31 @@
         android:id="@+id/confirmPasswordTil"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        app:hintEnabled="false"
-        app:passwordToggleEnabled="true"
         android:layout_below="@id/textConfirmPasword"
         android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="32dp"
         android:background="@drawable/edittext_green"
         app:boxBackgroundMode="none"
-        android:layout_marginTop="8dp"
-        >
+        app:hintEnabled="false"
+        app:passwordToggleEnabled="true">
+
         <EditText
             android:id="@+id/confirmPassword"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:background="@drawable/edittext_green"
             android:drawableStart="@drawable/ic_lock_gray"
             android:drawablePadding="12dp"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="8dp"
             android:ems="15"
-            android:inputType="textPassword"
             android:hint="Confirm Your Password!"
-            android:textSize="16sp"
+            android:inputType="textPassword"
+            android:padding="8dp"
             android:textColor="#a2a4b5"
             android:textColorHint="#C5C5C5"
-            />
+            android:textSize="16sp" />
     </com.google.android.material.textfield.TextInputLayout>
+
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/registerBtn"
         style="@style/Widget.AppCompat.Button"
@@ -184,8 +180,7 @@
         android:padding="4dp"
         android:text="Register"
         android:textColor="#ffffff"
-        android:textSize="22sp"
-        />
+        android:textSize="22sp" />
 
     <TextView
         android:id="@+id/backLogin"
@@ -193,7 +188,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/registerBtn"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="49dp"
+        android:layout_marginTop="20dp"
         android:text="Already have an account? Sign in"
         android:textColor="#0d6e6a"
         android:textSize="20dp"

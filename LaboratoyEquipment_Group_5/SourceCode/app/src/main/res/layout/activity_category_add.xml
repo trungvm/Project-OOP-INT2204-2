@@ -5,30 +5,30 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/back01"
-    tools:context=".activities.CategoryAddActivity">
+    tools:context=".activities.admin.CategoryAddActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="250dp"
-        android:background="@drawable/shape_toolbar"
-        >
+        android:background="@drawable/shape_toolbar">
+
         <ImageButton
             android:id="@+id/backBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_back_white"
             android:layout_margin="10dp"
-            android:padding="5dp"
             android:background="@android:color/transparent"
-            />
+            android:padding="5dp"
+            android:src="@drawable/ic_back_white" />
+
         <ImageView
             android:id="@+id/logoMain"
             android:layout_width="110dp"
             android:layout_height="110dp"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="40dp"
-            android:src="@drawable/login_logo"
-            />
+            android:src="@drawable/login_logo" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -36,20 +36,20 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
             android:fontFamily="sans-serif-condensed"
-            android:text="Add a new Category!"
+            android:text="Thêm mới thể loại"
             android:textColor="@color/white"
-            android:textSize="28sp"
-            />
+            android:textSize="28sp" />
     </RelativeLayout>
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/categoryTil"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:hintEnabled="false"
         android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp"
         android:layout_marginTop="225dp"
-        >
+        android:layout_marginEnd="30dp"
+        app:hintEnabled="false">
+
         <EditText
             android:id="@+id/category"
             android:layout_width="match_parent"
@@ -58,23 +58,45 @@
             android:drawableStart="@drawable/ic_category_gray"
             android:drawablePadding="18dp"
             android:hint="Category Title"
-            android:inputType="textPersonName|textCapWords"
+            android:inputType="textPersonName|textCapWords|textMultiLine"
             android:padding="18dp"
-            android:textColorHint="@color/gray02"
             android:textColor="@color/black"
-            />
+            android:textColorHint="@color/gray02" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/positionTil"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/categoryTil"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="30dp"
+        app:hintEnabled="false">
+
+        <EditText
+            android:id="@+id/position"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_editext01"
+            android:drawableStart="@drawable/ic_position_gray"
+            android:drawablePadding="18dp"
+            android:hint="Postion"
+            android:inputType="textPersonName|textCapWords|textMultiLine"
+            android:padding="18dp"
+            android:textColor="@color/black"
+            android:textColorHint="@color/gray02" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/submitBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/positionTil"
         android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp"
         android:layout_marginTop="20dp"
+        android:layout_marginEnd="30dp"
         android:background="@drawable/shape_button01"
-        android:text="submit"
-        android:layout_below="@id/categoryTil"
-        android:textColor="@color/white"
-        />
+        android:text="Xác nhận"
+        android:textColor="@color/white" />
 </RelativeLayout>

@@ -4,18 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.DashboardAdminActivity"
     android:background="@color/colorBackground"
     android:focusableInTouchMode="true"
-    >
+    tools:context=".activities.admin.DashboardAdminActivity">
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layoutHeader"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="120dp"
         android:background="@drawable/header_background"
         android:padding="10dp"
-        app:layout_constraintTop_toTopOf="parent"
-        >
+        app:layout_constraintTop_toTopOf="parent">
+
         <TextView
             android:id="@+id/textHello"
             android:layout_width="wrap_content"
@@ -25,9 +25,8 @@
             android:text="Xin chào"
             android:textColor="@color/white"
             android:textSize="25sp"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/textUserName"
@@ -42,71 +41,53 @@
             app:layout_constraintStart_toEndOf="@id/textHello"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageButton
+        <ImageView
             android:id="@+id/logoutBtn"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginEnd="15dp"
             android:contentDescription="@string/app_name"
-            android:src="@drawable/ic_logout_white"
+            android:src="@drawable/logout"
             app:layout_constraintBottom_toBottomOf="@id/textHello"
             app:layout_constraintEnd_toEndOf="parent"
-            android:background="@android:color/transparent"
             app:layout_constraintTop_toTopOf="@id/textHello"
-            app:tint="@color/white" />
+            app:tint="#F15D5D" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
-            android:layout_marginEnd="15dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="10dp"
-            android:background="@drawable/white_rectangle_background"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/logoutBtn"
-            >
-            <EditText
-                android:layout_width="0dp"
-                android:layout_height="40dp"
-                android:layout_weight="1"
-                android:background="@null"
-                android:hint="Search element"
-                android:imeOptions="actionSearch"
-                android:inputType="text"
-                android:paddingStart="15dp"
-                android:paddingEnd="15dp"
-                android:textColor="@color/colorAccent"
-                android:textSize="16sp"
-                android:importantForAutofill="no"
-                />
-            <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@drawable/search_icon_background"
-                android:contentDescription="@string/app_name"
-                android:padding="6dp"
-                android:src="@drawable/ic_search_black"
-                app:tint="@color/colorPrimary" />
-        </LinearLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/profileTv"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_marginStart="130dp"
+        android:layout_marginTop="44dp"
+        android:layout_marginEnd="136dp"
+
+        android:background="@color/white"
+        android:elevation="10dp"
+        android:src="@drawable/ic_person_gray"
+        app:layout_constraintEnd_toEndOf="@+id/layoutHeader"
+        app:layout_constraintStart_toStartOf="@+id/layoutHeader"
+        app:layout_constraintTop_toTopOf="@+id/layoutHeader"
+        app:shapeAppearance="@style/styleRoundCornersImage"
+        tools:ignore="MissingConstraints" />
+
     <ScrollView
+        android:id="@+id/scrollView2"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:overScrollMode="never"
-        android:scrollbars="none"
+        android:layout_height="650dp"
         app:layout_constraintBottom_toTopOf="@id/viewDivider"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/layoutHeader"
-        app:layout_constraintVertical_bias="1.0">
+        app:layout_constraintTop_toBottomOf="@+id/profileTv"
+        app:layout_constraintVertical_bias="0.0">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-15dp">
 
             <LinearLayout
                 android:id="@+id/layoutEquipments"
@@ -116,9 +97,9 @@
                 android:background="@drawable/white_rectangle_background"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:padding="15dp"
+                android:padding="10dp"
                 app:layout_constraintDimensionRatio="H, 1:1"
-                app:layout_constraintEnd_toStartOf="@id/layoutCart"
+                app:layout_constraintEnd_toStartOf="@id/layoutSchedule"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:ignore="MissingConstraints">
@@ -129,7 +110,7 @@
                     android:layout_margin="8dp"
                     android:contentDescription="@string/app_name"
                     android:padding="8dp"
-                    android:src="@drawable/le" />
+                    android:src="@drawable/calculator" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -143,14 +124,14 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/layoutCart"
+                android:id="@+id/layoutSchedule"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="22dp"
                 android:background="@drawable/white_rectangle_background"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:padding="15dp"
+                android:padding="10dp"
                 app:layout_constraintDimensionRatio="H, 1:1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/layoutEquipments"
@@ -163,13 +144,13 @@
                     android:layout_margin="8dp"
                     android:contentDescription="@string/app_name"
                     android:padding="8dp"
-                    android:src="@drawable/cart" />
+                    android:src="@drawable/calendar" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="Giỏ đồ mượn"
+                    android:text="Đặt lịch mượn"
                     android:textColor="@color/colorAccent"
                     android:textSize="20dp"
                     android:textStyle="bold" />
@@ -177,16 +158,17 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/layoutEquipmentBorrowed"
+                android:id="@+id/layoutCart"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="22dp"
+                android:layout_marginTop="16dp"
                 android:background="@drawable/white_rectangle_background"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:padding="15dp"
+                android:padding="10dp"
+
                 app:layout_constraintDimensionRatio="H, 1:1"
-                app:layout_constraintEnd_toStartOf="@id/layoutCart"
+                app:layout_constraintEnd_toStartOf="@id/layoutSchedule"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/layoutEquipments"
                 tools:ignore="MissingConstraints">
@@ -197,13 +179,15 @@
                     android:layout_margin="8dp"
                     android:contentDescription="@string/app_name"
                     android:padding="8dp"
-                    android:src="@drawable/rules" />
+                    android:src="@drawable/cart"
+                    android:tint="#1EBACD"
+                    tools:ignore="UseAppTint" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="Thiết bị mượn"
+                    android:text="Giỏ đồ"
                     android:textColor="@color/colorAccent"
                     android:textSize="20dp"
                     android:textStyle="bold" />
@@ -211,18 +195,18 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/layoutQA"
+                android:id="@+id/layoutEquipmentBorrowed"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="22dp"
+                android:layout_marginTop="16dp"
                 android:background="@drawable/white_rectangle_background"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:padding="15dp"
+                android:padding="10dp"
                 app:layout_constraintDimensionRatio="H, 1:1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/layoutEquipments"
-                app:layout_constraintTop_toBottomOf="@id/layoutCart"
+                app:layout_constraintTop_toBottomOf="@id/layoutSchedule"
                 tools:ignore="MissingConstraints">
 
                 <ImageView
@@ -231,74 +215,98 @@
                     android:layout_margin="8dp"
                     android:contentDescription="@string/app_name"
                     android:padding="8dp"
-                    android:src="@drawable/qa" />
+                    android:src="@drawable/history" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="Q&amp;A"
+                    android:text="Lịch sử"
                     android:textColor="@color/colorAccent"
                     android:textSize="20dp"
                     android:textStyle="bold" />
 
             </LinearLayout>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="22dp"
-                android:background="@drawable/trending_background"
-                android:padding="20dp"
-                app:layout_constraintEnd_toEndOf="@id/layoutQA"
-                app:layout_constraintStart_toStartOf="@id/layoutEquipments"
-                app:layout_constraintTop_toBottomOf="@id/layoutEquipmentBorrowed">
-
-                <TextView
-                    android:id="@+id/textTrending"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/white_rectangle_background"
-                    android:paddingStart="8dp"
-                    android:paddingTop="2dp"
-                    android:paddingEnd="8dp"
-                    android:paddingBottom="2dp"
-                    android:text="TRENDING"
-                    android:textColor="@color/colorAccent"
-                    android:textSize="16sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:ignore="MissingConstraints" />
-
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:contentDescription="@string/app_name"
-                    android:src="@drawable/ic_favorite_border"
-                    app:layout_constraintBottom_toBottomOf="@id/textTrending"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/textTrending"
-                    app:tint="@color/white" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:ellipsize="end"
-                    android:maxLines="3"
-                    android:text="lalallaslals"
-                    android:textColor="@color/white"
-                    android:textSize="20sp"
-                    app:layout_constraintTop_toBottomOf="@id/textTrending"
-
-                    />
-
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            >
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layoutRules"
+        android:layout_width="368dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="530dp"
+        android:background="@drawable/trending_background"
+        android:padding="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/layoutHeader">
+
+        <TextView
+            android:id="@+id/textTrending"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/white_rectangle_background"
+            android:paddingStart="8dp"
+            android:paddingTop="2dp"
+            android:paddingEnd="8dp"
+            android:paddingBottom="2dp"
+            android:text="RULES"
+            android:textColor="@color/colorAccent"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="MissingConstraints" />
+
+        <ImageView
+            android:id="@+id/clickHere"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/ic_guide_gray"
+            app:layout_constraintBottom_toBottomOf="@id/textTrending"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/textTrending"
+            app:tint="#836841" />
+
+        <TextView
+            android:id="@+id/textRules"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="3"
+            android:text="Nội quy phòng thí nghiệm"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            app:layout_constraintTop_toBottomOf="@id/textTrending"
+            tools:layout_editor_absoluteX="20dp" />
+
+        <ScrollView
+            android:id="@+id/contentRulesSv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/textRules"
+            tools:ignore="MissingConstraints"
+            tools:layout_editor_absoluteX="20dp">
+
+            <TextView
+                android:id="@+id/contentRules"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="test"
+                android:textColor="@color/white"
+                android:textSize="14sp" />
+        </ScrollView>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"
@@ -308,15 +316,14 @@
         app:itemIconSize="30dp"
         app:labelVisibilityMode="unlabeled"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:menu="@menu/navigation_user_menu"
-        >
+        app:menu="@menu/navigation_user_menu">
 
     </com.google.android.material.bottomnavigation.BottomNavigationView>
+
     <View
         android:id="@+id/viewDivider"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/colorDivider"
-        app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
-        />
+        app:layout_constraintBottom_toTopOf="@id/bottomNavigationView" />
 </androidx.constraintlayout.widget.ConstraintLayout>
