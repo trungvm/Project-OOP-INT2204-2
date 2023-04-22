@@ -51,6 +51,7 @@ public class ModelEquipment {
         this.quantity = quantity;
     }
 
+
     public String getPreStatus() {
         return preStatus;
     }

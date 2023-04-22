@@ -40,6 +40,7 @@ public class AddRulesAdminActivity extends AppCompatActivity {
                 Intent intent = new Intent(AddRulesAdminActivity.this, SuccessActivity.class);
                 intent.putExtra("status", "True");
                 startActivity(intent);
+                finish();
             }
         });
 

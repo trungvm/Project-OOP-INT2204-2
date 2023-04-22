@@ -1,8 +1,11 @@
 package com.example.oop_project.adapters.admin;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,12 +43,17 @@ public class AdapterBorrowsAdmin extends RecyclerView.Adapter<AdapterBorrowsAdmi
     private final Context context;
     private FilterBorrowsAdmin filter;
     private RowBorrowsAdminBinding binding;
+    private ArrayList<Boolean> isCallbackHandled;
 
 
     public AdapterBorrowsAdmin(Context context, ArrayList<ModelEquipment> equipmentArrayList) {
         this.context = context;
         this.equipmentArrayList = equipmentArrayList;
         filterList = equipmentArrayList;
+        isCallbackHandled = new ArrayList<>();
+        for(int i = 0; i <= 1000; i++){
+            isCallbackHandled.add(false);
+        }
 
     }
 
@@ -57,12 +65,12 @@ public class AdapterBorrowsAdmin extends RecyclerView.Adapter<AdapterBorrowsAdmi
     }
 
     @Override
-    public void onBindViewHolder(@NonNull HolderBorrowsAdmin holder, int position) {
+    public void onBindViewHolder(@NonNull HolderBorrowsAdmin holder, @SuppressLint("RecyclerView") int position) {
         ModelEquipment model = equipmentArrayList.get(position);
         String equipmentId = model.getId();
         String key = model.getKey();
         binding.textDate.setText("Thời gian mượn: ");
-        binding.categoryTv.setVisibility(View.GONE);
+        holder.categoryTv.setVisibility(View.GONE);
         String uid = model.getUid();
         String preStatus = model.getPreStatus();
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("EquipmentsBorrowed");
@@ -133,35 +141,62 @@ public class AdapterBorrowsAdmin extends RecyclerView.Adapter<AdapterBorrowsAdmi
             }
         });
         DatabaseReference refImage = FirebaseDatabase.getInstance().getReference("Equipments");
-        refImage.child(equipmentId).addListenerForSingleValueEvent(new ValueEventListener() {
+        refImage.child(equipmentId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String equipmentImage = "" + snapshot.child("equipmentImage").getValue();
-                Log.d("equipmentImage", equipmentImage);
-                Glide.with(context)
-                        .load(equipmentImage)
-                        .centerCrop()
-                        .listener(new RequestListener<Drawable>() {
-                            @Override
-                            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                Object lock = new Object();
+                synchronized (lock){
+                    final int finalPosition = position; // Gán giá trị của "position" vào biến tạm thời
+                    String title = "" + snapshot.child("title").getValue();
+                    String equipmentImage = "" + snapshot.child("equipmentImage").getValue();
+                    Log.d("Position", ""+finalPosition);
+                    Log.d("Image", equipmentImage);
+                    Glide.with(context)
+                            .load(equipmentImage)
+                            .centerCrop()
+                            .listener(new RequestListener<Drawable>() {
+                                @Override
+                                public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                                    if (!isCallbackHandled.get(finalPosition)) { // Kiểm tra nếu chưa xử lý callback
+                                        holder.progressBar.setVisibility(View.VISIBLE);
+                                        holder.imageView.setVisibility(View.GONE);
 
-                                binding.imageView.setVisibility(View.VISIBLE);
-                                return false;
-                            }
 
-                            @Override
-                            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                                binding.progressBar.setVisibility(View.VISIBLE);
-                                return false;
-                            }
 
-                        })
-                        .into(binding.imageView);
+                                        // Đánh dấu là đã xử lý callback
+                                        isCallbackHandled.set(finalPosition, true);
+                                    }
+
+                                    // Trả về false để cho phép Glide xử lý callback tiếp
+                                    return false;
+                                }
+
+                                @Override
+                                public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+
+                                    if (!isCallbackHandled.get(finalPosition)) { // Kiểm tra nếu chưa xử lý callback
+                                        Log.d("Check position", "" + finalPosition);
+                                        Log.d("Handle", "" + isCallbackHandled.get(finalPosition));
+                                        holder.imageView.setVisibility(View.VISIBLE);
+                                        holder.progressBar.setVisibility(View.GONE);
+
+
+                                        // Đánh dấu là đã xử lý callback
+                                        isCallbackHandled.set(finalPosition, true);
+
+                                        Log.d("Hanlde old", ""+isCallbackHandled.get(finalPosition));
+                                    }
+
+                                    // Trả về false để cho phép Glide xử lý callback tiếp
+                                    return false;
+                                }
+                            })
+                            .into(holder.imageView);
+                }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
             }
         });
 

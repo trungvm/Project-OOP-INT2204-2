@@ -23,6 +23,8 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import io.noties.markwon.Markwon;
+
 public class EquipmentEditActivity extends AppCompatActivity {
     String title = "", description = "", manual = "";
     int quantity = 0;

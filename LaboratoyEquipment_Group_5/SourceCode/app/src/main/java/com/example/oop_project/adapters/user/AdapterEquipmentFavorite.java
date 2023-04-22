@@ -103,18 +103,18 @@ public class AdapterEquipmentFavorite extends RecyclerView.Adapter<AdapterEquipm
                 .listener(new RequestListener<Drawable>() {
                     @Override
                     public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                        binding.progressBar.setVisibility(View.VISIBLE);
+                        holder.progressBar.setVisibility(View.VISIBLE);
                         return false;
                     }
 
                     @Override
                     public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
 
-                        binding.imageView.setVisibility(View.VISIBLE);
+                        holder.imageView.setVisibility(View.VISIBLE);
                         return false;
                     }
                 })
-                .into(binding.imageView);
+                .into(holder.imageView);
     }
 
     @Override

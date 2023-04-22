@@ -87,7 +87,7 @@
                 android:layout_below="@id/titleTv"
                 android:layout_marginTop="5dp"
                 android:layout_toEndOf="@id/equipmentRL"
-                android:maxLines="3"
+                android:maxLines="1"
                 android:text="Equipment desciption" />
 
             <TextView

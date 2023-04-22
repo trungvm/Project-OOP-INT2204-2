@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,7 +56,6 @@ public class EquipmentBorrowedFragment extends Fragment implements ViewPager.OnP
         fragment.setArguments(args);
         return fragment;
     }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,25 +67,6 @@ public class EquipmentBorrowedFragment extends Fragment implements ViewPager.OnP
 
     }
 
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser) {
-            if (title.equals("Đang mượn")) {
-                // load report layout + button
-                loadBorrowingEquipments();
-
-            } else if (title.equals("Đã mượn")) {
-                // hidden report layout + button
-                loadBorrowedEquipments();
-
-            } else if (categoryId.equals("03")) {
-                loadWaitingEquipments();
-            }
-        } else {
-            // Fragment được ẩn đi
-        }
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -97,7 +78,6 @@ public class EquipmentBorrowedFragment extends Fragment implements ViewPager.OnP
             loadBorrowingEquipments();
 
         } else if (title.equals("Đã mượn")) {
-            // hidden report layout + button
             loadBorrowedEquipments();
 
         } else if (categoryId.equals("03")) {

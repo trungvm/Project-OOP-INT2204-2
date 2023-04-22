@@ -104,8 +104,6 @@ public class CartActivity extends AppCompatActivity {
         binding.backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(CartActivity.this, DashboardUserActivity.class));
-                finish();
                 onBackPressed();
             }
         });
@@ -117,7 +115,6 @@ public class CartActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 flag = true;
-                insertDataToFirebase();
                 if (listIdChecked.size() == 0) {
                     Toast.makeText(CartActivity.this, "Vui lòng chọn sản phẩm!", Toast.LENGTH_SHORT).show();
                 } else {
@@ -128,12 +125,12 @@ public class CartActivity extends AppCompatActivity {
                         }
                     }
                     if (flag == true) {
+                        insertDataToFirebase();
                         Intent intent = new Intent(CartActivity.this, OrderActivity.class);
                         intent.putStringArrayListExtra("listOfKey", listOfKey);
                         intent.putStringArrayListExtra("listOfEquipmentId", listOfEquipmentId);
                         intent.putStringArrayListExtra("listOfTitleEquipment", listOfTitleEquipment);
                         startActivity(intent);
-                        finish();
                     }
                 }
 
@@ -196,7 +193,9 @@ public class CartActivity extends AppCompatActivity {
                                             if (status.equals("deleted")) {
 
                                             } else {
+                                                String equipmentImage = "" + snapshot.child("equipmentImage").getValue();
                                                 ModelEquipment model = snapshot.getValue(ModelEquipment.class);
+                                                model.setEquipmentImage(equipmentImage);
                                                 equipmentArrayList.add(model);
                                                 adapterEquipmentCart.notifyDataSetChanged();
                                             }

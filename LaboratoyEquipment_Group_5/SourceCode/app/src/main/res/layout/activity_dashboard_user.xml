@@ -302,7 +302,7 @@
                 android:layout_height="wrap_content"
                 android:text="test"
                 android:textColor="@color/white"
-                android:textSize="14sp" />
+                android:textSize="13sp" />
         </ScrollView>
 
 

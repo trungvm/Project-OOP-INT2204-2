@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.util.Pair;
 import android.view.View;
 import android.widget.Toast;
@@ -134,7 +135,6 @@ public class ScheduleActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 flag = true;
-                insertDataToFirebase();
                 if (listIdChecked.size() == 0) {
                     Toast.makeText(ScheduleActivity.this, "Vui lòng chọn sản phẩm!", Toast.LENGTH_SHORT).show();
                 } else {
@@ -145,6 +145,7 @@ public class ScheduleActivity extends AppCompatActivity {
                         }
                     }
                     if (flag == true) {
+                        insertDataToFirebase();
                         Intent intent = new Intent(ScheduleActivity.this, OrderScheduleActivity.class);
                         intent.putStringArrayListExtra("listOfKey", listOfKey);
                         intent.putStringArrayListExtra("listOfEquipmentId", listOfEquipmentId);
@@ -160,6 +161,7 @@ public class ScheduleActivity extends AppCompatActivity {
         long timestamp = System.currentTimeMillis();
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
         for (int i = 0; i < listIdChecked.size(); i++) {
+            Log.d("TAGG", listOfTitleEquipment.get(i));
             String key = ref.push().getKey();
             listOfKey.add("HH" + key);
             listOfEquipmentId.add(listIdChecked.get(i).first);

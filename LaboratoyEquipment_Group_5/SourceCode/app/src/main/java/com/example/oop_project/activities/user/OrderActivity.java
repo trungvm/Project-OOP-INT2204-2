@@ -85,8 +85,6 @@ public class OrderActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 cleanData();
-                startActivity(new Intent(OrderActivity.this, CartActivity.class));
-                finish();
                 onBackPressed();
             }
         });
@@ -245,7 +243,7 @@ public class OrderActivity extends AppCompatActivity {
 
 
         long timestamp = System.currentTimeMillis();
-        for (int i = 0; i < listOfKey.size(); i++) {
+        for (int i = 0; i < listOfTitleEquipment.size(); i++) {
             HashMap<String, Object> hashMap = new HashMap<>();
             hashMap.put("fullName", fullName);
             hashMap.put("email", email);
@@ -270,9 +268,8 @@ public class OrderActivity extends AppCompatActivity {
                         public void onSuccess(Void unused) {
                             progressDialog.dismiss();
                             Toast.makeText(OrderActivity.this, "Mượn thành công!", Toast.LENGTH_SHORT).show();
-
-                            startActivity(new Intent(OrderActivity.this, CartActivity.class));
                             finish();
+                            onBackPressed();
 
                         }
                     }).addOnFailureListener(new OnFailureListener() {

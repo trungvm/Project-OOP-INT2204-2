@@ -20,6 +20,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -59,7 +62,9 @@ public class EquipmentUserFragment extends Fragment {
             uid = getArguments().getString("uid");
         }
     }
-
+    public String getTitle(){
+        return this.title;
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -68,7 +73,8 @@ public class EquipmentUserFragment extends Fragment {
         if (title.equals("All")) {
             // load add equipments
             loadAllEquipments();
-        } else if (title.equals("Most Viewed")) {
+        }
+        else if (title.equals("Most Viewed")) {
             loadMostViewedEquipments();
         } else if (title.equals("Most Borrowed")) {
             loadMostBorrowedEquipments();
@@ -103,24 +109,33 @@ public class EquipmentUserFragment extends Fragment {
         equipmentArrayList = new ArrayList<>();
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Equipments");
         ref.orderByChild("categoryId").equalTo(categoryId)
-                .addValueEventListener(new ValueEventListener() {
+                .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         equipmentArrayList.clear();
-                        for (DataSnapshot ds : snapshot.getChildren()) {
-                            if (ds.hasChild("status")) {
-                                if (("" + ds.child("status").getValue()).equals("use")) {
-                                    ModelEquipment model = ds.getValue(ModelEquipment.class);
-
-                                    equipmentArrayList.add(model);
+                        Lock lock = new ReentrantLock();
+                        Condition condition = lock.newCondition();
+                        lock.lock();
+                        try {
+                            for (DataSnapshot ds : snapshot.getChildren()) {
+                                if (ds.hasChild("status")) {
+                                    if (("" + ds.child("status").getValue()).equals("use")) {
+                                        ModelEquipment model = ds.getValue(ModelEquipment.class);
+                                        String equipmentImage = "" + ds.child("equipmentImage").getValue();
+                                        model.setEquipmentImage(equipmentImage);
+                                        equipmentArrayList.add(model);
+                                    }
+                                } else {
+                                    ds.getRef().child("status").setValue("use");
                                 }
-                            } else {
-                                ds.getRef().child("status").setValue("use");
                             }
 
+                        }finally {
+                            lock.unlock();
                         }
                         adapterEquipmentUser = new AdapterEquipmentUser(getContext(), equipmentArrayList);
                         binding.equipmentRv.setAdapter(adapterEquipmentUser);
+                        adapterEquipmentUser.notifyDataSetChanged();
                     }
 
                     @Override
@@ -134,24 +149,32 @@ public class EquipmentUserFragment extends Fragment {
         equipmentArrayList = new ArrayList<>();
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Equipments");
         ref.orderByChild("numberOfBorrowings").limitToLast(10)
-                .addValueEventListener(new ValueEventListener() {
+                .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         equipmentArrayList.clear();
-                        for (DataSnapshot ds : snapshot.getChildren()) {
-                            if (ds.hasChild("status")) {
-                                if (("" + ds.child("status").getValue()).equals("use")) {
-                                    ModelEquipment model = ds.getValue(ModelEquipment.class);
-
-                                    equipmentArrayList.add(model);
+                        Lock lock = new ReentrantLock();
+                        Condition condition = lock.newCondition();
+                        lock.lock();
+                        try {
+                            for (DataSnapshot ds : snapshot.getChildren()) {
+                                if (ds.hasChild("status")) {
+                                    if (("" + ds.child("status").getValue()).equals("use")) {
+                                        ModelEquipment model = ds.getValue(ModelEquipment.class);
+                                        String equipmentImage = "" + ds.child("equipmentImage").getValue();
+                                        model.setEquipmentImage(equipmentImage);
+                                        equipmentArrayList.add(model);
+                                    }
+                                } else {
+                                    ds.getRef().child("status").setValue("use");
                                 }
-                            } else {
-                                ds.getRef().child("status").setValue("use");
                             }
+                        }finally {
+                            lock.unlock();
                         }
-
                         adapterEquipmentUser = new AdapterEquipmentUser(getContext(), equipmentArrayList);
                         binding.equipmentRv.setAdapter(adapterEquipmentUser);
+                        adapterEquipmentUser.notifyDataSetChanged();
                     }
 
                     @Override
@@ -166,24 +189,34 @@ public class EquipmentUserFragment extends Fragment {
         equipmentArrayList = new ArrayList<>();
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Equipments");
         ref.orderByChild("viewed").limitToLast(10)
-                .addValueEventListener(new ValueEventListener() {
+                .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         equipmentArrayList.clear();
-                        for (DataSnapshot ds : snapshot.getChildren()) {
-                            if (ds.hasChild("status")) {
-                                if (("" + ds.child("status").getValue()).equals("use")) {
-                                    ModelEquipment model = ds.getValue(ModelEquipment.class);
-
-                                    equipmentArrayList.add(model);
+                        Lock lock = new ReentrantLock();
+                        Condition condition = lock.newCondition();
+                        lock.lock();
+                        try {
+                            for (DataSnapshot ds : snapshot.getChildren()) {
+                                if (ds.hasChild("status")) {
+                                    if (("" + ds.child("status").getValue()).equals("use")) {
+                                        ModelEquipment model = ds.getValue(ModelEquipment.class);
+                                        String equipmentImage = "" + ds.child("equipmentImage").getValue();
+                                        model.setEquipmentImage(equipmentImage);
+                                        equipmentArrayList.add(model);
+                                    }
+                                } else {
+                                    ds.getRef().child("status").setValue("use");
                                 }
-                            } else {
-                                ds.getRef().child("status").setValue("use");
                             }
+
+                        }finally {
+                            lock.unlock();
                         }
 
                         adapterEquipmentUser = new AdapterEquipmentUser(getContext(), equipmentArrayList);
                         binding.equipmentRv.setAdapter(adapterEquipmentUser);
+                        adapterEquipmentUser.notifyDataSetChanged();
                     }
 
                     @Override
@@ -197,24 +230,33 @@ public class EquipmentUserFragment extends Fragment {
         equipmentArrayList = new ArrayList<>();
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Equipments");
 
-        ref.addValueEventListener(new ValueEventListener() {
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 equipmentArrayList.clear();
-                for (DataSnapshot ds : snapshot.getChildren()) {
-                    if (ds.hasChild("status")) {
-                        if (("" + ds.child("status").getValue()).equals("use")) {
-                            ModelEquipment model = ds.getValue(ModelEquipment.class);
+                Object lock = new Object();
 
-                            equipmentArrayList.add(model);
+                synchronized (lock) {
+                    for (DataSnapshot ds : snapshot.getChildren()) {
+                        if (ds.hasChild("status")) {
+                            if (("" + ds.child("status").getValue()).equals("use")) {
+                                String id = "" + ds.child("timestamp").getValue();
+                                String equipmentImage = "" + ds.child("equipmentImage").getValue();
+                                ModelEquipment model = ds.getValue(ModelEquipment.class);
+                                model.setId(id);
+                                model.setEquipmentImage(equipmentImage);
+                                equipmentArrayList.add(model);
+                            }
+                        } else {
+                            ds.getRef().child("status").setValue("use");
                         }
-                    } else {
-                        ds.getRef().child("status").setValue("use");
                     }
+                    adapterEquipmentUser = new AdapterEquipmentUser(getContext(), equipmentArrayList);
+                    binding.equipmentRv.setAdapter(adapterEquipmentUser);
+                    adapterEquipmentUser.notifyDataSetChanged();
                 }
 
-                adapterEquipmentUser = new AdapterEquipmentUser(getContext(), equipmentArrayList);
-                binding.equipmentRv.setAdapter(adapterEquipmentUser);
+
 
             }
 
@@ -223,5 +265,7 @@ public class EquipmentUserFragment extends Fragment {
 
             }
         });
+
     }
+
 }

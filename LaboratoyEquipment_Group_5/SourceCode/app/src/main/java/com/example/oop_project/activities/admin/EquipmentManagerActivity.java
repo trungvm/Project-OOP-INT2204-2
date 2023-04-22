@@ -97,8 +97,11 @@ public class EquipmentManagerActivity extends AppCompatActivity {
                         ds.getRef().child("status").setValue("use");
                     }
                 }
-                adapterCategory = new AdapterCategory(EquipmentManagerActivity.this, categoryArrayList);
-                binding.categories.setAdapter(adapterCategory);
+                if(adapterCategory == null){
+                    adapterCategory = new AdapterCategory(EquipmentManagerActivity.this, categoryArrayList);
+                    adapterCategory.notifyDataSetChanged();
+                    binding.categories.setAdapter(adapterCategory);
+                }
             }
 
             @Override

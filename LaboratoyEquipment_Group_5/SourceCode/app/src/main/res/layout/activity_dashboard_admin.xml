@@ -227,7 +227,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Quy định"
+                android:text="Nội quy"
                 android:textColor="@color/colorAccent"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -301,9 +301,10 @@
             android:id="@+id/textRules"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="0dp"
             android:ellipsize="end"
             android:gravity="center"
+            android:layout_margin="10dp"
             android:maxLines="3"
             android:text="Nội quy phòng thí nghiệm"
             android:textColor="@color/white"
@@ -326,7 +327,7 @@
                 android:layout_height="wrap_content"
                 android:text="test"
                 android:textColor="@color/white"
-                android:textSize="14sp" />
+                android:textSize="13sp" />
         </ScrollView>
 
 

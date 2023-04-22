@@ -12,9 +12,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.example.oop_project.R;
+import com.example.oop_project.activities.admin.DashboardAdminActivity;
 import com.example.oop_project.activities.common.MainActivity;
 import com.example.oop_project.activities.common.ProfileActivity;
 import com.example.oop_project.databinding.ActivityDashboardUserBinding;
+import com.example.oop_project.models.Person;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -128,8 +130,9 @@ public class DashboardUserActivity extends AppCompatActivity {
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             final Markwon markwon = Markwon.create(DashboardUserActivity.this);
                             String text = "" + snapshot.child("content").getValue();
-
-                            markwon.setMarkdown(binding.contentRules, text);
+                            text = text.replace("\\n", "\n");
+                            String newText = text;
+                            markwon.setMarkdown(binding.contentRules, newText);
                         }
 
                         @Override
@@ -143,7 +146,6 @@ public class DashboardUserActivity extends AppCompatActivity {
         });
 
     }
-
     private void checkUser() {
         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
         if (firebaseUser == null && isLoginWithout == 0) {
@@ -168,10 +170,12 @@ public class DashboardUserActivity extends AppCompatActivity {
                                         .into(binding.profileTv);
                             }
                             name = "" + snapshot.child("fullName").getValue();
-                            if (name.equals("null")) {
+                            if (name.equals("null") || name.equals("")) {
                                 binding.textUserName.setText(email);
                             } else {
-                                binding.textUserName.setText(name);
+                                Person person = new Person("user");
+                                String newName = person.normalizeName(name);
+                                binding.textUserName.setText(newName);
                             }
                         }
 

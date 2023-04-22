@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,6 +46,7 @@ public class AdapterSchedule extends RecyclerView.Adapter<AdapterSchedule.Holder
     private FilterSchedule filter;
     private final ArrayList<Integer> quantityBorrow;
     private final ArrayList<Boolean> isChecked;
+    private ArrayList<Boolean> isCallbackHandled;
 
     public AdapterSchedule(Context context, ArrayList<ModelEquipment> equipmentArrayList) {
         this.context = context;
@@ -51,9 +54,11 @@ public class AdapterSchedule extends RecyclerView.Adapter<AdapterSchedule.Holder
         this.filterList = equipmentArrayList;
         quantityBorrow = new ArrayList<>();
         isChecked = new ArrayList<>();
-        for (int i = 0; i < 10000; i++) {
+        isCallbackHandled = new ArrayList<>();
+        for (int i = 0; i < 1000; i++) {
             quantityBorrow.add(0);
             isChecked.add(false);
+            isCallbackHandled.add(false);
         }
     }
 
@@ -67,7 +72,7 @@ public class AdapterSchedule extends RecyclerView.Adapter<AdapterSchedule.Holder
     @Override
     public void onBindViewHolder(@NonNull HolderEquipmentsSchedule holder, @SuppressLint("RecyclerView") int position) {
         ModelEquipment modelEquipment = equipmentArrayList.get(position);
-        loadEquipmentDetails(modelEquipment, holder);
+        loadEquipmentDetails(modelEquipment, holder, position);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -142,7 +147,7 @@ public class AdapterSchedule extends RecyclerView.Adapter<AdapterSchedule.Holder
 
     }
 
-    private void loadEquipmentDetails(ModelEquipment model, HolderEquipmentsSchedule holder) {
+    private void loadEquipmentDetails(ModelEquipment model, HolderEquipmentsSchedule holder, int position) {
         String equipmentId = model.getId();
         String title = model.getTitle();
         String description = model.getDescription();
@@ -169,24 +174,51 @@ public class AdapterSchedule extends RecyclerView.Adapter<AdapterSchedule.Holder
             }
         });
 
+        Handler handler = new Handler(Looper.getMainLooper());
         Glide.with(context)
                 .load(equipmentImage)
                 .centerCrop()
                 .listener(new RequestListener<Drawable>() {
                     @Override
                     public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                        binding.progressBar.setVisibility(View.VISIBLE);
+                        if (!isCallbackHandled.get(position)) { // Kiểm tra nếu chưa xử lý callback
+                            handler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    holder.progressBar.setVisibility(View.VISIBLE);
+                                    holder.imageView.setVisibility(View.GONE);
+                                }
+                            });
+
+                            // Đánh dấu là đã xử lý callback
+                            isCallbackHandled.set(position, true);
+                        }
+
+                        // Trả về false để cho phép Glide xử lý callback tiếp
                         return false;
                     }
 
                     @Override
                     public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
 
-                        binding.imageView.setVisibility(View.VISIBLE);
+                        if (!isCallbackHandled.get(position)) { // Kiểm tra nếu chưa xử lý callback
+                            handler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    holder.imageView.setVisibility(View.VISIBLE);
+                                    holder.progressBar.setVisibility(View.GONE);
+                                }
+                            });
+
+                            // Đánh dấu là đã xử lý callback
+                            isCallbackHandled.set(position, true);
+                        }
+
+                        // Trả về false để cho phép Glide xử lý callback tiếp
                         return false;
                     }
                 })
-                .into(binding.imageView);
+                .into(holder.imageView);
     }
 
     @Override

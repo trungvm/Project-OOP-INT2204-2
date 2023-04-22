@@ -1,11 +1,15 @@
 package com.example.oop_project.adapters.admin;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +26,7 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.annotation.GlideModule;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
@@ -52,15 +57,20 @@ public class AdapterEquipmentAdmin extends RecyclerView.Adapter<AdapterEquipment
     private FilterEquipment filter;
 
     private final ProgressDialog progressDialog;
+    private ArrayList<Boolean> isCallbackHandled;
+
 
     public AdapterEquipmentAdmin(Context context, ArrayList<ModelEquipment> equipmentArraylist) {
         this.context = context;
         this.filterList = equipmentArraylist;
         this.equipmentArraylist = equipmentArraylist;
-
         progressDialog = new ProgressDialog(context);
         progressDialog.setTitle("Please wait!");
         progressDialog.setCanceledOnTouchOutside(false);
+        isCallbackHandled = new ArrayList<>();
+        for(int i = 0; i <= 1000; i++){
+            isCallbackHandled.add(false);
+        }
     }
 
     @NonNull
@@ -72,15 +82,17 @@ public class AdapterEquipmentAdmin extends RecyclerView.Adapter<AdapterEquipment
     }
 
     @Override
-    public void onBindViewHolder(@NonNull HolderEquipmentAdmin holder, int position) {
+    public void onBindViewHolder(@NonNull HolderEquipmentAdmin holder, @SuppressLint("RecyclerView") int position) {
         // get date, set data..
         ModelEquipment model = equipmentArraylist.get(position);
+
         String title = model.getTitle();
         String description = model.getDescription();
         long timestamp = model.getTimestamp();
         String formattedDate = MyApplication.formatTimestamp(timestamp);
         int quantity = model.getQuantity();
         String equipmentImage = model.getEquipmentImage();
+
         holder.titleTv.setText(title);
         holder.descriptionTv.setText(description);
         holder.dateTv.setText(formattedDate);
@@ -105,24 +117,54 @@ public class AdapterEquipmentAdmin extends RecyclerView.Adapter<AdapterEquipment
                 context.startActivity(intent);
             }
         });
-        Glide.with(context)
-                .load(equipmentImage)
-                .centerCrop()
-                .listener(new RequestListener<Drawable>() {
-                    @Override
-                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                        binding.progressBar.setVisibility(View.VISIBLE);
-                        return false;
-                    }
+        Handler handler = new Handler(Looper.getMainLooper());
 
-                    @Override
-                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
 
-                        binding.imageView.setVisibility(View.VISIBLE);
-                        return false;
-                    }
-                })
-                .into(binding.imageView);
+            Glide.with(context)
+                    .load(equipmentImage)
+                    .centerCrop()
+                    .listener(new RequestListener<Drawable>() {
+                        @Override
+                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                            if (!isCallbackHandled.get(position)) { // Kiểm tra nếu chưa xử lý callback
+                                handler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        holder.progressBar.setVisibility(View.VISIBLE);
+                                        holder.imageView.setVisibility(View.GONE);
+                                    }
+                                });
+
+                                // Đánh dấu là đã xử lý callback
+                                isCallbackHandled.set(position, true);
+                            }
+
+                            // Trả về false để cho phép Glide xử lý callback tiếp
+                            return false;
+                        }
+
+                        @Override
+                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+
+                            if (!isCallbackHandled.get(position)) { // Kiểm tra nếu chưa xử lý callback
+                                handler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        holder.imageView.setVisibility(View.VISIBLE);
+                                        holder.progressBar.setVisibility(View.GONE);
+                                    }
+                                });
+
+                                // Đánh dấu là đã xử lý callback
+                                isCallbackHandled.set(position, true);
+                            }
+
+                            // Trả về false để cho phép Glide xử lý callback tiếp
+                            return false;
+                        }
+                    })
+                    .into(holder.imageView);
+
     }
 
     private void moreOptionsDialog(ModelEquipment model, HolderEquipmentAdmin holder) {

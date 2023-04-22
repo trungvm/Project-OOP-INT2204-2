@@ -24,6 +24,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
+import com.example.oop_project.R;
+import com.example.oop_project.activities.common.ProfileEditActivity;
 import com.example.oop_project.databinding.ActivityEquipmentAddBinding;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -154,6 +157,7 @@ public class EquipmentAddActivity extends AppCompatActivity {
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType("image/*");
         galleryActivityResultLauncher.launch(intent);
+
     }
 
     private void pickImageCamera() {
@@ -164,6 +168,10 @@ public class EquipmentAddActivity extends AppCompatActivity {
 
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+        Glide.with(EquipmentAddActivity.this)
+                .load(imageUri)
+                .placeholder(R.drawable.ic_device_gray)
+                .into(binding.equipmentImage);
         cameraActivityResultLauncher.launch(intent);
     }
 
@@ -233,7 +241,7 @@ public class EquipmentAddActivity extends AppCompatActivity {
         hashMap.put("timestamp", timestamp);
         hashMap.put("manual", "" + manual);
         hashMap.put("quantity", quantity);
-        hashMap.put("viewed", viewed);
+        hashMap.put("viewed", 0);
         hashMap.put("numberOfBorrowings", 0);
         hashMap.put("status", "use");
         if (imageUri != null) {

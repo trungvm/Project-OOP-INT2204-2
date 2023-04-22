@@ -160,7 +160,7 @@ public class Person {
         Person person = new Person(this.accountType);
         person.setUid(uid);
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
-        ref.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+        ref.child(uid).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.hasChild("email")) {
@@ -212,5 +212,26 @@ public class Person {
         });
         return taskCompletionSource.getTask();
 
+    }
+    public String normalizeName(String name){
+        String[] danhSachTen = name.split(" ");
+
+        // Chuẩn hóa tên bằng cách chuyển đổi chữ cái đầu của mỗi từ thành chữ thường,
+        // và các chữ cái còn lại thành chữ hoa
+        for (int i = 0; i < danhSachTen.length; i++) {
+            String tu = danhSachTen[i].toLowerCase();
+            tu = tu.substring(0, 1).toUpperCase() + tu.substring(1);
+            danhSachTen[i] = tu;
+        }
+
+        // Lấy ra 2 tên cuối cùng
+        String haiTenCuoiCung = "";
+        if (danhSachTen.length >= 2) {
+            haiTenCuoiCung = danhSachTen[danhSachTen.length - 2] + " " + danhSachTen[danhSachTen.length - 1];
+        } else if (danhSachTen.length == 1) {
+            haiTenCuoiCung = danhSachTen[0];
+        }
+
+        return haiTenCuoiCung;
     }
 }

@@ -111,26 +111,29 @@ public class ScheduleAdminFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 equipmentArrayListAccept.clear();
-                for (DataSnapshot ds : snapshot.getChildren()) {
-                    if (("" + ds.child("status").getValue()).equals("Waiting")) {
-                        String key = ds.getKey();
-                        String uid = "" + ds.child("uid").getValue();
-                        ModelEquipment model = snapshot.getValue(ModelEquipment.class);
-                        String equipmentId = "" + ds.child("equipmentId").getValue();
-                        String title = "" + ds.child("title").getValue();
-                        String timestamp = "" + ds.child("timestamp").getValue();
+               Object lock = new Object();
+               synchronized (lock){
+                   for (DataSnapshot ds : snapshot.getChildren()) {
+                       if (("" + ds.child("status").getValue()).equals("Waiting")) {
+                           String key = ds.getKey();
+                           String uid = "" + ds.child("uid").getValue();
+                           ModelEquipment model = snapshot.getValue(ModelEquipment.class);
+                           String equipmentId = "" + ds.child("equipmentId").getValue();
+                           String title = "" + ds.child("title").getValue();
+                           String timestamp = "" + ds.child("timestamp").getValue();
 
-                        model.setTitle(title);
-                        model.setTimestamp(Long.parseLong(timestamp));
-                        model.setId(equipmentId);
-                        model.setKey(key);
-                        model.setUid(uid);
-                        model.setAdminStatus("Accept");
-                        model.setStatus("Waiting");
-                        equipmentArrayListAccept.add(model);
+                           model.setTitle(title);
+                           model.setTimestamp(Long.parseLong(timestamp));
+                           model.setId(equipmentId);
+                           model.setKey(key);
+                           model.setUid(uid);
+                           model.setAdminStatus("Accept");
+                           model.setStatus("Waiting");
+                           equipmentArrayListAccept.add(model);
 
-                    }
-                }
+                       }
+                   }
+               }
                 Collections.sort(equipmentArrayListAccept, new Comparator<ModelEquipment>() {
                     @Override
                     public int compare(ModelEquipment o1, ModelEquipment o2) {
@@ -167,24 +170,27 @@ public class ScheduleAdminFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 equipmentArrayListRefuse.clear();
-                for (DataSnapshot ds : snapshot.getChildren()) {
-                    if (("" + ds.child("status").getValue()).equals("Waiting")) {
-                        String key = ds.getKey();
-                        String uid = "" + ds.child("uid").getValue();
-                        ModelEquipment model = snapshot.getValue(ModelEquipment.class);
-                        String equipmentId = "" + ds.child("equipmentId").getValue();
-                        String title = "" + ds.child("title").getValue();
-                        model.setTitle(title);
-                        String timestamp = "" + ds.child("timestamp").getValue();
-                        model.setTimestamp(Long.parseLong(timestamp));
-                        model.setId(equipmentId);
-                        model.setKey(key);
-                        model.setUid(uid);
-                        model.setStatus("Waiting");
-                        model.setAdminStatus("Refuse");
-                        equipmentArrayListRefuse.add(model);
+                Object lock = new Object();
+                synchronized (lock) {
+                    for (DataSnapshot ds : snapshot.getChildren()) {
+                        if (("" + ds.child("status").getValue()).equals("Waiting")) {
+                            String key = ds.getKey();
+                            String uid = "" + ds.child("uid").getValue();
+                            ModelEquipment model = snapshot.getValue(ModelEquipment.class);
+                            String equipmentId = "" + ds.child("equipmentId").getValue();
+                            String title = "" + ds.child("title").getValue();
+                            model.setTitle(title);
+                            String timestamp = "" + ds.child("timestamp").getValue();
+                            model.setTimestamp(Long.parseLong(timestamp));
+                            model.setId(equipmentId);
+                            model.setKey(key);
+                            model.setUid(uid);
+                            model.setStatus("Waiting");
+                            model.setAdminStatus("Refuse");
+                            equipmentArrayListRefuse.add(model);
 
 
+                        }
                     }
                 }
                 Collections.sort(equipmentArrayListRefuse, new Comparator<ModelEquipment>() {
