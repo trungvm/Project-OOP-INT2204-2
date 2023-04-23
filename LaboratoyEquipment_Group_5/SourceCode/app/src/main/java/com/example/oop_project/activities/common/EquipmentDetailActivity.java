@@ -609,10 +609,10 @@ public class EquipmentDetailActivity extends AppCompatActivity {
                             isInMyFavorite = snapshot.exists();
                             if (isInMyFavorite) {
                                 binding.favoriteBtn.setCompoundDrawablesRelativeWithIntrinsicBounds(0, R.drawable.ic_favorite_white, 0, 0);
-                                binding.favoriteBtn.setText("Remove Favorite");
+                                binding.favoriteBtn.setText("Xóa yêu thích");
                             } else {
                                 binding.favoriteBtn.setCompoundDrawablesRelativeWithIntrinsicBounds(0, R.drawable.ic_favorite_border, 0, 0);
-                                binding.favoriteBtn.setText("Add Favorite");
+                                binding.favoriteBtn.setText("Thêm yêu thích");
                             }
                         }
 
