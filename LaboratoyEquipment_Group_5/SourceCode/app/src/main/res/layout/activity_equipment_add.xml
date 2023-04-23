@@ -83,7 +83,7 @@
                    android:drawableStart="@drawable/ic_title_gray"
                    android:drawablePadding="10dp"
                    android:hint="Equipment title"
-                   android:inputType="textPersonName"
+                   android:inputType="textPersonName|textCapSentences"
                    android:padding="10dp"
                    android:textColor="@color/black"
                    android:textColorHint="@color/gray01"

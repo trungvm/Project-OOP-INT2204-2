@@ -18,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.oop_project.activities.admin.EquipmentListAdminActivity;
+import com.example.oop_project.activities.admin.EquipmentManagerActivity;
 import com.example.oop_project.databinding.RowCategoryBinding;
 import com.example.oop_project.filters.admin.FilterCategory;
 import com.example.oop_project.models.ModelCategory;
@@ -141,6 +142,7 @@ public class AdapterCategory extends RecyclerView.Adapter<AdapterCategory.Holder
                                     }
 
                                 }
+
                             }
 
                             @Override

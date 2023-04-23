@@ -106,10 +106,8 @@ public class EquipmentListAdminActivity extends AppCompatActivity {
 
                     }
                 });
-        if (adapterEquipmentAdmin == null) {
             adapterEquipmentAdmin = new AdapterEquipmentAdmin(EquipmentListAdminActivity.this, equipmentArrayList);
             adapterEquipmentAdmin.notifyDataSetChanged();
             binding.equipmentRv.setAdapter(adapterEquipmentAdmin);
-        }
     }
 }

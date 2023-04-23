@@ -171,7 +171,6 @@ public class DashboardUserActivity extends AppCompatActivity {
                             }
                             name = "" + snapshot.child("fullName").getValue();
                             if (name.equals("null") || name.equals("")) {
-                                binding.textUserName.setText(email);
                             } else {
                                 Person person = new Person("user");
                                 String newName = person.normalizeName(name);

@@ -199,8 +199,7 @@ public class DashboardAdminActivity extends AppCompatActivity {
                                         .into(binding.profileTv);
                             }
                             name = "" + snapshot.child("fullName").getValue();
-                            if (name.equals("null")) {
-                                binding.textUserName.setText(email);
+                            if (name.equals("null") || name.equals("")) {
                             } else {
                                 Person person = new Person("admin");
                                 String newName = person.normalizeName(name);
