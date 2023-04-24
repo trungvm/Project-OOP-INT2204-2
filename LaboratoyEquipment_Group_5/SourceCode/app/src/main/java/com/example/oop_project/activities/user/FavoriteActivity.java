@@ -66,7 +66,10 @@ public class FavoriteActivity extends AppCompatActivity {
         });
         loadFavoriteEquipments();
     }
+    @Override
+    public void onBackPressed() {
 
+    }
     private void loadFavoriteEquipments() {
         equipmentArrayList = new ArrayList<>();
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");

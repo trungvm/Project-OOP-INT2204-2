@@ -91,6 +91,10 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
     }
+    @Override
+    public void onBackPressed() {
+
+    }
 
     private void loadUserInformation() {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
