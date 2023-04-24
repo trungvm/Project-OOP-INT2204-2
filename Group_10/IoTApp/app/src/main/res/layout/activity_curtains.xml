@@ -108,6 +108,7 @@
                     android:hint="Tên thiết bị">
 
                     <AutoCompleteTextView
+                        android:id="@+id/autocompletetextview_devices_curtains"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="none" />
@@ -251,7 +252,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/textview_autoMode_curtains"
                     android:fontFamily="@font/nunito"
-                    android:text="Chế độ này sẽ tự động bật khi nhiệt độ môi trường dưới 28"
+                    android:text="Chế độ này tự động đóng mở rèm cửa theo mức độ ánh sáng"
                     android:textAlignment="center" />
 
                 <com.google.android.material.button.MaterialButton
@@ -262,7 +263,7 @@
                     android:layout_alignParentEnd="true"
                     android:layout_marginEnd="30dp"
                     android:layout_marginTop="10dp"
-                    android:text="Đóng rèm" />
+                    android:text="Tắt tự động" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/button_autoMode_on_curtains"
@@ -272,7 +273,7 @@
                     android:layout_alignParentStart="true"
                     android:layout_marginStart="30dp"
                     android:layout_marginTop="10dp"
-                    android:text="Mở rèm" />
+                    android:text="Bật tự động" />
 
             </RelativeLayout>
             <View

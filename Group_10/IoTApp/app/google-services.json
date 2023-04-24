@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "582467762930",
+    "project_id": "ntiot-741e0",
+    "storage_bucket": "ntiot-741e0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:582467762930:android:a6ca9b4f0f3d01dd3aee6b",
+        "android_client_info": {
+          "package_name": "com.oop.iotapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "582467762930-8sarir4usntopi423m2prr5re3od6uep.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.oop.iotapp",
+            "certificate_hash": "62659fc98c7887ae0d3868087ef239f9fd0963e7"
+          }
+        },
+        {
+          "client_id": "582467762930-2n8s2ehu3vsrn0ga6p9sc19n57un4osb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDNw9aaTS29gAG90-_a0F6qqPi4WNadBtM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "582467762930-2n8s2ehu3vsrn0ga6p9sc19n57un4osb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
