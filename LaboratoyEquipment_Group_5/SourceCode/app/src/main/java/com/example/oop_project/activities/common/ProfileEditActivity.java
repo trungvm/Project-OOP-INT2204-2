@@ -271,6 +271,10 @@ public class ProfileEditActivity extends AppCompatActivity {
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType("image/*");
         galleryActivityResultLauncher.launch(intent);
+        Glide.with(ProfileEditActivity.this)
+                .load(imageUri)
+                .placeholder(R.drawable.ic_person_gray)
+                .into(binding.profileTv);
     }
 
     private void pickImageCamera() {

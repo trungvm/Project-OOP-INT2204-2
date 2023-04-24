@@ -60,8 +60,15 @@ public class EquipmentAddActivity extends AppCompatActivity {
                 @Override
                 public void onActivityResult(ActivityResult result) {
                     if (result.getResultCode() == Activity.RESULT_OK) {
-                        Intent data = result.getData();
-                        binding.equipmentImage.setImageURI(imageUri);
+//                        Intent data = result.getData();
+//                        binding.equipmentImage.setImageURI(imageUri);
+                        if (imageUri != null) {
+                            // Tải ảnh từ imageUri vào ImageView sử dụng Glide
+                            Glide.with(EquipmentAddActivity.this)
+                                    .load(imageUri)
+                                    .placeholder(R.drawable.ic_device_gray)
+                                    .into(binding.equipmentImage);
+                        }
 
                     } else {
                         Toast.makeText(EquipmentAddActivity.this, "Cancelled", Toast.LENGTH_SHORT).show();
@@ -157,6 +164,10 @@ public class EquipmentAddActivity extends AppCompatActivity {
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType("image/*");
         galleryActivityResultLauncher.launch(intent);
+        Glide.with(EquipmentAddActivity.this)
+                .load(imageUri)
+                .placeholder(R.drawable.ic_device_gray)
+                .into(binding.equipmentImage);
 
     }
 
@@ -172,13 +183,18 @@ public class EquipmentAddActivity extends AppCompatActivity {
                 .load(imageUri)
                 .placeholder(R.drawable.ic_device_gray)
                 .into(binding.equipmentImage);
+
         cameraActivityResultLauncher.launch(intent);
     }
 
     private void validateData() {
         title = binding.titleE.getText().toString().trim();
         description = binding.descriptionE.getText().toString().trim();
-        quantity = Integer.parseInt(binding.quantityE.getText().toString().trim());
+        String sQuantity = binding.quantityE.getText().toString().trim();
+        if(!TextUtils.isEmpty(sQuantity)){
+            quantity = Integer.parseInt(sQuantity);
+        }
+//        quantity = Integer.parseInt(binding.quantityE.getText().toString().trim());
         String quantityStr = binding.quantityE.getText().toString().trim();
         manual = binding.manualE.getText().toString().trim();
         if (TextUtils.isEmpty(title)) {
@@ -260,6 +276,7 @@ public class EquipmentAddActivity extends AppCompatActivity {
                         binding.manualE.setText("");
                         binding.descriptionE.setText("");
                         binding.quantityE.setText("");
+                        Glide.with(EquipmentAddActivity.this).clear(binding.equipmentImage);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {

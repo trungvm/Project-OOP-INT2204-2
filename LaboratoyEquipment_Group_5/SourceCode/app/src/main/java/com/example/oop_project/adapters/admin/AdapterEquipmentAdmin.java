@@ -119,51 +119,52 @@ public class AdapterEquipmentAdmin extends RecyclerView.Adapter<AdapterEquipment
         });
         Handler handler = new Handler(Looper.getMainLooper());
 
+            if(!equipmentImage.equals("null") && !equipmentImage.equals("")) {
+                Glide.with(context)
+                        .load(equipmentImage)
+                        .centerCrop()
+                        .listener(new RequestListener<Drawable>() {
+                            @Override
+                            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                                if (!isCallbackHandled.get(position)) { // Kiểm tra nếu chưa xử lý callback
+                                    handler.post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            holder.progressBar.setVisibility(View.VISIBLE);
+                                            holder.imageView.setVisibility(View.GONE);
+                                        }
+                                    });
 
-            Glide.with(context)
-                    .load(equipmentImage)
-                    .centerCrop()
-                    .listener(new RequestListener<Drawable>() {
-                        @Override
-                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                            if (!isCallbackHandled.get(position)) { // Kiểm tra nếu chưa xử lý callback
-                                handler.post(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        holder.progressBar.setVisibility(View.VISIBLE);
-                                        holder.imageView.setVisibility(View.GONE);
-                                    }
-                                });
+                                    // Đánh dấu là đã xử lý callback
+                                    isCallbackHandled.set(position, true);
+                                }
 
-                                // Đánh dấu là đã xử lý callback
-                                isCallbackHandled.set(position, true);
+                                // Trả về false để cho phép Glide xử lý callback tiếp
+                                return false;
                             }
 
-                            // Trả về false để cho phép Glide xử lý callback tiếp
-                            return false;
-                        }
+                            @Override
+                            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
 
-                        @Override
-                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                if (!isCallbackHandled.get(position)) { // Kiểm tra nếu chưa xử lý callback
+                                    handler.post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            holder.imageView.setVisibility(View.VISIBLE);
+                                            holder.progressBar.setVisibility(View.GONE);
+                                        }
+                                    });
 
-                            if (!isCallbackHandled.get(position)) { // Kiểm tra nếu chưa xử lý callback
-                                handler.post(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        holder.imageView.setVisibility(View.VISIBLE);
-                                        holder.progressBar.setVisibility(View.GONE);
-                                    }
-                                });
+                                    // Đánh dấu là đã xử lý callback
+                                    isCallbackHandled.set(position, true);
+                                }
 
-                                // Đánh dấu là đã xử lý callback
-                                isCallbackHandled.set(position, true);
+                                // Trả về false để cho phép Glide xử lý callback tiếp
+                                return false;
                             }
-
-                            // Trả về false để cho phép Glide xử lý callback tiếp
-                            return false;
-                        }
-                    })
-                    .into(holder.imageView);
+                        })
+                        .into(holder.imageView);
+            }
 
     }
 

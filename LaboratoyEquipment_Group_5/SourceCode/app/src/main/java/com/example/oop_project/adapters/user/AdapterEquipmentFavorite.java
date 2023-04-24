@@ -97,24 +97,28 @@ public class AdapterEquipmentFavorite extends RecyclerView.Adapter<AdapterEquipm
             }
         });
 
-        Glide.with(context)
-                .load(equipmentImage)
-                .centerCrop()
-                .listener(new RequestListener<Drawable>() {
-                    @Override
-                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                        holder.progressBar.setVisibility(View.VISIBLE);
-                        return false;
-                    }
+       if(equipmentImage.equals("null")|| equipmentImage.equals("")){
 
-                    @Override
-                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+       }else{
+           Glide.with(context)
+                   .load(equipmentImage)
+                   .centerCrop()
+                   .listener(new RequestListener<Drawable>() {
+                       @Override
+                       public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                           holder.progressBar.setVisibility(View.VISIBLE);
+                           return false;
+                       }
 
-                        holder.imageView.setVisibility(View.VISIBLE);
-                        return false;
-                    }
-                })
-                .into(holder.imageView);
+                       @Override
+                       public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+
+                           holder.imageView.setVisibility(View.VISIBLE);
+                           return false;
+                       }
+                   })
+                   .into(holder.imageView);
+       }
     }
 
     @Override

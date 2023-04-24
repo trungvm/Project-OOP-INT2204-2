@@ -208,6 +208,7 @@ public class CartActivity extends AppCompatActivity {
                                     });
                         }
                         adapterEquipmentCart = new AdapterEquipmentCart(CartActivity.this, equipmentArrayList);
+                        adapterEquipmentCart.notifyDataSetChanged();
                         binding.cartRv.setAdapter(adapterEquipmentCart);
                     }
 

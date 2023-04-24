@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,6 +48,7 @@ public class AdapterEquipmentBorrowed extends RecyclerView.Adapter<AdapterEquipm
     private final FirebaseAuth firebaseAuth;
     private FilterEquipmentBorrowed filter;
     private final ArrayList<Boolean> isChecked;
+    private ArrayList<Boolean> isCallbackHandled;
 
     public AdapterEquipmentBorrowed(Context context, ArrayList<ModelEquipment> equipmentArrayList) {
         firebaseAuth = FirebaseAuth.getInstance();
@@ -53,8 +56,10 @@ public class AdapterEquipmentBorrowed extends RecyclerView.Adapter<AdapterEquipm
         this.equipmentArrayList = equipmentArrayList;
         filterList = equipmentArrayList;
         isChecked = new ArrayList<>();
+        isCallbackHandled = new ArrayList<>();
         for (int i = 0; i < 1000; i++) {
             isChecked.add(false);
+            isCallbackHandled.add(false);
         }
 
 
@@ -96,7 +101,12 @@ public class AdapterEquipmentBorrowed extends RecyclerView.Adapter<AdapterEquipm
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 String timestamp = "" + snapshot.child("timestamp").getValue();
-                String date = MyApplication.formatTimestampToDetailTime(Long.parseLong(timestamp));
+                String date = "";
+                if(timestamp.equals("null") || timestamp.equals("")){
+
+                }else{
+                    date = MyApplication.formatTimestampToDetailTime(Long.parseLong(timestamp));
+                }
                 holder.dateTv.setText(date);
             }
 
@@ -136,24 +146,56 @@ public class AdapterEquipmentBorrowed extends RecyclerView.Adapter<AdapterEquipm
                 context.startActivity(intent);
             }
         });
-        Glide.with(context)
-                .load(equipmentImage)
-                .centerCrop()
-                .listener(new RequestListener<Drawable>() {
-                    @Override
-                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                        holder.progressBar.setVisibility(View.VISIBLE);
-                        return false;
-                    }
+       if(equipmentImage.equals("") || equipmentImage.equals("null")){
 
-                    @Override
-                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+       }else{
+           Handler handler = new Handler(Looper.getMainLooper());
+           Glide.with(context)
+                   .load(equipmentImage)
+                   .centerCrop()
+                   .listener(new RequestListener<Drawable>() {
+                       @Override
+                       public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                           if (!isCallbackHandled.get(position)) { // Kiểm tra nếu chưa xử lý callback
+                               handler.post(new Runnable() {
+                                   @Override
+                                   public void run() {
+                                       holder.progressBar.setVisibility(View.VISIBLE);
+                                       holder.imageView.setVisibility(View.GONE);
+                                   }
+                               });
 
-                        holder.imageView.setVisibility(View.VISIBLE);
-                        return false;
-                    }
-                })
-                .into(holder.imageView);
+                               // Đánh dấu là đã xử lý callback
+                               isCallbackHandled.set(position, true);
+                           }
+
+                           // Trả về false để cho phép Glide xử lý callback tiếp
+                           return false;
+                       }
+
+                       @Override
+                       public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+
+                           if (!isCallbackHandled.get(position)) { // Kiểm tra nếu chưa xử lý callback
+                               handler.post(new Runnable() {
+                                   @Override
+                                   public void run() {
+                                       holder.imageView.setVisibility(View.VISIBLE);
+
+                                       holder.progressBar.setVisibility(View.GONE);
+                                   }
+                               });
+
+                               // Đánh dấu là đã xử lý callback
+                               isCallbackHandled.set(position, true);
+                           }
+
+                           // Trả về false để cho phép Glide xử lý callback tiếp
+                           return false;
+                       }
+                   })
+                   .into(holder.imageView);
+       }
         holder.checkIs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

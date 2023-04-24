@@ -136,7 +136,12 @@ public class EquipmentDetailActivity extends AppCompatActivity {
                         manual = manual.replace("\\n", "\n");
                         String newManual = manual;
                         String categoryId = "" + snapshot.child("categoryId").getValue();
-                        String date = MyApplication.formatTimestamp(Long.parseLong(timestamp));
+                        String date = "";
+                        if(timestamp.equals("null") || timestamp.equals("")){
+
+                        }else{
+                            date = MyApplication.formatTimestamp(Long.parseLong(timestamp));
+                        }
                         String viewed = "" + snapshot.child("viewed").getValue();
                         String equipmentImage = "" + snapshot.child("equipmentImage").getValue();
                         String numberOfBorrowings = "0";
@@ -530,7 +535,7 @@ public class EquipmentDetailActivity extends AppCompatActivity {
                         }
                         binding.viewedTv.setText(viewed);
                         Handler handler = new Handler(Looper.getMainLooper());
-                        if(!isDestroyed()){
+                        if(!isDestroyed() && !equipmentImage.equals("null") && !equipmentImage.equals("")){
                             Glide.with(EquipmentDetailActivity.this)
                                     .load(equipmentImage)
                                     .centerCrop()

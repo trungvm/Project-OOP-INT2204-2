@@ -151,6 +151,10 @@ public class DashboardAdminActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onBackPressed() {
+
+    }
     private void setUpNotification() {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("EquipmentsBorrowed");
         ref.addValueEventListener(new ValueEventListener() {

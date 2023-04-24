@@ -186,6 +186,16 @@ public class OrderActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        // Xử lý sự kiện khi nút "Back" được nhấn
+        // Thêm mã logic của bạn ở đây
+        // Ví dụ: Đóng hoặc quay lại màn hình trước đó
+//        super.onBackPressed();
+//        startActivity(new Intent(OrderScheduleActivity.this, ScheduleActivity.class));
+        finish();
+        super.onBackPressed();
+    }
     private void insertData() {
         progressDialog.setMessage("Đang tiến hành mượn!");
         progressDialog.show();
@@ -268,8 +278,9 @@ public class OrderActivity extends AppCompatActivity {
                         public void onSuccess(Void unused) {
                             progressDialog.dismiss();
                             Toast.makeText(OrderActivity.this, "Mượn thành công!", Toast.LENGTH_SHORT).show();
-                            finish();
-                            onBackPressed();
+                            Intent intent = new Intent(OrderActivity.this, CartActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(intent);
 
                         }
                     }).addOnFailureListener(new OnFailureListener() {

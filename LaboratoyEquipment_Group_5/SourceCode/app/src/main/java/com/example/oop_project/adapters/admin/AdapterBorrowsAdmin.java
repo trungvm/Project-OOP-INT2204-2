@@ -26,6 +26,7 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.example.oop_project.MyApplication;
+import com.example.oop_project.activities.admin.BorrowsAdminActivity;
 import com.example.oop_project.activities.common.EquipmentDetailActivity;
 import com.example.oop_project.databinding.RowBorrowsAdminBinding;
 import com.example.oop_project.filters.admin.FilterBorrowsAdmin;
@@ -79,7 +80,12 @@ public class AdapterBorrowsAdmin extends RecyclerView.Adapter<AdapterBorrowsAdmi
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         String timestamp = "" + snapshot.child("timestamp").getValue();
-                        String date = MyApplication.formatTimestampToDetailTime(Long.parseLong(timestamp));
+                        String date = "";
+                        if(timestamp.equals("null") || timestamp.equals("")){
+
+                        }else{
+                            date = MyApplication.formatTimestampToDetailTime(Long.parseLong(timestamp));
+                        }
                         holder.dateTv.setText(date);
                         String fullName = "" + snapshot.child("fullName").getValue();
                         holder.descriptionTv.setText("Người mượn: " + fullName);
@@ -151,47 +157,53 @@ public class AdapterBorrowsAdmin extends RecyclerView.Adapter<AdapterBorrowsAdmi
                     String equipmentImage = "" + snapshot.child("equipmentImage").getValue();
                     Log.d("Position", ""+finalPosition);
                     Log.d("Image", equipmentImage);
-                    Glide.with(context)
-                            .load(equipmentImage)
-                            .centerCrop()
-                            .listener(new RequestListener<Drawable>() {
-                                @Override
-                                public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                                    if (!isCallbackHandled.get(finalPosition)) { // Kiểm tra nếu chưa xử lý callback
-                                        holder.progressBar.setVisibility(View.VISIBLE);
-                                        holder.imageView.setVisibility(View.GONE);
+                    if(context instanceof BorrowsAdminActivity){
+                        BorrowsAdminActivity activity = (BorrowsAdminActivity) context;
+                        if(!activity.isDestroyed() && !(equipmentImage.equals("null") || equipmentImage.equals(""))){
+                            Glide.with(context)
+                                    .load(equipmentImage)
+                                    .centerCrop()
+                                    .listener(new RequestListener<Drawable>() {
+                                        @Override
+                                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                                            if (!isCallbackHandled.get(finalPosition)) { // Kiểm tra nếu chưa xử lý callback
+                                                holder.progressBar.setVisibility(View.VISIBLE);
+                                                holder.imageView.setVisibility(View.GONE);
 
 
 
-                                        // Đánh dấu là đã xử lý callback
-                                        isCallbackHandled.set(finalPosition, true);
-                                    }
+                                                // Đánh dấu là đã xử lý callback
+                                                isCallbackHandled.set(finalPosition, true);
+                                            }
 
-                                    // Trả về false để cho phép Glide xử lý callback tiếp
-                                    return false;
-                                }
+                                            // Trả về false để cho phép Glide xử lý callback tiếp
+                                            return false;
+                                        }
 
-                                @Override
-                                public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                        @Override
+                                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
 
-                                    if (!isCallbackHandled.get(finalPosition)) { // Kiểm tra nếu chưa xử lý callback
-                                        Log.d("Check position", "" + finalPosition);
-                                        Log.d("Handle", "" + isCallbackHandled.get(finalPosition));
-                                        holder.imageView.setVisibility(View.VISIBLE);
-                                        holder.progressBar.setVisibility(View.GONE);
+                                            if (!isCallbackHandled.get(finalPosition)) { // Kiểm tra nếu chưa xử lý callback
+                                                Log.d("Check position", "" + finalPosition);
+                                                Log.d("Handle", "" + isCallbackHandled.get(finalPosition));
+                                                holder.imageView.setVisibility(View.VISIBLE);
+                                                holder.progressBar.setVisibility(View.GONE);
 
 
-                                        // Đánh dấu là đã xử lý callback
-                                        isCallbackHandled.set(finalPosition, true);
+                                                // Đánh dấu là đã xử lý callback
+                                                isCallbackHandled.set(finalPosition, true);
 
-                                        Log.d("Hanlde old", ""+isCallbackHandled.get(finalPosition));
-                                    }
+                                                Log.d("Hanlde old", ""+isCallbackHandled.get(finalPosition));
+                                            }
 
-                                    // Trả về false để cho phép Glide xử lý callback tiếp
-                                    return false;
-                                }
-                            })
-                            .into(holder.imageView);
+                                            // Trả về false để cho phép Glide xử lý callback tiếp
+                                            return false;
+                                        }
+                                    })
+                                    .into(holder.imageView);
+                        }
+                    }
+
                 }
             }
 
@@ -199,9 +211,7 @@ public class AdapterBorrowsAdmin extends RecyclerView.Adapter<AdapterBorrowsAdmi
             public void onCancelled(@NonNull DatabaseError error) {
             }
         });
-
     }
-
     @Override
     public int getItemCount() {
         return equipmentArrayList.size();

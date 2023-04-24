@@ -146,6 +146,10 @@ public class DashboardUserActivity extends AppCompatActivity {
         });
 
     }
+    @Override
+    public void onBackPressed() {
+
+    }
     private void checkUser() {
         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
         if (firebaseUser == null && isLoginWithout == 0) {
