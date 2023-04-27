@@ -15,6 +15,7 @@ import com.example.oop_project.R;
 import com.example.oop_project.activities.common.MainActivity;
 import com.example.oop_project.activities.common.ProfileActivity;
 import com.example.oop_project.databinding.ActivityDashboardAdminBinding;
+import com.example.oop_project.models.Person;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -31,6 +32,9 @@ public class DashboardAdminActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private boolean isLayoutOpen = false;
     int cnt = 0;
+    String name = "";
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,7 +59,7 @@ public class DashboardAdminActivity extends AppCompatActivity {
         binding.bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()){
+                switch (item.getItemId()) {
                     case R.id.menuHome:
                         Intent intent = new Intent(DashboardAdminActivity.this, DashboardAdminActivity.class);
                         intent.putExtra("CURRENT_TAB", 0);
@@ -96,8 +100,8 @@ public class DashboardAdminActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 int heightInPxt = (int) TypedValue.applyDimension(
-                        TypedValue.COMPLEX_UNIT_DIP, 930, getResources().getDisplayMetrics());
-                if(isLayoutOpen){
+                        TypedValue.COMPLEX_UNIT_DIP, 950, getResources().getDisplayMetrics());
+                if (isLayoutOpen) {
                     binding.contentRulesSv.setVisibility(View.GONE);
                     binding.layoutRulesC.getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;
                     binding.layoutRulesC.requestLayout();
@@ -110,7 +114,7 @@ public class DashboardAdminActivity extends AppCompatActivity {
                     ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) binding.layoutRulesC.getLayoutParams();
                     params.topMargin = heightInPxt1;
                     binding.layoutRulesC.setLayoutParams(params);
-                }else{
+                } else {
                     binding.layoutRulesC.getLayoutParams().height = heightInPxt;
                     binding.layoutRulesC.requestLayout();
                     binding.contentRulesSv.setVisibility(View.VISIBLE);
@@ -125,8 +129,9 @@ public class DashboardAdminActivity extends AppCompatActivity {
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             final Markwon markwon = Markwon.create(DashboardAdminActivity.this);
                             String text = "" + snapshot.child("content").getValue();
-
-                            markwon.setMarkdown(binding.contentRules, text);
+                            text = text.replace("\\n", "\n");
+                            String newText = text;
+                            markwon.setMarkdown(binding.contentRules, newText);
                         }
 
                         @Override
@@ -146,22 +151,26 @@ public class DashboardAdminActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onBackPressed() {
+
+    }
     private void setUpNotification() {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("EquipmentsBorrowed");
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 cnt = 0;
-                for(DataSnapshot ds : snapshot.getChildren()){
-                    if(("" + ds.child("status").getValue()).equals("Waiting")){
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    if (("" + ds.child("status").getValue()).equals("Waiting")) {
                         cnt++;
                     }
                 }
-               if(cnt == 0){
-                   binding.notification.setVisibility(View.GONE);
-               }else{
-                   binding.notification.setText(""+cnt);
-               }
+                if (cnt == 0) {
+                    binding.notification.setVisibility(View.GONE);
+                } else {
+                    binding.notification.setText("" + cnt);
+                }
             }
 
             @Override
@@ -172,7 +181,7 @@ public class DashboardAdminActivity extends AppCompatActivity {
 
     }
 
-    String name = "";
+
     private void checkUser() {
         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
         if (firebaseUser == null) {
@@ -187,17 +196,18 @@ public class DashboardAdminActivity extends AppCompatActivity {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             String profileImage = "" + snapshot.child("profileImage").getValue();
-                            if(!profileImage.equals("null") && !isDestroyed()){
+                            if (!profileImage.equals("null") && !isDestroyed()) {
                                 Glide.with(DashboardAdminActivity.this)
                                         .load(profileImage)
                                         .placeholder(R.drawable.ic_person_gray)
                                         .into(binding.profileTv);
                             }
-                            name = ""+snapshot.child("fullName").getValue();
-                            if(name.equals("null")){
-                                binding.textUserName.setText(email);
-                            }else{
-                                binding.textUserName.setText(name);
+                            name = "" + snapshot.child("fullName").getValue();
+                            if (name.equals("null") || name.equals("")) {
+                            } else {
+                                Person person = new Person("admin");
+                                String newName = person.normalizeName(name);
+                                binding.textUserName.setText(newName);
                             }
                         }
 

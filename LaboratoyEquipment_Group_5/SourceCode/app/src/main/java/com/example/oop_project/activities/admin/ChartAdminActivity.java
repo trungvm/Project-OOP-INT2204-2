@@ -2,6 +2,7 @@ package com.example.oop_project.activities.admin;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -78,12 +79,16 @@ public class ChartAdminActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 barEntries.clear();
                 listView.clear();
-                for(DataSnapshot ds : snapshot.getChildren()){
-                    String title = "" + ds.child("title").getValue();
-                    String viewed = "" + ds.child("viewed").getValue();
+                binding.barChart.clear();
 
-                    Pair<String, String> p = new Pair<>(title, viewed);
-                    listView.add(p);
+                for(DataSnapshot ds : snapshot.getChildren()){
+                    if(("" + ds.child("status").getValue()).equals("use")){
+                        String title = "" + ds.child("title").getValue();
+                        String viewed = "" + ds.child("viewed").getValue();
+
+                        Pair<String, String> p = new Pair<>(title, viewed);
+                        listView.add(p);
+                    }
                 }
 
                 Collections.sort(listView, new Comparator<Pair<String, String>>() {
@@ -96,31 +101,32 @@ public class ChartAdminActivity extends AppCompatActivity {
                         return Integer.compare(viewed2, viewed1);
                     }
                 });
-                List<Pair<String, String>> firstFiveEntries = listView.subList(0, Math.min(5, listView.size()));
+                List<Pair<String, String>> firstFiveEntries = listView.subList(0, Math.min(3, listView.size()));
                 ArrayList<String> titleE = new ArrayList<>();
-                for(int i = 0; i < firstFiveEntries.size(); i++){
+                titleE.clear();
+                for(int i = 0; i <= 2; i++){
                     String title = firstFiveEntries.get(i).first;
                     String viewed = firstFiveEntries.get(i).second;
                     titleE.add(title);
                     barEntries.add(new BarEntry(i, Integer.parseInt(viewed)));
                 }
-                BarDataSet barDataSet = new BarDataSet(barEntries, "Số lần đã xem");
-                int[] colors = new int[]{Color.BLUE, Color.RED, Color.GREEN, Color.YELLOW, Color.MAGENTA};
+                BarDataSet barDataSet = new BarDataSet(barEntries, "Số lần đã xem");int[] colors = new int[]{Color.BLUE, Color.RED, Color.GREEN, Color.YELLOW, Color.MAGENTA};
 
                 barDataSet.setColors(colors); // Đặt màu cho cột
-                barDataSet.setValueTextSize(12f); // Đặt kích thước chữ của giá trị trên cột
+                barDataSet.setValueTextSize(10); // Đặt kích thước chữ của giá trị trên cột
 
                 BarData barData = new BarData(barDataSet);
+                XAxis xAxis = binding.barChart.getXAxis();
+                xAxis.setValueFormatter(new IndexAxisValueFormatter(titleE));
+                xAxis.setLabelCount(titleE.size()); // Đặt số giá trị của trục x bằng số lượng phần tử trong danh sách titleE
 
-                ValueFormatter xAxisFormatter = new IndexAxisValueFormatter(titleE); // Định d
-                binding.barChart.getXAxis().setValueFormatter(xAxisFormatter);
+
                 binding.barChart.setData(barData);
 
-                XAxis xAxis = binding.barChart.getXAxis();
-                xAxis.setTextSize(14f);
+                xAxis.setTextSize(10);
                 YAxis yAxis = binding.barChart.getAxisLeft();
-                yAxis.setTextSize(14f);
-                binding.barChart.getData().setValueTextSize(12f);
+                yAxis.setTextSize(10);
+                binding.barChart.getData().setValueTextSize(10);
 
 
                 binding.barChart.invalidate();
@@ -147,12 +153,15 @@ public class ChartAdminActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 barEntries.clear();
                 listView.clear();
+                binding.barChart.clear();
                 for(DataSnapshot ds : snapshot.getChildren()){
-                    String title = "" + ds.child("title").getValue();
-                    String viewed = "" + ds.child("numberOfBorrowings").getValue();
+                   if(("" + ds.child("status").getValue()).equals("use")){
+                       String title = "" + ds.child("title").getValue();
+                       String viewed = "" + ds.child("numberOfBorrowings").getValue();
 
-                    Pair<String, String> p = new Pair<>(title, viewed);
-                    listView.add(p);
+                       Pair<String, String> p = new Pair<>(title, viewed);
+                       listView.add(p);
+                   }
                 }
 
                 Collections.sort(listView, new Comparator<Pair<String, String>>() {
@@ -165,9 +174,9 @@ public class ChartAdminActivity extends AppCompatActivity {
                         return Integer.compare(viewed2, viewed1);
                     }
                 });
-                List<Pair<String, String>> firstFiveEntries = listView.subList(0, Math.min(5, listView.size()));
+                List<Pair<String, String>> firstFiveEntries = listView.subList(0, Math.min(3, listView.size()));
                 ArrayList<String> titleE = new ArrayList<>();
-                for(int i = 0; i < firstFiveEntries.size(); i++){
+                for(int i = 0; i <= 2; i++){
                     String title = firstFiveEntries.get(i).first;
                     String viewed = firstFiveEntries.get(i).second;
                     titleE.add(title);
@@ -177,19 +186,21 @@ public class ChartAdminActivity extends AppCompatActivity {
                 int[] colors = new int[]{Color.BLUE, Color.RED, Color.GREEN, Color.YELLOW, Color.MAGENTA};
 
                 barDataSet.setColors(colors); // Đặt màu cho cột
-                barDataSet.setValueTextSize(12f); // Đặt kích thước chữ của giá trị trên cột
+                barDataSet.setValueTextSize(10); // Đặt kích thước chữ của giá trị trên cột
 
                 BarData barData = new BarData(barDataSet);
 
-                ValueFormatter xAxisFormatter = new IndexAxisValueFormatter(titleE); // Định d
-                binding.barChart.getXAxis().setValueFormatter(xAxisFormatter);
+                XAxis xAxis = binding.barChart.getXAxis();
+                xAxis.setValueFormatter(new IndexAxisValueFormatter(titleE));
+                xAxis.setLabelCount(titleE.size()); // Đặt số giá trị của trục x bằng số lượng phần tử trong danh sách titleE
+
+
                 binding.barChart.setData(barData);
 
-                XAxis xAxis = binding.barChart.getXAxis();
-                xAxis.setTextSize(14f);
+                xAxis.setTextSize(10);
                 YAxis yAxis = binding.barChart.getAxisLeft();
-                yAxis.setTextSize(14f);
-                binding.barChart.getData().setValueTextSize(12f);
+                yAxis.setTextSize(10);
+                binding.barChart.getData().setValueTextSize(10);
 
 
                 binding.barChart.invalidate();

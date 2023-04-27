@@ -127,26 +127,29 @@ public class BorrowsAdminFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 equipmentArrayListBorrowing.clear();
-                for (DataSnapshot ds : snapshot.getChildren()) {
-                    if (("" + ds.child("status").getValue()).equals("Borrowed")) {
-                        String key = ds.getKey();
-                        String uid = "" + ds.child("uid").getValue();
-                        ModelEquipment model = snapshot.getValue(ModelEquipment.class);
-                        String equipmentId = "" + ds.child("equipmentId").getValue();
-                        String title = "" + ds.child("title").getValue();
-                        String preStatus = "";
-                        if (ds.hasChild("preStatus")) {
-                            preStatus = "" + ds.child("preStatus").getValue();
+                Object lock = new Object();
+                synchronized (lock) {
+                    for (DataSnapshot ds : snapshot.getChildren()) {
+                        if (("" + ds.child("status").getValue()).equals("Borrowed")) {
+                            String key = ds.getKey();
+                            String uid = "" + ds.child("uid").getValue();
+                            ModelEquipment model = snapshot.getValue(ModelEquipment.class);
+                            String equipmentId = "" + ds.child("equipmentId").getValue();
+                            String title = "" + ds.child("title").getValue();
+                            String preStatus = "";
+                            if (ds.hasChild("preStatus")) {
+                                preStatus = "" + ds.child("preStatus").getValue();
+                            }
+                            model.setTitle(title);
+                            model.setPreStatus(preStatus);
+                            model.setId(equipmentId);
+                            model.setKey(key);
+                            model.setUid(uid);
+                            model.setStatus("Borrowed");
+                            equipmentArrayListBorrowing.add(model);
+
+
                         }
-                        model.setTitle(title);
-                        model.setPreStatus(preStatus);
-                        model.setId(equipmentId);
-                        model.setKey(key);
-                        model.setUid(uid);
-                        model.setStatus("Borrowed");
-                        equipmentArrayListBorrowing.add(model);
-
-
                     }
                 }
 
@@ -176,25 +179,28 @@ public class BorrowsAdminFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 equipmentArrayListBorrowed.clear();
-                for (DataSnapshot ds : snapshot.getChildren()) {
-                    if (("" + ds.child("status").getValue()).equals("History")) {
-                        String key = ds.getKey();
-                        String uid = "" + ds.child("uid").getValue();
-                        ModelEquipment model = snapshot.getValue(ModelEquipment.class);
-                        String equipmentId = "" + ds.child("equipmentId").getValue();
-                        String title = "" + ds.child("title").getValue();
-                        String preStatus = "";
-                        if (ds.hasChild("preStatus")) {
-                            preStatus = "" + ds.child("preStatus").getValue();
-                        }
-                        model.setTitle(title);
-                        model.setId(equipmentId);
-                        model.setKey(key);
-                        model.setPreStatus(preStatus);
-                        model.setUid(uid);
-                        model.setStatus("History");
+                Object lock = new Object();
+                synchronized (lock) {
+                    for (DataSnapshot ds : snapshot.getChildren()) {
+                        if (("" + ds.child("status").getValue()).equals("History")) {
+                            String key = ds.getKey();
+                            String uid = "" + ds.child("uid").getValue();
+                            ModelEquipment model = snapshot.getValue(ModelEquipment.class);
+                            String equipmentId = "" + ds.child("equipmentId").getValue();
+                            String title = "" + ds.child("title").getValue();
+                            String preStatus = "";
+                            if (ds.hasChild("preStatus")) {
+                                preStatus = "" + ds.child("preStatus").getValue();
+                            }
+                            model.setTitle(title);
+                            model.setId(equipmentId);
+                            model.setKey(key);
+                            model.setPreStatus(preStatus);
+                            model.setUid(uid);
+                            model.setStatus("History");
 
-                        equipmentArrayListBorrowed.add(model);
+                            equipmentArrayListBorrowed.add(model);
+                        }
                     }
                 }
                 adapterBorrowsAdmin = new AdapterBorrowsAdmin(getContext(), equipmentArrayListBorrowed);
@@ -221,22 +227,24 @@ public class BorrowsAdminFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 getEquipmentArrayListRefuse.clear();
-                for (DataSnapshot ds : snapshot.getChildren()) {
-                    if (("" + ds.child("status").getValue()).equals("Refuse")) {
-                        String key = ds.getKey();
-                        String uid = "" + ds.child("uid").getValue();
-                        ModelEquipment model = snapshot.getValue(ModelEquipment.class);
-                        String equipmentId = "" + ds.child("equipmentId").getValue();
-                        String title = "" + ds.child("title").getValue();
-                        model.setTitle(title);
+                Object lock = new Object();
+                synchronized (lock) {
+                    for (DataSnapshot ds : snapshot.getChildren()) {
+                        if (("" + ds.child("status").getValue()).equals("Refuse")) {
+                            String key = ds.getKey();
+                            String uid = "" + ds.child("uid").getValue();
+                            ModelEquipment model = snapshot.getValue(ModelEquipment.class);
+                            String equipmentId = "" + ds.child("equipmentId").getValue();
+                            String title = "" + ds.child("title").getValue();
+                            model.setTitle(title);
 
-                        model.setId(equipmentId);
-                        model.setKey(key);
-                        model.setUid(uid);
-                        model.setStatus("Refuse");
-                        getEquipmentArrayListRefuse.add(model);
+                            model.setId(equipmentId);
+                            model.setKey(key);
+                            model.setUid(uid);
+                            model.setStatus("Refuse");
+                            getEquipmentArrayListRefuse.add(model);
 
-
+                        }
                     }
                 }
 

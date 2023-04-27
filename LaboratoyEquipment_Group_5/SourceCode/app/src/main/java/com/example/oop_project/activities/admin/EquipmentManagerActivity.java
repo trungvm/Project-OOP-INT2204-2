@@ -98,6 +98,7 @@ public class EquipmentManagerActivity extends AppCompatActivity {
                     }
                 }
                 adapterCategory = new AdapterCategory(EquipmentManagerActivity.this, categoryArrayList);
+                adapterCategory.notifyDataSetChanged();
                 binding.categories.setAdapter(adapterCategory);
             }
 

@@ -1,8 +1,12 @@
 package com.example.oop_project.adapters.user;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +33,8 @@ import com.example.oop_project.models.ModelCategory;
 import com.example.oop_project.models.ModelEquipment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
@@ -38,11 +44,16 @@ public class AdapterEquipmentUser extends RecyclerView.Adapter<AdapterEquipmentU
     private FilterEquipmentUser filter;
 
     private RowEquipmentsUserBinding binding;
+    private ArrayList<Boolean> isCallbackHandled;
 
     public AdapterEquipmentUser(Context context, ArrayList<ModelEquipment> equipmentArrayList) {
         this.context = context;
         this.equipmentArrayList = equipmentArrayList;
         this.filterList = equipmentArrayList;
+        isCallbackHandled = new ArrayList<>();
+        for(int i = 0; i < 1000; i++){
+            isCallbackHandled.add(false);
+        }
 
     }
 
@@ -55,7 +66,7 @@ public class AdapterEquipmentUser extends RecyclerView.Adapter<AdapterEquipmentU
     }
 
     @Override
-    public void onBindViewHolder(@NonNull HolderEquipemntUser holder, int position) {
+    public void onBindViewHolder(@NonNull HolderEquipemntUser holder, @SuppressLint("RecyclerView") int position) {
 
         ModelEquipment model = equipmentArrayList.get(position);
         String title = model.getTitle();
@@ -64,6 +75,7 @@ public class AdapterEquipmentUser extends RecyclerView.Adapter<AdapterEquipmentU
         int quantity = model.getQuantity();
         long timestamp = model.getTimestamp();
         int viewed = model.getViewed();
+        String id = model.getId();
         String equipmentImage = model.getEquipmentImage();
 
         String date = MyApplication.formatTimestamp(timestamp);
@@ -109,24 +121,57 @@ public class AdapterEquipmentUser extends RecyclerView.Adapter<AdapterEquipmentU
 
             }
         });
-        Glide.with(context)
-                .load(equipmentImage)
-                .centerCrop()
-                .listener(new RequestListener<Drawable>() {
-                    @Override
-                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                        binding.progressBar.setVisibility(View.VISIBLE);
-                        return false;
-                    }
 
-                    @Override
-                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+       if(equipmentImage.equals("null") || equipmentImage.equals("")){
 
-                        binding.imageView.setVisibility(View.VISIBLE);
-                        return false;
-                    }
-                })
-                .into(binding.imageView);
+       }else{
+           Handler handler = new Handler(Looper.getMainLooper());
+           Glide.with(context)
+                   .load(equipmentImage)
+                   .centerCrop()
+                   .listener(new RequestListener<Drawable>() {
+                       @Override
+                       public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                           if (!isCallbackHandled.get(position)) { // Kiểm tra nếu chưa xử lý callback
+                               handler.post(new Runnable() {
+                                   @Override
+                                   public void run() {
+                                       holder.progressBar.setVisibility(View.VISIBLE);
+                                       holder.imageView.setVisibility(View.GONE);
+                                   }
+                               });
+
+                               // Đánh dấu là đã xử lý callback
+                               isCallbackHandled.set(position, true);
+                           }
+
+                           // Trả về false để cho phép Glide xử lý callback tiếp
+                           return false;
+                       }
+
+                       @Override
+                       public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+
+                           if (!isCallbackHandled.get(position)) { // Kiểm tra nếu chưa xử lý callback
+                               handler.post(new Runnable() {
+                                   @Override
+                                   public void run() {
+                                       Log.d("Tagg", title);
+                                       holder.imageView.setVisibility(View.VISIBLE);
+                                       holder.progressBar.setVisibility(View.GONE);
+                                   }
+                               });
+
+                               // Đánh dấu là đã xử lý callback
+                               isCallbackHandled.set(position, true);
+                           }
+
+                           // Trả về false để cho phép Glide xử lý callback tiếp
+                           return false;
+                       }
+                   })
+                   .into(holder.imageView);
+       }
     }
 
     @Override

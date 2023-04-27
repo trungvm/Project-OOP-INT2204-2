@@ -2,6 +2,8 @@ package com.example.oop_project.activities.user;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -13,8 +15,10 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.oop_project.EquipmentUserFragment;
+import com.example.oop_project.R;
 import com.example.oop_project.databinding.ActivityEquipmentUserShowBinding;
 import com.example.oop_project.models.ModelCategory;
+import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -29,6 +33,11 @@ public class EquipmentUserShowActivity extends AppCompatActivity {
     public ArrayList<ModelCategory> categoryArrayList;
     public ViewPagerAdapter viewPagerAdapter;
     private ActivityEquipmentUserShowBinding binding;
+    private boolean isDataLoaded = false; // Khai báo cờ kiểm tra
+    EquipmentUserFragment fragment;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +48,7 @@ public class EquipmentUserShowActivity extends AppCompatActivity {
 
         setupViewPagerAdapter(binding.viewPager);
         binding.tabLayout.setupWithViewPager(binding.viewPager);
+
         binding.backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -85,7 +95,6 @@ public class EquipmentUserShowActivity extends AppCompatActivity {
                         "" + modelMostBorrowed.getUid()
                 ), modelMostBorrowed.getTitle());
 
-                // refresh list
                 viewPagerAdapter.notifyDataSetChanged();
 
                 for (DataSnapshot ds : snapshot.getChildren()) {
@@ -100,6 +109,7 @@ public class EquipmentUserShowActivity extends AppCompatActivity {
                         viewPagerAdapter.notifyDataSetChanged();
                     }
                 }
+                isDataLoaded = true; // Đánh dấu là dữ liệu đã được tải hoàn tất
 
             }
 
@@ -108,9 +118,8 @@ public class EquipmentUserShowActivity extends AppCompatActivity {
 
             }
         });
-
+        viewPagerAdapter.notifyDataSetChanged();
         viewPager.setAdapter(viewPagerAdapter);
-
     }
 
     public static class ViewPagerAdapter extends FragmentPagerAdapter {

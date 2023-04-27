@@ -34,7 +34,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:layout_marginTop="0dp"
-            android:text="Huong"
+            android:text="Anonymous"
             android:textColor="@color/white"
             android:textSize="25sp"
             android:textStyle="bold"
@@ -302,7 +302,7 @@
                 android:layout_height="wrap_content"
                 android:text="test"
                 android:textColor="@color/white"
-                android:textSize="14sp" />
+                android:textSize="13sp" />
         </ScrollView>
 
 

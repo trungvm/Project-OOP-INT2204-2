@@ -58,10 +58,10 @@ dependencies {
 
 
     // firsbase
-    implementation 'com.google.firebase:firebase-analytics:21.2.1'
-    implementation 'com.google.firebase:firebase-auth:21.2.0'
-    implementation 'com.google.firebase:firebase-database:20.1.0'
-    implementation 'com.google.firebase:firebase-firestore:24.4.5'
+    implementation 'com.google.firebase:firebase-analytics:21.2.2'
+    implementation 'com.google.firebase:firebase-auth:21.3.0'
+    implementation 'com.google.firebase:firebase-database:20.2.0'
+    implementation 'com.google.firebase:firebase-firestore:24.5.0'
     implementation 'com.google.firebase:firebase-storage:20.1.0'
 
     testImplementation 'junit:junit:4.13.2'
@@ -73,8 +73,17 @@ dependencies {
     implementation ('com.github.bumptech.glide:glide:4.15.1'){
         exclude group: "com.android.support"
     }
-    // markdown
-    implementation "io.noties.markwon:core:4.2.0"
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.15.1'
+
+
+    annotationProcessor 'androidx.annotation:annotation:1.6.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
+    implementation ("com.github.bumptech.glide:glide:4.15.1@aar") {
+        transitive = true
+    }
+
+        // markdown
+    implementation "io.noties.markwon:core:4.6.2"
     // sendmail
     implementation 'com.sun.mail:android-mail:1.6.6'
     implementation 'com.sun.mail:android-activation:1.6.7'

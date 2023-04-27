@@ -3,6 +3,7 @@ package com.example.oop_project.activities.user;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -131,6 +132,15 @@ public class OrderScheduleActivity extends AppCompatActivity {
         progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("Please wait!");
         progressDialog.setCanceledOnTouchOutside(false);
+        listOfEquipmentId = new ArrayList<>();
+        listOfTitleEquipment = new ArrayList<>();
+        listOfKey = new ArrayList<>();
+
+
+        listOfEquipmentId.clear();
+        listOfTitleEquipment.clear();
+        listOfKey.clear();
+
         listOfKey = getIntent().getStringArrayListExtra("listOfKey");
         listOfEquipmentId = getIntent().getStringArrayListExtra("listOfEquipmentId");
         listOfTitleEquipment = getIntent().getStringArrayListExtra("listOfTitleEquipment");
@@ -158,11 +168,10 @@ public class OrderScheduleActivity extends AppCompatActivity {
 
                             }
                         });
-
-
                 onBackPressed();
             }
         });
+
         binding.genderTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -175,6 +184,16 @@ public class OrderScheduleActivity extends AppCompatActivity {
                 validateData();
             }
         });
+    }
+    @Override
+    public void onBackPressed() {
+        // Xử lý sự kiện khi nút "Back" được nhấn
+        // Thêm mã logic của bạn ở đây
+        // Ví dụ: Đóng hoặc quay lại màn hình trước đó
+//        super.onBackPressed();
+//        startActivity(new Intent(OrderScheduleActivity.this, ScheduleActivity.class));
+        finish();
+        super.onBackPressed();
     }
 
 
@@ -296,7 +315,7 @@ public class OrderScheduleActivity extends AppCompatActivity {
                 });
 
         sendMail();
-        for (int i = 0; i < listOfKey.size(); i++) {
+        for (int i = 0; i < listOfTitleEquipment.size(); i++) {
             long timestamp = System.currentTimeMillis();
             HashMap<String, Object> hashMap = new HashMap<>();
             hashMap.put("fullName", fullName);

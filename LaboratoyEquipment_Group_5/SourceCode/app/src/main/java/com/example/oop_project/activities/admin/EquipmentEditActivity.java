@@ -23,6 +23,8 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import io.noties.markwon.Markwon;
+
 public class EquipmentEditActivity extends AppCompatActivity {
     String title = "", description = "", manual = "";
     int quantity = 0;
@@ -76,14 +78,16 @@ public class EquipmentEditActivity extends AppCompatActivity {
         description = binding.descriptionE.getText().toString().trim();
         manual = binding.manualE.getText().toString().trim();
         String sQuantity = binding.quantityE.getText().toString().trim();
-        quantity = Integer.parseInt(sQuantity);
+        if(!TextUtils.isEmpty(sQuantity)){
+            quantity = Integer.parseInt(sQuantity);
+        }
 
         if (TextUtils.isEmpty(title)) {
             Toast.makeText(this, "Enter Title", Toast.LENGTH_SHORT).show();
         } else if (TextUtils.isEmpty(description)) {
             Toast.makeText(this, "Enter Description", Toast.LENGTH_SHORT).show();
-        } else if (TextUtils.isEmpty(selectedCategoryTitle)) {
-            Toast.makeText(this, "Chose Category", Toast.LENGTH_SHORT).show();
+        } else if (TextUtils.isEmpty(selectedCategoryId)) {
+            Toast.makeText(this, "Choose Category", Toast.LENGTH_SHORT).show();
         } else if (TextUtils.isEmpty(manual)) {
             Toast.makeText(this, "Enter Manual", Toast.LENGTH_SHORT).show();
         } else if (TextUtils.isEmpty(sQuantity)) {
@@ -193,10 +197,13 @@ public class EquipmentEditActivity extends AppCompatActivity {
                 categoryTitleArraylist.clear();
                 categoryIdArraylist.clear();
                 for (DataSnapshot ds : snapshot.getChildren()) {
-                    String id = "" + ds.child("id").getValue();
-                    String category = "" + ds.child("title").getValue();
-                    categoryIdArraylist.add(id);
-                    categoryTitleArraylist.add(category);
+                    if (!("" + ds.child("status").getValue()).equals("deleted")) {
+
+                        String id = "" + ds.child("id").getValue();
+                        String category = "" + ds.child("title").getValue();
+                        categoryIdArraylist.add(id);
+                        categoryTitleArraylist.add(category);
+                    }
                 }
             }
 

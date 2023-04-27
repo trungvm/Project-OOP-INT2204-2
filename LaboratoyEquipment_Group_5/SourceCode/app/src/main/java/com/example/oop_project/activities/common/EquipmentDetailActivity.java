@@ -3,6 +3,9 @@ package com.example.oop_project.activities.common;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -17,6 +20,7 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.example.oop_project.MyApplication;
 import com.example.oop_project.R;
+import com.example.oop_project.activities.admin.DashboardAdminActivity;
 import com.example.oop_project.databinding.ActivityEquipmentDetailBinding;
 import com.example.oop_project.models.ModelCategory;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -29,6 +33,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import io.noties.markwon.Markwon;
+
 public class EquipmentDetailActivity extends AppCompatActivity {
     public FirebaseAuth firebaseAuth;
     String equipmentId;
@@ -40,6 +46,7 @@ public class EquipmentDetailActivity extends AppCompatActivity {
     String preStatus = "";
     private ActivityEquipmentDetailBinding binding;
     private String quantity = "";
+    private boolean isCallbackHandled = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,8 +133,15 @@ public class EquipmentDetailActivity extends AppCompatActivity {
                         String timestamp = "" + snapshot.child("timestamp").getValue();
                         quantity = "" + snapshot.child("quantity").getValue();
                         String manual = "" + snapshot.child("manual").getValue();
+                        manual = manual.replace("\\n", "\n");
+                        String newManual = manual;
                         String categoryId = "" + snapshot.child("categoryId").getValue();
-                        String date = MyApplication.formatTimestamp(Long.parseLong(timestamp));
+                        String date = "";
+                        if(timestamp.equals("null") || timestamp.equals("")){
+
+                        }else{
+                            date = MyApplication.formatTimestamp(Long.parseLong(timestamp));
+                        }
                         String viewed = "" + snapshot.child("viewed").getValue();
                         String equipmentImage = "" + snapshot.child("equipmentImage").getValue();
                         String numberOfBorrowings = "0";
@@ -515,27 +529,58 @@ public class EquipmentDetailActivity extends AppCompatActivity {
 
                         } else {
                             binding.descriptionTv.setText(description);
-                            binding.manualTv.setText(manual);
+                            final Markwon markwon = Markwon.create(EquipmentDetailActivity.this);
+
+                            markwon.setMarkdown(binding.manualTv, newManual);
                         }
                         binding.viewedTv.setText(viewed);
-                        Glide.with(EquipmentDetailActivity.this)
-                                .load(equipmentImage)
-                                .centerCrop()
-                                .listener(new RequestListener<Drawable>() {
-                                    @Override
-                                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                                        binding.progressBar.setVisibility(View.VISIBLE);
-                                        return false;
-                                    }
+                        Handler handler = new Handler(Looper.getMainLooper());
+                        if(!isDestroyed() && !equipmentImage.equals("null") && !equipmentImage.equals("")){
+                            Glide.with(EquipmentDetailActivity.this)
+                                    .load(equipmentImage)
+                                    .centerCrop()
+                                    .listener(new RequestListener<Drawable>() {
+                                        @Override
+                                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                                            if (!isCallbackHandled) { // Kiểm tra nếu chưa xử lý callback
+                                                handler.post(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        binding.progressBar.setVisibility(View.VISIBLE);
+                                                        binding.imageView.setVisibility(View.GONE);
+                                                    }
+                                                });
 
-                                    @Override
-                                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                                // Đánh dấu là đã xử lý callback
+                                                isCallbackHandled = true;
+                                            }
 
-                                        binding.imageView.setVisibility(View.VISIBLE);
-                                        return false;
-                                    }
-                                })
-                                .into(binding.imageView);
+                                            // Trả về false để cho phép Glide xử lý callback tiếp
+                                            return false;
+                                        }
+
+                                        @Override
+                                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+
+                                            if (!isCallbackHandled) { // Kiểm tra nếu chưa xử lý callback
+                                                handler.post(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        binding.imageView.setVisibility(View.VISIBLE);
+                                                        binding.progressBar.setVisibility(View.GONE);
+                                                    }
+                                                });
+
+                                                // Đánh dấu là đã xử lý callback
+                                                isCallbackHandled = true;
+                                            }
+
+                                            // Trả về false để cho phép Glide xử lý callback tiếp
+                                            return false;
+                                        }
+                                    })
+                                    .into(binding.imageView);
+                        }
                     }
 
                     @Override
@@ -569,10 +614,10 @@ public class EquipmentDetailActivity extends AppCompatActivity {
                             isInMyFavorite = snapshot.exists();
                             if (isInMyFavorite) {
                                 binding.favoriteBtn.setCompoundDrawablesRelativeWithIntrinsicBounds(0, R.drawable.ic_favorite_white, 0, 0);
-                                binding.favoriteBtn.setText("Remove Favorite");
+                                binding.favoriteBtn.setText("Xóa yêu thích");
                             } else {
                                 binding.favoriteBtn.setCompoundDrawablesRelativeWithIntrinsicBounds(0, R.drawable.ic_favorite_border, 0, 0);
-                                binding.favoriteBtn.setText("Add Favorite");
+                                binding.favoriteBtn.setText("Thêm yêu thích");
                             }
                         }
 
