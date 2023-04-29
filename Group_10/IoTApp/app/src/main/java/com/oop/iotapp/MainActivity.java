@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.google.android.material.card.MaterialCardView;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -37,8 +38,9 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "clickCardViews: Stared");
 
         cvUser.setOnClickListener(e -> {
-            Intent intentUser = new Intent(MainActivity.this, null);
-            //TODO click user
+            FirebaseAuth.getInstance().signOut();
+            Intent intentUser = new Intent(MainActivity.this, LoginActivity.class);
+            startActivity(intentUser);
         });
 
         cvLight.setOnClickListener(e -> {
