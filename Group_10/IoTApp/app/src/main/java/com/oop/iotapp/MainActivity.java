@@ -13,7 +13,7 @@ import com.google.android.material.card.MaterialCardView;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
-    private MaterialCardView cvUser, cvLight, cvHeater, cvDoor, cvTemperature, cvCurtain, cvCamera;
+    private MaterialCardView cvUser, cvLight, cvHeater, cvTemperature, cvCurtain;
     private TextView tvWelcome;
 
     private String user = "USER";
@@ -57,20 +57,12 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intentTemperature);
         });
 
-        cvDoor.setOnClickListener(e -> {
-            Intent intentDoor = new Intent(MainActivity.this, null);
-            //TODO click Door
-        });
 
         cvCurtain.setOnClickListener(e -> {
-            Intent intentCurtain = new Intent(MainActivity.this, null);
-            //TODO click Curtain
+            Intent intentCurtain = new Intent(MainActivity.this, CurtainsActivity.class);
+            startActivity(intentCurtain);
         });
 
-        cvCamera.setOnClickListener(e -> {
-            Intent intentCamera = new Intent(MainActivity.this, null);
-            //TODO click Camera
-        });
     }
 
     private void initViews() {
@@ -79,10 +71,8 @@ public class MainActivity extends AppCompatActivity {
         cvUser = findViewById(R.id.cardview_user);
         cvLight = findViewById(R.id.cardview_light);
         cvHeater = findViewById(R.id.cardview_heater);
-        cvDoor = findViewById(R.id.cardview_door);
-        cvTemperature  = findViewById(R.id.cardview_temperature);
+        cvTemperature = findViewById(R.id.cardview_temperature);
         cvCurtain = findViewById(R.id.cardview_curtain);
-        cvCamera = findViewById(R.id.cardview_camera);
 
         tvWelcome = findViewById(R.id.textview_welcome);
         tvWelcome.setText("Welcome " + user);
