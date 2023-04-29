@@ -11,4 +11,5 @@
     <color name="primary_light">#222831</color>
     <color  name="second_light">#393E46</color>
     <color name="third_light">#00ADB5</color>
+    <color name="null_color">#3b4452</color>
 </resources>
