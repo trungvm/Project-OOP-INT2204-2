@@ -1,47 +1,37 @@
 package com.oop.iotapp;
 
 public class TemperatureData {
-    private Long id, userId, status, temperature, fanSpeed, ecoMode, timerMode;
-    private String timerStart, timerStop;
+    private Long status, temperature, fanSpeed, autoMode, timerMode;
+    private String timerStart, timerStop, name;
 
     public TemperatureData(){
-        this.id = 0L;
-        this.userId = 0L;
+        this.name = "#";
         this.status = 0L;
         this.temperature = 0L;
         this.fanSpeed = 0L;
-        this.ecoMode = 0L;
+        this.autoMode = 0L;
         this.timerMode = 0L;
         this.timerStart = "#";
         this.timerStop = "#";
     }
 
-    public TemperatureData(Long id, Long userId, Long status, Long temperature, Long fanSpeed, Long ecoMode, Long timerMode, String timerStart, String timerStop) {
-        this.userId = userId;
+    public TemperatureData(String name, Long status, Long temperature, Long fanSpeed, Long autoMode, Long timerMode, String timerStart, String timerStop) {
+        this.name = name;
         this.status = status;
         this.temperature = temperature;
         this.fanSpeed = fanSpeed;
-        this.ecoMode = ecoMode;
+        this.autoMode = autoMode;
         this.timerMode = timerMode;
         this.timerStart = timerStart;
         this.timerStop = timerStop;
-        this.id = id;
     }
 
-    public Long getId() {
-        return id;
+    public String getName() {
+        return name;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Long getStatus() {
@@ -68,12 +58,12 @@ public class TemperatureData {
         this.fanSpeed = fanSpeed;
     }
 
-    public Long getEcoMode() {
-        return ecoMode;
+    public Long getAutoMode() {
+        return autoMode;
     }
 
-    public void setEcoMode(Long ecoMode) {
-        this.ecoMode = ecoMode;
+    public void setAutoMode(Long autoMode) {
+        this.autoMode = autoMode;
     }
 
     public Long getTimerMode() {

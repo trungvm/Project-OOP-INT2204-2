@@ -55,7 +55,6 @@ public class MainActivity extends AppCompatActivity {
 
         cvTemperature.setOnClickListener(e -> {
             Intent intentTemperature = new Intent(MainActivity.this, TemperatureActivity.class);
-            intentTemperature.putExtra("email", email);
             startActivity(intentTemperature);
         });
 
