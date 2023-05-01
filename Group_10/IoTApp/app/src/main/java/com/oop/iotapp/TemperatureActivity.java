@@ -253,11 +253,7 @@ public class TemperatureActivity extends AppCompatActivity {
         if (!selected.equals("")) {
             myRef.child(selected).child("status").setValue(1L);
         }
-//        bt_statusOn.setBackgroundColor(ContextCompat.getColor(this ,R.color.second_light));
-//        bt_statusOn.setClickable(false);
-//
-//        bt_statusOff.setBackgroundColor(ContextCompat.getColor(this ,R.color.primary_light));
-//        bt_statusOff.setClickable(true);
+
     }
 
     private void deleteDevice() {

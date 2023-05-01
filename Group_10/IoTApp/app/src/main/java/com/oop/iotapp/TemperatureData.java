@@ -1,10 +1,12 @@
 package com.oop.iotapp;
 
-public class TemperatureData {
+public class TemperatureData extends Device{
     private Long status, temperature, fanSpeed, autoMode, timerMode;
     private String timerStart, timerStop, name;
 
     public TemperatureData(){
+        this.setAddress("0.0.0.0");
+        this.setPort(0L);
         this.name = "#";
         this.status = 0L;
         this.temperature = 0L;
@@ -24,6 +26,18 @@ public class TemperatureData {
         this.timerMode = timerMode;
         this.timerStart = timerStart;
         this.timerStop = timerStop;
+    }
+
+    public TemperatureData(String address, Long port, Long status, Long temperature, Long fanSpeed, Long autoMode, Long timerMode, String timerStart, String timerStop, String name) {
+        super(address, port);
+        this.status = status;
+        this.temperature = temperature;
+        this.fanSpeed = fanSpeed;
+        this.autoMode = autoMode;
+        this.timerMode = timerMode;
+        this.timerStart = timerStart;
+        this.timerStop = timerStop;
+        this.name = name;
     }
 
     public String getName() {

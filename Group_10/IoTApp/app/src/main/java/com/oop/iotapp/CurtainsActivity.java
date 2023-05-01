@@ -5,7 +5,9 @@ import static android.content.ContentValues.TAG;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.material.button.MaterialButton;
@@ -36,7 +39,7 @@ public class CurtainsActivity extends AppCompatActivity{
     private DatabaseReference myRef;
 
     private AutoCompleteTextView actv_devices;
-    private MaterialButton bt_addDevice, bt_deleteDevice, bt_statusOn, bt_statusOff, bt_percentConfirm, bt_autoOn, bt_autoOff;
+    private MaterialButton bt_addDevice, bt_deleteDevice, bt_statusOn, bt_statusOff, bt_percentConfirm, bt_autoOn, bt_autoOff, bt_back;
     private Slider sl_percent;
 
     @Override
@@ -54,128 +57,129 @@ public class CurtainsActivity extends AppCompatActivity{
     }
 
     private void curtainsTasks() {
+
         Log.e(TAG, "curtainsTasks: Start");
 
-        selectDevice();
+        Toast.makeText(this, "Vui lòng chọn thiết bị", Toast.LENGTH_SHORT).show();
 
-        addDevice();
+        bt_back.setOnClickListener(e -> {
+            Intent intentBack = new Intent(this, MainActivity.class);
+            startActivity(intentBack);
+        });
 
-        deleteDevice();
+        bt_addDevice.setOnClickListener(e -> {
+            addDevice();
+        });
 
+        bt_deleteDevice.setOnClickListener(e -> {
+            deleteDevice();
+        });
+
+        bt_statusOn.setOnClickListener(e -> {
+            statusOn();
+        });
+
+        bt_statusOff.setOnClickListener(e -> {
+            statusOff();
+        });
+
+        bt_percentConfirm.setOnClickListener(e -> {
+            setPercent();
+        });
+
+        bt_autoOn.setOnClickListener(e -> {
+            autoOn();
+        });
+
+        bt_autoOff.setOnClickListener(e -> {
+            autoOff();
+        });
+    }
+
+    private void setPercent() {
+        Log.e(TAG, "setTemperature: Start");
+        String selected = actv_devices.getText().toString();
+        Long percent = (long) sl_percent.getValue();
+        myRef.child(selected).child("percent").setValue(percent);
+    }
+
+    private void autoOff() {
+        Log.e(TAG, "bt_autoOff: Start");
+        String selected = actv_devices.getText().toString();
+        if (!selected.equals("")) {
+            myRef.child(selected).child("autoMode").setValue(0L);
+        }
+    }
+
+    private void autoOn() {
+        Log.e(TAG, "bt_autoOn: Start");
+        String selected = actv_devices.getText().toString();
+        if (!selected.equals("")) {
+            myRef.child(selected).child("autoMode").setValue(1L);
+        }
+    }
+
+    private void statusOff() {
+        Log.e(TAG, "statusOff: Start");
+        String selected = actv_devices.getText().toString();
+        if (!selected.equals("")) {
+            myRef.child(selected).child("status").setValue(0L);
+        }
+    }
+
+    private void statusOn() {
+        Log.e(TAG, "statusOn: Start");
+        String selected = actv_devices.getText().toString();
+        if (!selected.equals("")) {
+            myRef.child(selected).child("status").setValue(1L);
+        }
     }
 
     private void deleteDevice() {
-        bt_deleteDevice.setOnClickListener(e -> {
-
-            String selected = actv_devices.getText().toString();
-            MaterialAlertDialogBuilder alert = new MaterialAlertDialogBuilder(this);
-            alert.setTitle("Xóa thiết bị");
-            alert.setMessage("Bạn có chắc bạn muốn xóa " + selected + " chứ?\n" + "Nếu bấm YES bạn sẽ không thể khôi phục!");
-            alert.setPositiveButton("YES", (dialog, which) -> {
-                deleteNode(selected);
+        Log.e(TAG, "deleteDevice: Start");
+        String selected = actv_devices.getText().toString();
+        if (!selected.equals("")) {
+            AlertDialog.Builder dialog = new AlertDialog.Builder(CurtainsActivity.this);
+            dialog.setTitle("XÓA THIẾT BỊ");
+            dialog.setMessage("Bạn có chắc muốn xóa " + selected + " không?");
+            dialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Toast.makeText(CurtainsActivity.this, "Xóa thành công", Toast.LENGTH_SHORT).show();
+                    myRef.child(selected).removeValue();
+                    finish();
+                    startActivity(getIntent());
+                }
             });
-            alert.setNegativeButton("No", (dialog, which) -> {
+            dialog.show();
+        }
 
-            });
-            alert.show();
-        });
     }
-
-    private void deleteNode(String selected) {
-        myRef.child(selected).removeValue();
-        //TODO: bug
-    }
-
-
 
     private void addDevice() {
+        Log.e(TAG, "addDevice: Start");
+        Toast.makeText(this, "Oke ?", Toast.LENGTH_SHORT).show();
+        AlertDialog.Builder dialog = new AlertDialog.Builder(CurtainsActivity.this);
+        dialog.setTitle("THÊM THIẾT BỊ");
+
+        View view = getLayoutInflater().inflate(R.layout.layout_add_device, null);
+
+        EditText et_deviceName = view.findViewById(R.id.edittext_name_add);
+        EditText et_deviceAddress = view.findViewById(R.id.edittext_address_add);
+        EditText et_devicePort = view.findViewById(R.id.edittext_port_add);
+        Button bt_addDevice = view.findViewById(R.id.button_add_add);
         bt_addDevice.setOnClickListener(e -> {
-            //TODO: added simple dialog to enter device information
-        });
-    }
-
-    private void selectDevice() {
-
-        String selectedDevice = actv_devices.getText().toString();
-
-        if (selectedDevice.equals("")){
-            bt_deleteDevice.setBackgroundColor(Color.rgb(63,72,84));
-            bt_deleteDevice.setClickable(false);
-
-            bt_statusOn.setBackgroundColor(Color.rgb(63,72,84));
-            bt_statusOn.setClickable(false);
-
-            bt_statusOff.setBackgroundColor(Color.rgb(63, 72, 84));
-            bt_statusOff.setClickable(false);
-
-            bt_percentConfirm.setBackgroundColor(Color.rgb(63, 72, 84));
-            bt_percentConfirm.setClickable(false);
-
-            bt_autoOff.setBackgroundColor(Color.rgb(63, 72, 84));
-            bt_autoOff.setClickable(false);
-
-            bt_autoOn.setBackgroundColor(Color.rgb(63, 72, 84));
-            bt_autoOn.setClickable(false);
-
-            Toast.makeText(this, "Vui lòng chọn thiết bị hoặc chế độ tự động!", Toast.LENGTH_SHORT).show();
-
-        }
-        actv_devices.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                Query query = myRef.child(actv_devices.getText().toString());
-                CurtainsData cd;
-                query.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        CurtainsData curtainsData = snapshot.getValue(CurtainsData.class);
-                        Toast.makeText(CurtainsActivity.this, "Selected " + curtainsData.getName(), Toast.LENGTH_SHORT).show();
-
-                        bt_deleteDevice.setBackgroundColor(Color.rgb(34, 40, 49));
-                        bt_deleteDevice.setClickable(true);
-                        //Dieu chinh PERCENT
-                        bt_percentConfirm.setBackgroundColor(Color.rgb(34, 40, 49));
-                        bt_percentConfirm.setClickable(true);
-                        //Xet trang thai cua STATUS de dieu chinh nut bam
-                        if (curtainsData.getStatus() == 0L){
-                            bt_statusOff.setBackgroundColor(Color.rgb(63,72,84));
-                            bt_statusOff.setClickable(false);
-
-                            bt_statusOn.setBackgroundColor(Color.rgb(34, 40, 49));
-                            bt_statusOn.setClickable(true);
-                        }
-                        else {
-                            bt_statusOff.setBackgroundColor(Color.rgb(34, 40, 49));
-                            bt_statusOff.setClickable(true);
-
-                            bt_statusOn.setBackgroundColor(Color.rgb(63,72,84));
-                            bt_statusOn.setClickable(false);
-                        }
-                        //Xet trang thai cua AUTOMODE de dieu chinh nut bam
-                        if (curtainsData.getAutoMode() == 0L){
-                            bt_autoOff.setBackgroundColor(Color.rgb(63,72,84));
-                            bt_autoOff.setClickable(false);
-
-                            bt_autoOn.setBackgroundColor(Color.rgb(34, 40, 49));
-                            bt_autoOn.setClickable(true);
-                        }
-                        else{
-                            bt_autoOff.setBackgroundColor(Color.rgb(34, 40, 49));
-                            bt_autoOff.setClickable(true);
-
-                            bt_autoOn.setBackgroundColor(Color.rgb(63,72,84));
-                            bt_autoOn.setClickable(false);
-                        }
-                    }
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                        Toast.makeText(CurtainsActivity.this, "Không thể lấy dữ liệu", Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
+            String newDevice = et_deviceName.getText().toString();
+            CurtainsData curtainsData = new CurtainsData(newDevice, 0L, 0L, 0L);
+            myRef.child(newDevice).setValue(curtainsData);
+            Toast.makeText(CurtainsActivity.this, "Thêm thành công", Toast.LENGTH_SHORT).show();
+            finish();
+            startActivity(getIntent());
         });
 
+        dialog.setView(view);
+
+        dialog.show();
     }
 
     private void getListCurtains() {
@@ -209,6 +213,7 @@ public class CurtainsActivity extends AppCompatActivity{
         bt_percentConfirm = findViewById(R.id.button_percent_confirm_curtains);
         bt_autoOn = findViewById(R.id.button_autoMode_on_curtains);
         bt_autoOff = findViewById(R.id.button_autoMode_off_curtains);
+        bt_back = findViewById(R.id.cardview_back_curtains);
         sl_percent = findViewById(R.id.slider_percent_curtains);
 
         adapter = new ArrayAdapter<>(this, R.layout.dropdown_item, listDevices);

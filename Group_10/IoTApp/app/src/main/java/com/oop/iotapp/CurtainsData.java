@@ -3,13 +3,15 @@ package com.oop.iotapp;
 import com.google.firebase.database.IgnoreExtraProperties;
 
 @IgnoreExtraProperties
-public class CurtainsData {
+public class CurtainsData extends Device{
     private String name;
     private Long status;
     private Long percent;
     private Long autoMode;
 
     public CurtainsData() {
+        this.setAddress("0.0.0.0");
+        this.setPort(0L);
         this.name = "#";
         this.status = 0L;
         this.percent = 0L;
@@ -17,6 +19,14 @@ public class CurtainsData {
     }
 
     public CurtainsData(String name, Long status, Long percent, Long autoMode) {
+        this.name = name;
+        this.status = status;
+        this.percent = percent;
+        this.autoMode = autoMode;
+    }
+
+    public CurtainsData(String address, Long port, String name, Long status, Long percent, Long autoMode) {
+        super(address, port);
         this.name = name;
         this.status = status;
         this.percent = percent;
