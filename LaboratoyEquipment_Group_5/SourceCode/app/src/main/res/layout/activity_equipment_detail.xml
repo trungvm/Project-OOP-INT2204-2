@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/back01"
+    tools:context=".activities.common.EquipmentDetailActivity">
+
+    <RelativeLayout
+        android:id="@+id/toolbarRl"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:background="@drawable/shape_toolbar">
+
+        <ImageButton
+            android:id="@+id/backBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@android:color/transparent"
+            android:contentDescription="TODO"
+            android:padding="5dp"
+            android:src="@drawable/ic_back_white" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Chi tiết thiết bị"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/equipmentOptions"
+        android:layout_below="@id/toolbarRl"
+        android:padding="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <RelativeLayout
+                    android:id="@+id/equipmentRL"
+                    android:layout_width="100dp"
+                    android:layout_height="140dp"
+                    android:layout_marginEnd="5dp"
+                    android:background="@color/gray02">
+
+                    <ProgressBar
+                        android:id="@+id/progressBar"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+                    <ImageView
+                        android:id="@+id/imageView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop" />
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/titleTv"
+                    style="@style/TextAppearance.MaterialComponents.Headline6"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/equipmentRL"
+                    android:text="Title of Equipment"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/titleTv"
+                    android:layout_toEndOf="@id/equipmentRL">
+
+                    <TableRow>
+
+                        <TextView
+                            android:id="@+id/categoryLabelTv"
+                            style="@style/TextAppearance.MaterialComponents.Caption"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="5dp"
+                            android:text="Thể loại: "
+                            android:textSize="14sp"
+                            android:textStyle="italic" />
+
+                        <TextView
+                            android:id="@+id/categoryTv"
+                            style="@style/TextAppearance.MaterialComponents.Caption"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="5dp"
+                            android:text="N/A"
+                            android:textSize="14sp" />
+                    </TableRow>
+
+                    <TableRow>
+
+                        <TextView
+                            android:id="@+id/dateLabelTv"
+                            style="@style/TextAppearance.MaterialComponents.Caption"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="5dp"
+                            android:text="Ngày nhập: "
+                            android:textSize="14sp"
+                            android:textStyle="italic" />
+
+                        <TextView
+                            android:id="@+id/dateTv"
+                            style="@style/TextAppearance.MaterialComponents.Caption"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="5dp"
+                            android:text="N/A"
+                            android:textSize="14sp" />
+                    </TableRow>
+
+                    <TableRow>
+
+                        <TextView
+                            android:id="@+id/quantityLabelTv"
+                            style="@style/TextAppearance.MaterialComponents.Caption"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="5dp"
+                            android:text="Số lượng trong kho: "
+                            android:textSize="14sp"
+                            android:textStyle="italic" />
+
+                        <TextView
+                            android:id="@+id/quantityTv"
+                            style="@style/TextAppearance.MaterialComponents.Caption"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="5dp"
+                            android:text="N/A"
+                            android:textSize="14sp" />
+                    </TableRow>
+
+                    <TableRow>
+
+                        <TextView
+                            android:id="@+id/viewedLabelTv"
+                            style="@style/TextAppearance.MaterialComponents.Caption"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="5dp"
+                            android:text="Số lượng đã xem: "
+                            android:textSize="14sp"
+                            android:textStyle="italic" />
+
+                        <TextView
+                            android:id="@+id/viewedTv"
+                            style="@style/TextAppearance.MaterialComponents.Caption"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="5dp"
+                            android:text="N/A"
+                            android:textSize="14sp" />
+                    </TableRow>
+
+                    <TableRow>
+
+                        <TextView
+                            android:id="@+id/numberOfBorrowingsText"
+                            style="@style/TextAppearance.MaterialComponents.Caption"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="5dp"
+                            android:text="Số lượng đã mượn: "
+                            android:textSize="14sp"
+                            android:textStyle="italic" />
+
+                        <TextView
+                            android:id="@+id/numberOfBorrowings"
+                            style="@style/TextAppearance.MaterialComponents.Caption"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="5dp"
+                            android:text="N/A"
+                            android:textSize="14sp" />
+                    </TableRow>
+
+                    <TableRow>
+
+                        <TextView
+                            android:id="@+id/textPosition"
+                            style="@style/TextAppearance.MaterialComponents.Caption"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="5dp"
+                            android:text="Vị trí thiết bị: "
+                            android:textSize="14sp"
+                            android:textStyle="italic" />
+
+                        <TextView
+                            android:id="@+id/position"
+                            style="@style/TextAppearance.MaterialComponents.Caption"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="5dp"
+                            android:text="N/A"
+                            android:textSize="14sp" />
+                    </TableRow>
+                </TableLayout>
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/descriptionTv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="The description of Equipment"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="italic" />
+
+            <TextView
+                android:id="@+id/manualTv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="The manual of Equipment"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/equipmentOptions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/design_default_color_on_primary"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/favoriteBtn"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_weight="1"
+            android:background="@color/design_default_color_on_primary"
+            android:drawableTop="@drawable/ic_favorite_border"
+            android:text="Add Favorite" />
+
+        <Button
+            android:id="@+id/addCartBtn"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_weight="1"
+            android:background="@color/design_default_color_on_primary"
+            android:drawableTop="@drawable/ic_borrow_gray"
+            android:text="Thêm vào giỏ hàng" />
+
+    </LinearLayout>
+
+
+</RelativeLayout>

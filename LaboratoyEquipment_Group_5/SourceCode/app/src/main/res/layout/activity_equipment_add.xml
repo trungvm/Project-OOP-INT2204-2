@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/back01"
+    tools:context=".activities.admin.EquipmentAddActivity"
+    android:focusableInTouchMode="true"
+    >
+
+    <RelativeLayout
+        android:id="@+id/toolbarRl"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:background="@drawable/shape_toolbar">
+
+        <ImageButton
+            android:id="@+id/backBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@android:color/transparent"
+            android:contentDescription="TODO"
+            android:padding="5dp"
+            android:src="@drawable/ic_back_white" />
+
+        <ImageView
+            android:id="@+id/iconMain"
+            android:layout_width="110dp"
+            android:layout_height="110dp"
+            android:layout_below="@id/backBtn"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="153dp"
+            android:layout_marginTop="-40dp"
+            android:background="@drawable/login_logo" />
+
+        <TextView
+            android:id="@+id/textMain"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/iconMain"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="4dp"
+            android:fontFamily="sans-serif-condensed"
+            android:text="Thêm mới thiết bị"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+
+    </RelativeLayout>
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/equipmentImage"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="160dp"
+        android:background="@color/white"
+        android:src="@drawable/ic_device_gray"
+        app:shapeAppearance="@style/styleRoundCornersImage" />
+
+   <ScrollView
+       android:layout_below="@id/equipmentImage"
+       android:layout_width="match_parent"
+       android:layout_height="match_parent">
+       <RelativeLayout
+           android:layout_width="match_parent"
+           android:layout_height="match_parent">
+           <com.google.android.material.textfield.TextInputLayout
+               android:id="@+id/titleTil"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_below="@id/equipmentImage"
+               android:layout_marginStart="30dp"
+               android:layout_marginEnd="30dp"
+               app:hintEnabled="false"
+               tools:ignore="NotSibling">
+
+               <EditText
+                   android:id="@+id/titleE"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:layout_marginTop="10dp"
+                   android:background="@drawable/shape_editext01"
+                   android:drawableStart="@drawable/ic_title_gray"
+                   android:drawablePadding="10dp"
+                   android:hint="Equipment title"
+                   android:inputType="textPersonName|textCapSentences"
+                   android:padding="10dp"
+                   android:textColor="@color/black"
+                   android:textColorHint="@color/gray01"
+                   android:textSize="16sp" />
+           </com.google.android.material.textfield.TextInputLayout>
+
+           <com.google.android.material.textfield.TextInputLayout
+               android:id="@+id/descriptionTil"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_below="@id/titleTil"
+               android:layout_marginStart="30dp"
+               android:layout_marginTop="5dp"
+               android:layout_marginEnd="30dp"
+               app:hintEnabled="false">
+
+               <EditText
+                   android:id="@+id/descriptionE"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:background="@drawable/shape_editext01"
+                   android:drawableStart="@drawable/ic_description_gray"
+                   android:drawablePadding="10dp"
+                   android:hint="Equipment Description"
+                   android:inputType="textMultiLine|textCapSentences"
+                   android:padding="10dp"
+                   android:textColor="@color/black"
+                   android:textColorHint="@color/gray01"
+                   android:textSize="16sp"
+
+                   />
+           </com.google.android.material.textfield.TextInputLayout>
+
+           <com.google.android.material.textfield.TextInputLayout
+               android:id="@+id/quantityTil"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_below="@id/descriptionTil"
+               android:layout_marginStart="30dp"
+               android:layout_marginTop="5dp"
+               android:layout_marginEnd="30dp"
+               app:hintEnabled="false">
+
+               <EditText
+                   android:id="@+id/quantityE"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:background="@drawable/shape_editext01"
+                   android:drawableStart="@drawable/ic_number_gray"
+                   android:drawablePadding="10dp"
+                   android:hint="Number of equipments"
+                   android:inputType="number"
+                   android:padding="10dp"
+                   android:textColor="@color/black"
+                   android:textColorHint="@color/gray01"
+                   android:textSize="16sp"
+
+                   />
+           </com.google.android.material.textfield.TextInputLayout>
+
+           <com.google.android.material.textfield.TextInputLayout
+               android:id="@+id/manualTil"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_below="@id/quantityTil"
+               android:layout_marginStart="30dp"
+               android:layout_marginTop="5dp"
+               android:layout_marginEnd="30dp"
+               app:hintEnabled="false">
+
+               <EditText
+                   android:id="@+id/manualE"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:background="@drawable/shape_editext01"
+                   android:drawableStart="@drawable/ic_manual_gray"
+                   android:drawablePadding="10dp"
+                   android:hint="User manual"
+                   android:inputType="textMultiLine|textCapSentences"
+                   android:padding="10dp"
+                   android:textColor="@color/black"
+                   android:textColorHint="@color/gray01"
+                   android:textSize="16sp"
+
+                   />
+           </com.google.android.material.textfield.TextInputLayout>
+           <!--pick category-->
+           <TextView
+               android:id="@+id/categoryTv"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_below="@id/manualTil"
+               android:layout_marginStart="30dp"
+               android:layout_marginTop="5dp"
+               android:layout_marginEnd="30dp"
+               android:background="@drawable/shape_editext01"
+               android:drawableStart="@drawable/ic_category_gray"
+               android:drawableEnd="@drawable/ic_down_gray"
+               android:drawablePadding="10dp"
+               android:gravity="center_vertical"
+               android:hint="Equipment Category"
+               android:padding="10dp"
+               android:textColor="@color/black"
+               android:textColorHint="@color/gray01"
+               android:textSize="16sp" />
+
+           <Button
+               android:id="@+id/submitBtn"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_below="@id/categoryTv"
+               android:layout_marginStart="30dp"
+               android:layout_marginTop="20dp"
+               android:layout_marginEnd="30dp"
+               android:background="@drawable/shape_button01"
+               android:text="Xác nhận"
+               android:textColor="@color/white" />
+       </RelativeLayout>
+   </ScrollView>
+</RelativeLayout>
