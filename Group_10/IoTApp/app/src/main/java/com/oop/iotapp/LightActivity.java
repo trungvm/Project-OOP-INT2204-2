@@ -154,7 +154,7 @@ public class LightActivity extends AppCompatActivity {
         Log.e(TAG, "setLightIntensity: Start");
         String selected = actv_devices.getText().toString();
         Long lightIntensity = (long) sl_lightIntensity.getValue();
-        myRef.child(selected).child("light").setValue(lightIntensity);
+        myRef.child(selected).child("lightIntensity").setValue(lightIntensity);
     }
 
     private void bt_autoOff() {
