@@ -4,7 +4,7 @@ public class LightData extends Device{
     private Long status, lightIntensity, autoMode, timerMode;
     private String timerStart, timerStop, name;
 
-    public LightData(String newDevice, long l, long l1, long l2, long l3, long l4, String s, String s1){
+    public LightData(){
         this.setAddress("0.0.0.0");
         this.setPort(0L);
         this.name = "#";

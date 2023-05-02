@@ -183,20 +183,6 @@
                     android:text="Tắt thiết bị" />
             </RelativeLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="@color/second_light"
-                android:layout_marginTop="20dp"
-                android:layout_marginHorizontal="30dp"/>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="@color/second_light"
-                android:layout_marginTop="20dp"
-                android:layout_marginHorizontal="30dp"/>
-
             <!--LIGHTINTENSITY-->
             <RelativeLayout
                 android:layout_width="match_parent"

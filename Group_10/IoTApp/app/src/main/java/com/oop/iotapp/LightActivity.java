@@ -48,7 +48,7 @@ public class LightActivity extends AppCompatActivity {
     private AutoCompleteTextView actv_devices;
     private MaterialButton bt_addDevice, bt_deleteDevice, bt_statusOn, bt_statusOff,
             bt_autoOn, bt_autoOff, bt_timerSetStart, bt_timerSetStop, bt_timerOn, bt_timerOff, bt_confirmLightIntensity;
-    private Slider sl_light, sl_lightIntensity;
+    private Slider  sl_lightIntensity;
     private MaterialCardView cv_back;
     private TextView tv_timerSetStart, tv_timerSetStop;
 
@@ -281,7 +281,7 @@ public class LightActivity extends AppCompatActivity {
         bt_addDevice.setOnClickListener(e -> {
             String newDevice = et_deviceName.getText().toString();
             LightData lightData = new LightData(newDevice,
-                    0L, 0L, 0L, 0L, 0L, "00:00", "00:00");
+                    0L, 0L, 0L, 0L, "00:00", "00:00");
             myRef.child(newDevice).setValue(lightData);
             Toast.makeText(LightActivity.this, "Thêm thành công", Toast.LENGTH_SHORT).show();
             finish();
