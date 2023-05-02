@@ -44,8 +44,8 @@ public class MainActivity extends AppCompatActivity {
         });
 
         cvLight.setOnClickListener(e -> {
-            Intent intentLight = new Intent(MainActivity.this, null);
-            //TODO click Light
+            Intent intentLight = new Intent(MainActivity.this, LightActivity.class);
+            startActivity(intentLight);
         });
 
         cvHeater.setOnClickListener(e -> {
