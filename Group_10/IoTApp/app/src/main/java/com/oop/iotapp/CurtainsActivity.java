@@ -6,10 +6,15 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
+import android.app.Service;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -20,6 +25,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.slider.Slider;
 import com.google.firebase.database.DataSnapshot;
@@ -28,6 +34,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+
+import org.eclipse.paho.client.mqttv3.MqttClient;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,13 +47,19 @@ public class CurtainsActivity extends AppCompatActivity{
     private DatabaseReference myRef;
 
     private AutoCompleteTextView actv_devices;
-    private MaterialButton bt_addDevice, bt_deleteDevice, bt_statusOn, bt_statusOff, bt_percentConfirm, bt_autoOn, bt_autoOff, bt_back;
+    private MaterialButton bt_addDevice, bt_deleteDevice, bt_statusOn, bt_statusOff, bt_percentConfirm, bt_autoOn, bt_autoOff;
+    private MaterialCardView cv_back;
     private Slider sl_percent;
+
+    private MqttHandler mqttHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_curtains);
+
+        mqttHandler  = new MqttHandler();
+        mqttHandler.connect("tcp://192.168.1.96:1883", MqttClient.generateClientId());
 
         initViews();
 
@@ -62,9 +76,10 @@ public class CurtainsActivity extends AppCompatActivity{
 
         Toast.makeText(this, "Vui lòng chọn thiết bị", Toast.LENGTH_SHORT).show();
 
-        bt_back.setOnClickListener(e -> {
+        cv_back.setOnClickListener(e -> {
             Intent intentBack = new Intent(this, MainActivity.class);
             startActivity(intentBack);
+            this.finish();
         });
 
         bt_addDevice.setOnClickListener(e -> {
@@ -132,6 +147,7 @@ public class CurtainsActivity extends AppCompatActivity{
         String selected = actv_devices.getText().toString();
         if (!selected.equals("")) {
             myRef.child(selected).child("status").setValue(1L);
+            mqttHandler.publish("test", "data");
         }
     }
 
@@ -213,10 +229,15 @@ public class CurtainsActivity extends AppCompatActivity{
         bt_percentConfirm = findViewById(R.id.button_percent_confirm_curtains);
         bt_autoOn = findViewById(R.id.button_autoMode_on_curtains);
         bt_autoOff = findViewById(R.id.button_autoMode_off_curtains);
-        bt_back = findViewById(R.id.cardview_back_curtains);
+        cv_back = findViewById(R.id.cardview_back_curtains);
         sl_percent = findViewById(R.id.slider_percent_curtains);
 
         adapter = new ArrayAdapter<>(this, R.layout.dropdown_item, listDevices);
         actv_devices.setAdapter(adapter);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 }

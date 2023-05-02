@@ -124,6 +124,7 @@ public class TemperatureActivity extends AppCompatActivity {
         cv_back.setOnClickListener(e -> {
             Intent intentBack = new Intent(TemperatureActivity.this, MainActivity.class);
             startActivity(intentBack);
+            this.finish();
         });
 
     }
