@@ -49,8 +49,8 @@ public class MainActivity extends AppCompatActivity {
         });
 
         cvHeater.setOnClickListener(e -> {
-            Intent intentHeater = new Intent(MainActivity.this, null);
-            //TODO click Heater
+            Intent intentHeater = new Intent(MainActivity.this, HeaterActivity.class);
+            startActivity(intentHeater);
         });
 
         cvTemperature.setOnClickListener(e -> {
