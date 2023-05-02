@@ -10,11 +10,11 @@ pageEncoding="UTF-8" %>
     <br />
     <a href="/farmer_time/helloservlet">Hello Servlet</a>
     <br />
-    <a href="test.jsp">Hello Test</a>
+    <a href="test.jsp">Test</a>
     <br />
-    <a href="components/footer.jsp">Footer</a>
+    <a href="timeTable.jsp">Time Table</a>
     <br />
-    <a href="components/header.jsp">Header</a>
+    <a href="signup.jsp">Signup</a>
     <br />
     <a href="login.jsp">Login</a>
   </body>

@@ -1,6 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html lang="">
+<html lang="en">
 <head>
 
     <meta charset="UTF-8">
@@ -9,15 +8,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Test Footer</title>
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
 
     <!-- Style CSS -->
-    <link rel="stylesheet" href="css/style.css">    
+    <link rel="stylesheet" href="./css/style.css">
+
 
 </head>
 <body>
 <main>
     <h3> Hello Test</h3>
+    <img src="./images/bg.jpg" alt="Not image">
 </main>
 <footer>
     <jsp:include page="components/footer.jsp" />

@@ -1,2 +1,5 @@
-HelloServlet.class
 ConnectMySQL.class
+CssServlet.class
+NotFoundServlet.class
+HelloServlet.class
+ImageServlet.class
