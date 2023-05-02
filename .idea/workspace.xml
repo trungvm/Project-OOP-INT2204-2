@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9a802340-ecf0-4b5e-b72a-e5efd560532f" name="Changes" comment="" />
+    <list default="true" id="9a802340-ecf0-4b5e-b72a-e5efd560532f" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/Group_10/IoTApp/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/Group_10/IoTApp/app/build.gradle" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -27,7 +29,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.cidr.known.project.marker": "true",
     "cidr.known.project.marker": "true",
-    "last_opened_file_path": "C:/Users/ADMIN/OneDrive - vnu.edu.vn/Documents/GitHub/Project-OOP-INT2204-2/Group_10/IoTApp",
+    "last_opened_file_path": "C:/Users/ADMIN/OneDrive - vnu.edu.vn/Desktop/Project-OOP-INT2204-2",
     "settings.editor.selected.configurable": "experimental"
   }
 }]]></component>
