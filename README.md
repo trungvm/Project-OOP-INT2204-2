@@ -15,3 +15,6 @@ Step 2: Add your project folder to your local github. The folder struct:
 ```
 
 Step 3: You will develop the project, create pull requests and a report once per week.
+
+
+Testing

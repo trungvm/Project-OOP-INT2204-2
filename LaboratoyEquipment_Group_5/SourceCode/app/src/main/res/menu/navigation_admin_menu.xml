@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+    >
+    <item
+        android:id="@+id/menuHome"
+        android:icon="@drawable/ic_home_black"
+        android:title="Home"
+        app:showAsAction="always"
+        android:iconTint="@color/colorBackground"
+        />
+    <item
+        android:id="@+id/menuAccount"
+        android:icon="@drawable/ic_account_circle"
+        android:title="Account"
+        app:showAsAction="always"
+        android:iconTint="@color/colorBackground"
+        />
+</menu>
