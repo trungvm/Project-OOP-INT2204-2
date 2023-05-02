@@ -247,7 +247,7 @@ public class HeaterActivity extends AppCompatActivity {
         bt_addDevice.setOnClickListener(e -> {
             String newDevice = et_deviceName.getText().toString();
             HeaterData heaterData = new HeaterData(newDevice,
-                    0L, 0L, 0L, 0L, 0L, "00:00", "00:00");
+                    0L, 0L, 0L, "00:00", "00:00");
             myRef.child(newDevice).setValue(heaterData);
             Toast.makeText(HeaterActivity.this, "Thêm thành công", Toast.LENGTH_SHORT).show();
             finish();

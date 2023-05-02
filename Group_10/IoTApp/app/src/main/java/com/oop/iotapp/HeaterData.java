@@ -4,7 +4,7 @@ public class HeaterData extends Device{
     private Long status, heater, timerMode;
     private String timerStart, timerStop, name;
 
-    public HeaterData(String newDevice, long port, long status, long heater, long timerMode, long l, String timerStop, String name){
+    public HeaterData(){
         this.setAddress("0.0.0.0");
         this.setPort(0L);
         this.name = "#";

@@ -23,6 +23,11 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".HeaterActivity"
+            android:exported="false">
+
+        </activity>
+        <activity
             android:name=".CurtainsActivity"
             android:exported="false">
 
