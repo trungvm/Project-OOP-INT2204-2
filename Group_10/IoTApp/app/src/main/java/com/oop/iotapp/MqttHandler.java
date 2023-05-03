@@ -23,11 +23,10 @@ public class MqttHandler {
 
     private MqttClient client;
 
-    public void connect(String brokerURl, String clientId){
+    public void connect(String brokerURl, String clientId, Context context){
         try{
 
             MemoryPersistence persistence = new MemoryPersistence();
-
 
             client = new MqttClient(brokerURl, clientId, persistence);
 
@@ -39,6 +38,7 @@ public class MqttHandler {
 
         } catch (MqttException e){
             e.printStackTrace();
+            Toast.makeText(context, "Không thể kết nối tới broker", Toast.LENGTH_SHORT).show();
         }
     }
 

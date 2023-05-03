@@ -36,6 +36,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import org.eclipse.paho.client.mqttv3.MqttClient;
+import org.eclipse.paho.client.mqttv3.MqttException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,8 +59,12 @@ public class CurtainsActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_curtains);
 
-//        mqttHandler  = new MqttHandler();
-//        mqttHandler.connect("tcp://192.168.1.96:1883", MqttClient.generateClientId());
+        try {
+            mqttHandler  = new MqttHandler();
+            mqttHandler.connect("tcp://192.168.1.96:1883", "curtains", this.getApplicationContext());
+        } catch (Exception e){
+            e.printStackTrace();
+        }
 
         initViews();
 
@@ -116,6 +121,7 @@ public class CurtainsActivity extends AppCompatActivity{
         String selected = actv_devices.getText().toString();
         Long percent = (long) sl_percent.getValue();
         myRef.child(selected).child("percent").setValue(percent);
+        mqttHandler.publish(selected+"/percent", Long.toString(percent));
     }
 
     private void autoOff() {
@@ -124,6 +130,7 @@ public class CurtainsActivity extends AppCompatActivity{
         if (!selected.equals("")) {
             myRef.child(selected).child("autoMode").setValue(0L);
         }
+        mqttHandler.publish(selected+"/auto_mode", "0");
     }
 
     private void autoOn() {
@@ -131,6 +138,7 @@ public class CurtainsActivity extends AppCompatActivity{
         String selected = actv_devices.getText().toString();
         if (!selected.equals("")) {
             myRef.child(selected).child("autoMode").setValue(1L);
+            mqttHandler.publish(selected+"/auto_mode", "1");
         }
     }
 
@@ -139,6 +147,7 @@ public class CurtainsActivity extends AppCompatActivity{
         String selected = actv_devices.getText().toString();
         if (!selected.equals("")) {
             myRef.child(selected).child("status").setValue(0L);
+            mqttHandler.publish(selected+"/status", "0");
         }
     }
 
@@ -147,7 +156,7 @@ public class CurtainsActivity extends AppCompatActivity{
         String selected = actv_devices.getText().toString();
         if (!selected.equals("")) {
             myRef.child(selected).child("status").setValue(1L);
-//            mqttHandler.publish("test", "data");
+            mqttHandler.publish(selected+"/status", "1");
         }
     }
 
@@ -239,6 +248,6 @@ public class CurtainsActivity extends AppCompatActivity{
     @Override
     protected void onDestroy() {
         super.onDestroy();
-//        mqttHandler.disconnect();
+        mqttHandler.disconnect();
     }
 }
