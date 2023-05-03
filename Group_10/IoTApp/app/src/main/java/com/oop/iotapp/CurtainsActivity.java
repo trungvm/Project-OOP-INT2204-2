@@ -125,7 +125,7 @@ public class CurtainsActivity extends AppCompatActivity{
         String selected = actv_devices.getText().toString();
         Long percent = (long) sl_percent.getValue();
         myRef.child(selected).child("percent").setValue(percent);
-        mqttHandler.publish(selected+"/percent", Long.toString(percent));
+        mqttHandler.publish("curtains/"+selected+"/percent", Long.toString(percent));
     }
 
     private void autoOff() {
@@ -134,7 +134,7 @@ public class CurtainsActivity extends AppCompatActivity{
         if (!selected.equals("")) {
             myRef.child(selected).child("autoMode").setValue(0L);
         }
-        mqttHandler.publish(selected+"/auto_mode", "0");
+        mqttHandler.publish("curtains/"+selected+"/auto_mode", "0");
     }
 
     private void autoOn() {
@@ -142,7 +142,7 @@ public class CurtainsActivity extends AppCompatActivity{
         String selected = actv_devices.getText().toString();
         if (!selected.equals("")) {
             myRef.child(selected).child("autoMode").setValue(1L);
-            mqttHandler.publish(selected+"/auto_mode", "1");
+            mqttHandler.publish("curtains/"+selected+"/auto_mode", "1");
         }
     }
 
@@ -151,7 +151,7 @@ public class CurtainsActivity extends AppCompatActivity{
         String selected = actv_devices.getText().toString();
         if (!selected.equals("")) {
             myRef.child(selected).child("status").setValue(0L);
-            mqttHandler.publish(selected+"/status", "0");
+            mqttHandler.publish("curtains/"+selected+"/status", "0");
         }
     }
 
@@ -160,7 +160,7 @@ public class CurtainsActivity extends AppCompatActivity{
         String selected = actv_devices.getText().toString();
         if (!selected.equals("")) {
             myRef.child(selected).child("status").setValue(1L);
-            mqttHandler.publish(selected+"/status", "1");
+            mqttHandler.publish("curtains/"+selected+"/status", "1");
         }
     }
 

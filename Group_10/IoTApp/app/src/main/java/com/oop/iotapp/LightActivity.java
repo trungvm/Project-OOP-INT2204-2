@@ -56,10 +56,19 @@ public class LightActivity extends AppCompatActivity {
 
     private String uid;
 
+    private MqttHandler mqttHandler;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_light);
+
+        try {
+            mqttHandler  = new MqttHandler();
+            mqttHandler.connect("tcp://192.168.1.96:1883", "light", this.getApplicationContext());
+        } catch (Exception e){
+            e.printStackTrace();
+        }
 
         initViews();
 
@@ -133,6 +142,7 @@ public class LightActivity extends AppCompatActivity {
         String selected = actv_devices.getText().toString();
         if (!selected.equals("")) {
             myRef.child(selected).child("timerMode").setValue(0L);
+            mqttHandler.publish("light/"+selected+"/timer_mode", "0");
         }
 //        bt_timerOff.setBackgroundColor(ContextCompat.getColor(this ,R.color.second_light));
 //        bt_timerOff.setClickable(false);
@@ -146,6 +156,7 @@ public class LightActivity extends AppCompatActivity {
         String selected = actv_devices.getText().toString();
         if (!selected.equals("")) {
             myRef.child(selected).child("timerMode").setValue(1L);
+            mqttHandler.publish("light/"+selected+"/timer_mode", "1");
         }
 //        bt_timerOn.setBackgroundColor(ContextCompat.getColor(this ,R.color.second_light));
 //        bt_timerOn.setClickable(false);
@@ -159,6 +170,7 @@ public class LightActivity extends AppCompatActivity {
         String selected = actv_devices.getText().toString();
         Long lightIntensity = (long) sl_lightIntensity.getValue();
         myRef.child(selected).child("lightIntensity").setValue(lightIntensity);
+        mqttHandler.publish("light/"+selected+"/light_intensity", Long.toString(lightIntensity));
     }
 
     private void bt_autoOff() {
@@ -166,6 +178,7 @@ public class LightActivity extends AppCompatActivity {
         String selected = actv_devices.getText().toString();
         if (!selected.equals("")) {
             myRef.child(selected).child("autoMode").setValue(0L);
+            mqttHandler.publish("light/"+selected+"/status", "0");
         }
 //        bt_autoOff.setBackgroundColor(ContextCompat.getColor(this ,R.color.second_light));
 //        bt_autoOff.setClickable(false);
@@ -179,6 +192,8 @@ public class LightActivity extends AppCompatActivity {
         String selected = actv_devices.getText().toString();
         if (!selected.equals("")) {
             myRef.child(selected).child("autoMode").setValue(1L);
+            mqttHandler.publish("light/"+selected+"/auto_mode", "1");
+
         }
 //        bt_autoOn.setBackgroundColor(ContextCompat.getColor(this ,R.color.second_light));
 //        bt_autoOn.setClickable(false);
@@ -199,6 +214,7 @@ public class LightActivity extends AppCompatActivity {
                 minute[0] = selectedMinute;
                 tv_timerSetStop.setText(String.format(Locale.getDefault(), "%02d:%02d", hour[0], minute[0]));
                 myRef.child(selected).child("timerStop").setValue(String.format(Locale.getDefault(), "%02d:%02d", hour[0], minute[0]));
+                mqttHandler.publish("light/"+selected+"/time_stop", String.format(Locale.getDefault(), "%02d:%02d", hour[0], minute[0]));
             }
         };
 
@@ -219,6 +235,7 @@ public class LightActivity extends AppCompatActivity {
                 minute[0] = selectedMinute;
                 tv_timerSetStart.setText(String.format(Locale.getDefault(), "%02d:%02d", hour[0], minute[0]));
                 myRef.child(selected).child("timerStart").setValue(String.format(Locale.getDefault(), "%02d:%02d", hour[0], minute[0]));
+                mqttHandler.publish("light/"+selected+"/time_start", String.format(Locale.getDefault(), "%02d:%02d", hour[0], minute[0]));
             }
         };
 
@@ -232,6 +249,7 @@ public class LightActivity extends AppCompatActivity {
         String selected = actv_devices.getText().toString();
         if (!selected.equals("")) {
             myRef.child(selected).child("status").setValue(0L);
+            mqttHandler.publish("light/"+selected+"/status", "0");
         }
 //        bt_statusOff.setBackgroundColor(ContextCompat.getColor(this ,R.color.second_light));
 //        bt_statusOff.setClickable(false);
@@ -245,6 +263,7 @@ public class LightActivity extends AppCompatActivity {
         String selected = actv_devices.getText().toString();
         if (!selected.equals("")) {
             myRef.child(selected).child("status").setValue(1L);
+            mqttHandler.publish("light/"+selected+"/status", "1");
         }
 
     }

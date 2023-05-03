@@ -56,10 +56,19 @@ public class TemperatureActivity extends AppCompatActivity {
 
     private String uid;
 
+    private MqttHandler mqttHandler;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_temperature);
+
+        try {
+            mqttHandler  = new MqttHandler();
+            mqttHandler.connect("tcp://192.168.1.96:1883", "temperature", this.getApplicationContext());
+        } catch (Exception e){
+            e.printStackTrace();
+        }
 
         initViews();
 
@@ -138,6 +147,7 @@ public class TemperatureActivity extends AppCompatActivity {
         String selected = actv_devices.getText().toString();
         if (!selected.equals("")) {
             myRef.child(selected).child("timerMode").setValue(0L);
+            mqttHandler.publish("temperature/"+selected+"/timer_mode", "0");
         }
 //        bt_timerOff.setBackgroundColor(ContextCompat.getColor(this ,R.color.second_light));
 //        bt_timerOff.setClickable(false);
@@ -151,6 +161,7 @@ public class TemperatureActivity extends AppCompatActivity {
         String selected = actv_devices.getText().toString();
         if (!selected.equals("")) {
             myRef.child(selected).child("timerMode").setValue(1L);
+            mqttHandler.publish("temperature/"+selected+"/timer_mode", "1");
         }
 //        bt_timerOn.setBackgroundColor(ContextCompat.getColor(this ,R.color.second_light));
 //        bt_timerOn.setClickable(false);
@@ -163,7 +174,8 @@ public class TemperatureActivity extends AppCompatActivity {
         Log.e(TAG, "setFanSpeed: Start");
         String selected = actv_devices.getText().toString();
         Long fanSpeed = (long) sl_fanSpeed.getValue();
-        myRef.child(selected).child("temperature").setValue(fanSpeed);
+        myRef.child(selected).child("fanSpeed").setValue(fanSpeed);
+        mqttHandler.publish("temperature/"+selected+"/fan_speed", Long.toString(fanSpeed));
     }
 
     private void setTemperature() {
@@ -171,6 +183,7 @@ public class TemperatureActivity extends AppCompatActivity {
         String selected = actv_devices.getText().toString();
         Long temperature = (long) sl_temperature.getValue();
         myRef.child(selected).child("temperature").setValue(temperature);
+        mqttHandler.publish("temperature/"+selected+"/temperature", Long.toString(temperature));
     }
 
     private void bt_autoOff() {
@@ -178,6 +191,7 @@ public class TemperatureActivity extends AppCompatActivity {
         String selected = actv_devices.getText().toString();
         if (!selected.equals("")) {
             myRef.child(selected).child("autoMode").setValue(0L);
+            mqttHandler.publish("temperature/"+selected+"/auto_mode", "0");
         }
 //        bt_autoOff.setBackgroundColor(ContextCompat.getColor(this ,R.color.second_light));
 //        bt_autoOff.setClickable(false);
@@ -191,6 +205,7 @@ public class TemperatureActivity extends AppCompatActivity {
         String selected = actv_devices.getText().toString();
         if (!selected.equals("")) {
             myRef.child(selected).child("autoMode").setValue(1L);
+            mqttHandler.publish("temperature/"+selected+"/auto_mode", "1");
         }
 //        bt_autoOn.setBackgroundColor(ContextCompat.getColor(this ,R.color.second_light));
 //        bt_autoOn.setClickable(false);
@@ -211,6 +226,7 @@ public class TemperatureActivity extends AppCompatActivity {
                 minute[0] = selectedMinute;
                 tv_timerSetStop.setText(String.format(Locale.getDefault(), "%02d:%02d", hour[0], minute[0]));
                 myRef.child(selected).child("timerStop").setValue(String.format(Locale.getDefault(), "%02d:%02d", hour[0], minute[0]));
+                mqttHandler.publish("temperature/"+selected+"/timer_stop", String.format(Locale.getDefault(), "%02d:%02d", hour[0], minute[0]));
             }
         };
 
@@ -231,6 +247,7 @@ public class TemperatureActivity extends AppCompatActivity {
                 minute[0] = selectedMinute;
                 tv_timerSetStart.setText(String.format(Locale.getDefault(), "%02d:%02d", hour[0], minute[0]));
                 myRef.child(selected).child("timerStart").setValue(String.format(Locale.getDefault(), "%02d:%02d", hour[0], minute[0]));
+                mqttHandler.publish("temperature/"+selected+"/timer_start", String.format(Locale.getDefault(), "%02d:%02d", hour[0], minute[0]));
             }
         };
 
@@ -244,6 +261,7 @@ public class TemperatureActivity extends AppCompatActivity {
         String selected = actv_devices.getText().toString();
         if (!selected.equals("")) {
             myRef.child(selected).child("status").setValue(0L);
+            mqttHandler.publish("temperature/"+selected+"/status", "0");
         }
 //        bt_statusOff.setBackgroundColor(ContextCompat.getColor(this ,R.color.second_light));
 //        bt_statusOff.setClickable(false);
@@ -257,6 +275,7 @@ public class TemperatureActivity extends AppCompatActivity {
         String selected = actv_devices.getText().toString();
         if (!selected.equals("")) {
             myRef.child(selected).child("status").setValue(1L);
+            mqttHandler.publish("temperature/"+selected+"/status", "1");
         }
 
     }
