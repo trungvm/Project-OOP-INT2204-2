@@ -54,6 +54,8 @@ public class CurtainsActivity extends AppCompatActivity{
 
     private MqttHandler mqttHandler;
 
+    private String uid;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,7 +70,9 @@ public class CurtainsActivity extends AppCompatActivity{
 
         initViews();
 
-        myRef = FirebaseDatabase.getInstance("https://ntiot-741e0-default-rtdb.asia-southeast1.firebasedatabase.app").getReference("Curtains");
+        uid = getIntent().getStringExtra("uid");
+
+        myRef = FirebaseDatabase.getInstance("https://ntiot-741e0-default-rtdb.asia-southeast1.firebasedatabase.app").getReference(uid+"/Curtains");
 
         getListCurtains();
 

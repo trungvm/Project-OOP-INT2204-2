@@ -42,6 +42,8 @@ import java.util.Locale;
 
 public class HeaterActivity extends AppCompatActivity {
 
+    private String uid;
+
     private ArrayAdapter<String> adapter = null;
     private List<String> listDevices = new ArrayList<>();
 
@@ -61,7 +63,9 @@ public class HeaterActivity extends AppCompatActivity {
 
         initViews();
 
-        myRef = FirebaseDatabase.getInstance("https://ntiot-741e0-default-rtdb.asia-southeast1.firebasedatabase.app").getReference("Heater");
+        uid = getIntent().getStringExtra("uid");
+
+        myRef = FirebaseDatabase.getInstance("https://ntiot-741e0-default-rtdb.asia-southeast1.firebasedatabase.app").getReference(uid+"/Heater");
 
         getListHeater();
 

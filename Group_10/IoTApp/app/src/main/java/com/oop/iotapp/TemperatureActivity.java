@@ -54,6 +54,8 @@ public class TemperatureActivity extends AppCompatActivity {
 
     private DatabaseReference myRef;
 
+    private String uid;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,7 +63,9 @@ public class TemperatureActivity extends AppCompatActivity {
 
         initViews();
 
-        myRef = FirebaseDatabase.getInstance("https://ntiot-741e0-default-rtdb.asia-southeast1.firebasedatabase.app").getReference("Temperature");
+        uid = getIntent().getStringExtra("uid");
+
+        myRef = FirebaseDatabase.getInstance("https://ntiot-741e0-default-rtdb.asia-southeast1.firebasedatabase.app").getReference(uid+"/Temperature");
 
         getListTemperature();
 
