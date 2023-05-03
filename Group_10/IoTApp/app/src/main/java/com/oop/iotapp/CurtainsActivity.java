@@ -58,8 +58,8 @@ public class CurtainsActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_curtains);
 
-        mqttHandler  = new MqttHandler();
-        mqttHandler.connect("tcp://192.168.1.96:1883", MqttClient.generateClientId());
+//        mqttHandler  = new MqttHandler();
+//        mqttHandler.connect("tcp://192.168.1.96:1883", MqttClient.generateClientId());
 
         initViews();
 
@@ -147,7 +147,7 @@ public class CurtainsActivity extends AppCompatActivity{
         String selected = actv_devices.getText().toString();
         if (!selected.equals("")) {
             myRef.child(selected).child("status").setValue(1L);
-            mqttHandler.publish("test", "data");
+//            mqttHandler.publish("test", "data");
         }
     }
 
@@ -239,5 +239,6 @@ public class CurtainsActivity extends AppCompatActivity{
     @Override
     protected void onDestroy() {
         super.onDestroy();
+//        mqttHandler.disconnect();
     }
 }
