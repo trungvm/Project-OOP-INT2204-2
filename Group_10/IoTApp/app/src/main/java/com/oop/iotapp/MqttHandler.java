@@ -28,6 +28,7 @@ public class MqttHandler {
 
             MemoryPersistence persistence = new MemoryPersistence();
 
+
             client = new MqttClient(brokerURl, clientId, persistence);
 
             MqttConnectOptions connectOptions = new MqttConnectOptions();
