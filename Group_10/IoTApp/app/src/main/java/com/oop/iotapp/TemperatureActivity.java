@@ -54,7 +54,7 @@ public class TemperatureActivity extends AppCompatActivity {
 
     private DatabaseReference myRef;
 
-    private String uid;
+    private String uid, port = "192.168.1.96", uri = "1883";
 
     private MqttHandler mqttHandler;
 
@@ -63,16 +63,19 @@ public class TemperatureActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_temperature);
 
+        uid = getIntent().getStringExtra("uid");
+        port = getIntent().getStringExtra("port");
+        uri = getIntent().getStringExtra("uri");
+
         try {
             mqttHandler  = new MqttHandler();
-            mqttHandler.connect("tcp://192.168.1.96:1883", "temperature", this.getApplicationContext());
+            mqttHandler.connect("tcp://"+uri+":"+port, "temperature", this.getApplicationContext());
         } catch (Exception e){
             e.printStackTrace();
         }
 
         initViews();
 
-        uid = getIntent().getStringExtra("uid");
 
         myRef = FirebaseDatabase.getInstance("https://ntiot-741e0-default-rtdb.asia-southeast1.firebasedatabase.app").getReference(uid+"/Temperature");
 
@@ -310,8 +313,7 @@ public class TemperatureActivity extends AppCompatActivity {
         View view = getLayoutInflater().inflate(R.layout.layout_add_device, null);
 
         EditText et_deviceName = view.findViewById(R.id.edittext_name_add);
-        EditText et_deviceAddress = view.findViewById(R.id.edittext_address_add);
-        EditText et_devicePort = view.findViewById(R.id.edittext_port_add);
+
         Button bt_addDevice = view.findViewById(R.id.button_add_add);
         bt_addDevice.setOnClickListener(e -> {
             String newDevice = et_deviceName.getText().toString();

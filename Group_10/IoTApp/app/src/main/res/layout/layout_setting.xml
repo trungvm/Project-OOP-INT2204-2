@@ -8,22 +8,31 @@
         android:orientation="vertical">
 
         <EditText
-            android:id="@+id/edittext_name_add"
+            android:id="@+id/edittext_uri"
             android:layout_marginHorizontal="20dp"
             android:layout_marginTop="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="18sp"
-            android:hint="Tên thiết bị"/>
+            android:hint="URI"/>
+
+        <EditText
+            android:id="@+id/edittext_port"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:hint="PORT"/>
 
         <Button
-            android:id="@+id/button_add_add"
+            android:id="@+id/button_setting_confirm"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:layout_marginVertical="20dp"
             android:layout_marginEnd="20dp"
-            android:text="Add Device"/>
+            android:text="CONFIRM"/>
 
     </LinearLayout>
 

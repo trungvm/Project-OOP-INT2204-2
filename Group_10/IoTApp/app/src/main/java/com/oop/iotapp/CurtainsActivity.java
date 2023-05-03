@@ -54,25 +54,30 @@ public class CurtainsActivity extends AppCompatActivity{
 
     private MqttHandler mqttHandler;
 
-    private String uid;
+    private String uid, port = "192.168.1.96", uri = "1883";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_curtains);
 
+        uid = getIntent().getStringExtra("uid");
+        port = getIntent().getStringExtra("port");
+        uri = getIntent().getStringExtra("uri");
+
         try {
             mqttHandler  = new MqttHandler();
-            mqttHandler.connect("tcp://192.168.1.96:1883", "curtains", this.getApplicationContext());
+            mqttHandler.connect("tcp://"+uri+":"+port, "curtains", this.getApplicationContext());
         } catch (Exception e){
             e.printStackTrace();
         }
 
         initViews();
 
-        uid = getIntent().getStringExtra("uid");
 
         myRef = FirebaseDatabase.getInstance("https://ntiot-741e0-default-rtdb.asia-southeast1.firebasedatabase.app").getReference(uid+"/Curtains");
+
+//        Toast.makeText(this, uid, Toast.LENGTH_SHORT).show();
 
         getListCurtains();
 
@@ -187,15 +192,12 @@ public class CurtainsActivity extends AppCompatActivity{
 
     private void addDevice() {
         Log.e(TAG, "addDevice: Start");
-        Toast.makeText(this, "Oke ?", Toast.LENGTH_SHORT).show();
         AlertDialog.Builder dialog = new AlertDialog.Builder(CurtainsActivity.this);
         dialog.setTitle("THÊM THIẾT BỊ");
 
         View view = getLayoutInflater().inflate(R.layout.layout_add_device, null);
 
         EditText et_deviceName = view.findViewById(R.id.edittext_name_add);
-        EditText et_deviceAddress = view.findViewById(R.id.edittext_address_add);
-        EditText et_devicePort = view.findViewById(R.id.edittext_port_add);
         Button bt_addDevice = view.findViewById(R.id.button_add_add);
         bt_addDevice.setOnClickListener(e -> {
             String newDevice = et_deviceName.getText().toString();
