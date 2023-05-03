@@ -32,6 +32,11 @@
         <activity android:name=".LightActivity"
             android:exported="false"/>
         <activity
+            android:name=".HeaterActivity"
+            android:exported="false">
+
+        </activity>
+        <activity
             android:name=".CurtainsActivity"
             android:exported="false">
 
