@@ -9,19 +9,25 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.google.android.material.card.MaterialCardView;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
-    private MaterialCardView cvUser, cvLight, cvHeater, cvDoor, cvTemperature, cvCurtain, cvCamera;
+    private MaterialCardView cvUser, cvLight, cvHeater, cvTemperature, cvCurtain;
     private TextView tvWelcome;
 
     private String user = "USER";
+
+    private String email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Intent loginIntent = getIntent();
+        email = loginIntent.getStringExtra("email");
 
         initViews();
 
@@ -32,8 +38,9 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "clickCardViews: Stared");
 
         cvUser.setOnClickListener(e -> {
-            Intent intentUser = new Intent(MainActivity.this, null);
-            //TODO click user
+            FirebaseAuth.getInstance().signOut();
+            Intent intentUser = new Intent(MainActivity.this, LoginActivity.class);
+            startActivity(intentUser);
         });
 
         cvLight.setOnClickListener(e -> {
@@ -42,29 +49,21 @@ public class MainActivity extends AppCompatActivity {
         });
 
         cvHeater.setOnClickListener(e -> {
-            Intent intentHeater = new Intent(MainActivity.this, null);
-            //TODO click Heater
+            Intent intentHeater = new Intent(MainActivity.this, HeaterActivity.class);
+            startActivity(intentHeater);
         });
 
         cvTemperature.setOnClickListener(e -> {
-            Intent intentTemperature = new Intent(MainActivity.this, null);
-            //TODO click Temperature
+            Intent intentTemperature = new Intent(MainActivity.this, TemperatureActivity.class);
+            startActivity(intentTemperature);
         });
 
-        cvDoor.setOnClickListener(e -> {
-            Intent intentDoor = new Intent(MainActivity.this, null);
-            //TODO click Door
-        });
 
         cvCurtain.setOnClickListener(e -> {
-            Intent intentCurtain = new Intent(MainActivity.this, null);
-            //TODO click Curtain
+            Intent intentCurtain = new Intent(MainActivity.this, CurtainsActivity.class);
+            startActivity(intentCurtain);
         });
 
-        cvCamera.setOnClickListener(e -> {
-            Intent intentCamera = new Intent(MainActivity.this, null);
-            //TODO click Camera
-        });
     }
 
     private void initViews() {
@@ -73,10 +72,8 @@ public class MainActivity extends AppCompatActivity {
         cvUser = findViewById(R.id.cardview_user);
         cvLight = findViewById(R.id.cardview_light);
         cvHeater = findViewById(R.id.cardview_heater);
-        cvDoor = findViewById(R.id.cardview_door);
-        cvTemperature  = findViewById(R.id.cardview_temperature);
+        cvTemperature = findViewById(R.id.cardview_temperature);
         cvCurtain = findViewById(R.id.cardview_curtain);
-        cvCamera = findViewById(R.id.cardview_camera);
 
         tvWelcome = findViewById(R.id.textview_welcome);
         tvWelcome.setText("Welcome " + user);
