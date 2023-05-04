@@ -1,21 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <title>Time Table</title>
 
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
-      rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="./css/style.css">
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" type="text/css" href="./css/style.css" />
   </head>
   <body>
+    <header>
+      <jsp:include page="components/header.jsp" />
+    </header>
     <div class="container">
       <div class="timetable-img text-center">
-        <img src="img/content/timetable.png" alt="img not found" />
+        <img src="images/bg.jpg" alt="img not found" />
       </div>
       <div class="table-responsive">
         <table class="table table-bordered text-center">
@@ -28,6 +32,7 @@
               <th class="text-uppercase">Thursday</th>
               <th class="text-uppercase">Friday</th>
               <th class="text-uppercase">Saturday</th>
+              <th class="text-uppercase">Sunday</th>
             </tr>
           </thead>
           <tbody>
@@ -254,6 +259,9 @@
         </table>
       </div>
     </div>
+    <footer>
+      <jsp:include page="components/footer.jsp" />
+    </footer>
   </body>
   <script
     src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
