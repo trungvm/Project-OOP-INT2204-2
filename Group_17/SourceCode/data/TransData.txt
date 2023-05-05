@@ -1,0 +1,10 @@
+Shopping;50000;2023-01-12;mua ao
+Shopping;60000;2023-02-14;Mua quan
+Shopping;50000;2023-02-12;Mua ao
+Shopping;700000;2023-02-15;Mua giay
+Eating;500000;2023-01-15;An che
+Eating;70000;2023-12-01;An my cay
+Shopping;500000;2023-04-24;Mua giay
+Shopping;50000;2023-04-24;mua dep
+Eating;45000;2023-01-12;An kem
+Eating;80000;2023-05-04;An banh my
