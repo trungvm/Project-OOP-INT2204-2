@@ -40,28 +40,28 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class HeaterActivity extends AppCompatActivity {
-
-    private String uid, port = "192.168.1.96", uri = "1883";
+public class LightActivity extends AppCompatActivity {
 
     private ArrayAdapter<String> adapter = null;
     private List<String> listDevices = new ArrayList<>();
 
     private AutoCompleteTextView actv_devices;
     private MaterialButton bt_addDevice, bt_deleteDevice, bt_statusOn, bt_statusOff,
-             bt_timerSetStart, bt_timerSetStop, bt_timerOn, bt_timerOff, bt_confirmHeater;
-    private Slider sl_heater;
+            bt_autoOn, bt_autoOff, bt_timerSetStart, bt_timerSetStop, bt_timerOn, bt_timerOff, bt_confirmLightIntensity;
+    private Slider  sl_lightIntensity;
     private MaterialCardView cv_back;
     private TextView tv_timerSetStart, tv_timerSetStop;
 
     private DatabaseReference myRef;
+
+    private String uid, port = "192.168.1.96", uri = "1883";
 
     private MqttHandler mqttHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_heater);
+        setContentView(R.layout.activity_light);
 
         uid = getIntent().getStringExtra("uid");
         port = getIntent().getStringExtra("port");
@@ -69,22 +69,22 @@ public class HeaterActivity extends AppCompatActivity {
 
         try {
             mqttHandler  = new MqttHandler();
-            mqttHandler.connect("tcp://"+uri+":"+port, "heater", this.getApplicationContext());
+            mqttHandler.connect("tcp://"+uri+":"+port, "light", this.getApplicationContext());
         } catch (Exception e){
             e.printStackTrace();
         }
 
         initViews();
 
-        myRef = FirebaseDatabase.getInstance("https://ntiot-741e0-default-rtdb.asia-southeast1.firebasedatabase.app").getReference(uid+"/Heater");
+        myRef = FirebaseDatabase.getInstance("https://ntiot-741e0-default-rtdb.asia-southeast1.firebasedatabase.app").getReference(uid+"/Light");
 
-        getListHeater();
+        getListLight();
 
-        heaterTasks();
+        lightTasks();
     }
 
-    private void heaterTasks() {
-        Log.e(TAG, "heaterTasks: Start");
+    private void lightTasks() {
+        Log.e(TAG, "lightTasks: Start");
 
         Toast.makeText(this, "Vui lòng chọn thiết bị", Toast.LENGTH_SHORT).show();
 
@@ -104,8 +104,16 @@ public class HeaterActivity extends AppCompatActivity {
             statusOff();
         });
 
-        bt_confirmHeater.setOnClickListener(e -> {
-            setHeater();
+        bt_autoOn.setOnClickListener(e -> {
+            bt_autoOn();
+        });
+
+        bt_autoOff.setOnClickListener(e -> {
+            bt_autoOff();
+        });
+
+        bt_confirmLightIntensity.setOnClickListener(e -> {
+            setLightIntensity();
         });
 
         bt_timerOn.setOnClickListener(e -> {
@@ -125,7 +133,7 @@ public class HeaterActivity extends AppCompatActivity {
         });
 
         cv_back.setOnClickListener(e -> {
-            Intent intentBack = new Intent(HeaterActivity.this, MainActivity.class);
+            Intent intentBack = new Intent(LightActivity.this, MainActivity.class);
             startActivity(intentBack);
         });
 
@@ -136,7 +144,7 @@ public class HeaterActivity extends AppCompatActivity {
         String selected = actv_devices.getText().toString();
         if (!selected.equals("")) {
             myRef.child(selected).child("timerMode").setValue(0L);
-            mqttHandler.publish("heater/"+selected+"/timer_mode", "0");
+            mqttHandler.publish("light/"+selected+"/timer_mode", "0");
         }
 //        bt_timerOff.setBackgroundColor(ContextCompat.getColor(this ,R.color.second_light));
 //        bt_timerOff.setClickable(false);
@@ -150,7 +158,7 @@ public class HeaterActivity extends AppCompatActivity {
         String selected = actv_devices.getText().toString();
         if (!selected.equals("")) {
             myRef.child(selected).child("timerMode").setValue(1L);
-            mqttHandler.publish("heater/"+selected+"/timer_mode", "1");
+            mqttHandler.publish("light/"+selected+"/timer_mode", "1");
         }
 //        bt_timerOn.setBackgroundColor(ContextCompat.getColor(this ,R.color.second_light));
 //        bt_timerOn.setClickable(false);
@@ -159,12 +167,41 @@ public class HeaterActivity extends AppCompatActivity {
 //        bt_timerOff.setClickable(true);
     }
 
-    private void setHeater() {
-        Log.e(TAG, "setHeater: Start");
+    private void setLightIntensity() {
+        Log.e(TAG, "setLightIntensity: Start");
         String selected = actv_devices.getText().toString();
-        Long heater = (long) sl_heater.getValue();
-        myRef.child(selected).child("heater").setValue(heater);
-        mqttHandler.publish("heater/"+selected+"/set_heater", Long.toString(heater));
+        Long lightIntensity = (long) sl_lightIntensity.getValue();
+        myRef.child(selected).child("lightIntensity").setValue(lightIntensity);
+        mqttHandler.publish("light/"+selected+"/light_intensity", Long.toString(lightIntensity));
+    }
+
+    private void bt_autoOff() {
+        Log.e(TAG, "bt_autoOff: Start");
+        String selected = actv_devices.getText().toString();
+        if (!selected.equals("")) {
+            myRef.child(selected).child("autoMode").setValue(0L);
+            mqttHandler.publish("light/"+selected+"/status", "0");
+        }
+//        bt_autoOff.setBackgroundColor(ContextCompat.getColor(this ,R.color.second_light));
+//        bt_autoOff.setClickable(false);
+//
+//        bt_autoOn.setBackgroundColor(ContextCompat.getColor(this ,R.color.primary_light));
+//        bt_autoOn.setClickable(true);
+    }
+
+    private void bt_autoOn() {
+        Log.e(TAG, "bt_autoOn: Start");
+        String selected = actv_devices.getText().toString();
+        if (!selected.equals("")) {
+            myRef.child(selected).child("autoMode").setValue(1L);
+            mqttHandler.publish("light/"+selected+"/auto_mode", "1");
+
+        }
+//        bt_autoOn.setBackgroundColor(ContextCompat.getColor(this ,R.color.second_light));
+//        bt_autoOn.setClickable(false);
+//
+//        bt_autoOff.setBackgroundColor(ContextCompat.getColor(this ,R.color.primary_light));
+//        bt_autoOff.setClickable(true);
     }
 
     private void setStop() {
@@ -179,7 +216,7 @@ public class HeaterActivity extends AppCompatActivity {
                 minute[0] = selectedMinute;
                 tv_timerSetStop.setText(String.format(Locale.getDefault(), "%02d:%02d", hour[0], minute[0]));
                 myRef.child(selected).child("timerStop").setValue(String.format(Locale.getDefault(), "%02d:%02d", hour[0], minute[0]));
-                mqttHandler.publish("heater/"+selected+"/time_stop", String.format(Locale.getDefault(), "%02d:%02d", hour[0], minute[0]));
+                mqttHandler.publish("light/"+selected+"/time_stop", String.format(Locale.getDefault(), "%02d:%02d", hour[0], minute[0]));
             }
         };
 
@@ -200,7 +237,7 @@ public class HeaterActivity extends AppCompatActivity {
                 minute[0] = selectedMinute;
                 tv_timerSetStart.setText(String.format(Locale.getDefault(), "%02d:%02d", hour[0], minute[0]));
                 myRef.child(selected).child("timerStart").setValue(String.format(Locale.getDefault(), "%02d:%02d", hour[0], minute[0]));
-                mqttHandler.publish("heater/"+selected+"/time_start", String.format(Locale.getDefault(), "%02d:%02d", hour[0], minute[0]));
+                mqttHandler.publish("light/"+selected+"/time_start", String.format(Locale.getDefault(), "%02d:%02d", hour[0], minute[0]));
             }
         };
 
@@ -214,7 +251,7 @@ public class HeaterActivity extends AppCompatActivity {
         String selected = actv_devices.getText().toString();
         if (!selected.equals("")) {
             myRef.child(selected).child("status").setValue(0L);
-            mqttHandler.publish("heater/"+selected+"/status", "0");
+            mqttHandler.publish("light/"+selected+"/status", "0");
         }
 //        bt_statusOff.setBackgroundColor(ContextCompat.getColor(this ,R.color.second_light));
 //        bt_statusOff.setClickable(false);
@@ -228,7 +265,7 @@ public class HeaterActivity extends AppCompatActivity {
         String selected = actv_devices.getText().toString();
         if (!selected.equals("")) {
             myRef.child(selected).child("status").setValue(1L);
-            mqttHandler.publish("heater/"+selected+"/status", "1");
+            mqttHandler.publish("light/"+selected+"/status", "1");
         }
 
     }
@@ -237,13 +274,13 @@ public class HeaterActivity extends AppCompatActivity {
         Log.e(TAG, "deleteDevice: Start");
         String selected = actv_devices.getText().toString();
         if (!selected.equals("")) {
-            AlertDialog.Builder dialog = new AlertDialog.Builder(HeaterActivity.this);
+            AlertDialog.Builder dialog = new AlertDialog.Builder(LightActivity.this);
             dialog.setTitle("XÓA THIẾT BỊ");
             dialog.setMessage("Bạn có chắc muốn xóa " + selected + " không?");
             dialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    Toast.makeText(HeaterActivity.this, "Xóa thành công", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LightActivity.this, "Xóa thành công", Toast.LENGTH_SHORT).show();
                     myRef.child(selected).removeValue();
                     finish();
                     startActivity(getIntent());
@@ -257,20 +294,19 @@ public class HeaterActivity extends AppCompatActivity {
     private void addDevice() {
         Log.e(TAG, "addDevice: Start");
         Toast.makeText(this, "Oke ?", Toast.LENGTH_SHORT).show();
-        AlertDialog.Builder dialog = new AlertDialog.Builder(HeaterActivity.this);
+        AlertDialog.Builder dialog = new AlertDialog.Builder(LightActivity.this);
         dialog.setTitle("THÊM THIẾT BỊ");
 
         View view = getLayoutInflater().inflate(R.layout.layout_add_device, null);
 
         EditText et_deviceName = view.findViewById(R.id.edittext_name_add);
-
         Button bt_addDevice = view.findViewById(R.id.button_add_add);
         bt_addDevice.setOnClickListener(e -> {
             String newDevice = et_deviceName.getText().toString();
-            HeaterData heaterData = new HeaterData(newDevice,
-                    0L, 0L, 0L, "00:00", "00:00");
-            myRef.child(newDevice).setValue(heaterData);
-            Toast.makeText(HeaterActivity.this, "Thêm thành công", Toast.LENGTH_SHORT).show();
+            LightData lightData = new LightData(newDevice,
+                    0L, 0L, 0L, 0L, "00:00", "00:00");
+            myRef.child(newDevice).setValue(lightData);
+            Toast.makeText(LightActivity.this, "Thêm thành công", Toast.LENGTH_SHORT).show();
             finish();
             startActivity(getIntent());
         });
@@ -280,14 +316,14 @@ public class HeaterActivity extends AppCompatActivity {
         dialog.show();
     }
 
-    private void getListHeater() {
-        Log.e(TAG, "getListHeater: Start");
+    private void getListLight() {
+        Log.e(TAG, "getListLight: Start");
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    String heaterData = dataSnapshot.getKey();
-                    listDevices.add(heaterData);
+                    String lightData = dataSnapshot.getKey();
+                    listDevices.add(lightData);
                 }
 
                 adapter.notifyDataSetChanged();
@@ -295,7 +331,7 @@ public class HeaterActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(HeaterActivity.this, "Không thể lấy dữ liệu từ server", Toast.LENGTH_SHORT).show();
+                Toast.makeText(LightActivity.this, "Không thể lấy dữ liệu từ server", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -303,24 +339,26 @@ public class HeaterActivity extends AppCompatActivity {
     private void initViews() {
         Log.e(TAG, "initViews: Start");
 
-        bt_addDevice = findViewById(R.id.button_add_device_heater);
-        bt_deleteDevice = findViewById(R.id.button_delete_device_heater);
-        bt_statusOn = findViewById(R.id.button_status_on_heater);
-        bt_statusOff = findViewById(R.id.button_status_off_heater);
-        bt_timerSetStart = findViewById(R.id.button_timer_start_heater);
-        bt_timerSetStop = findViewById(R.id.button_timer_stop_heater);
-        bt_timerOn = findViewById(R.id.button_timer_on_heater);
-        bt_timerOff = findViewById(R.id.button_timer_off_heater);
-        bt_confirmHeater = findViewById(R.id.button_confirm_heater_heater);
+        bt_addDevice = findViewById(R.id.button_add_device_light);
+        bt_deleteDevice = findViewById(R.id.button_delete_device_light);
+        bt_statusOn = findViewById(R.id.button_status_on_light);
+        bt_statusOff = findViewById(R.id.button_status_off_light);
+        bt_autoOn = findViewById(R.id.button_auto_on_light);
+        bt_autoOff = findViewById(R.id.button_auto_off_light);
+        bt_timerSetStart = findViewById(R.id.button_timer_start_light);
+        bt_timerSetStop = findViewById(R.id.button_timer_stop_light);
+        bt_timerOn = findViewById(R.id.button_timer_on_light);
+        bt_timerOff = findViewById(R.id.button_timer_off_light);
+        bt_confirmLightIntensity = findViewById(R.id.button_confirm_lightIntensity_light);
 
-        sl_heater = findViewById(R.id.slider_heater_heater);
+        sl_lightIntensity = findViewById(R.id.slider_lightIntensity_light);
 
-        cv_back = findViewById(R.id.cardview_back_heater);
+        cv_back = findViewById(R.id.cardview_back_light);
 
-        tv_timerSetStart = findViewById(R.id.textview_timer_start_heater);
-        tv_timerSetStop = findViewById(R.id.textview_timer_stop_heater);
+        tv_timerSetStart = findViewById(R.id.textview_timer_start_light);
+        tv_timerSetStop = findViewById(R.id.textview_timer_stop_light);
 
-        actv_devices = findViewById(R.id.autocompletetextview_devices_heater);
+        actv_devices = findViewById(R.id.autocompletetextview_devices_light);
         adapter = new ArrayAdapter<>(this, R.layout.dropdown_item, listDevices);
         actv_devices.setAdapter(adapter);
     }
