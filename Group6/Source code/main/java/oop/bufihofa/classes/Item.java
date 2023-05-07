@@ -6,7 +6,7 @@ import java.time.format.DateTimeFormatter;
 
 public class Item {
     private String name = "?";
-    private double price = 1;
+    private int price = 1;
     private double quantity = 1;
     private int id = 1000000000;
     private String unit = "?";
@@ -19,7 +19,7 @@ public class Item {
     public Item(String s){
 
     }
-    public Item(String name, int id, double price, double quantity, String unit, String date) {
+    public Item(String name, int id, int price, double quantity, String unit, String date) {
         this.name = name;
         this.id = id;
         this.price = price;
@@ -28,7 +28,7 @@ public class Item {
         this.dateString = date;
         this.ldate = LocalDate.parse(date, formatter);
     }
-    public Item(String name, int id, double price, double quantity, String unit, LocalDate date) {
+    public Item(String name, int id, int price, double quantity, String unit, LocalDate date) {
         this.name = name;
         this.id = id;
         this.price = price;
@@ -49,11 +49,11 @@ public class Item {
         this.name = name;
     }
 
-    public double getPrice() {
+    public int getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(int price) {
         this.price = price;
     }
 

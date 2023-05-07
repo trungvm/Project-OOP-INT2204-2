@@ -23,12 +23,79 @@ import oop.bufihofa.classes.*;
 
 public class ui implements Initializable {
     @FXML
-    Label infoStorage;
+    CheckBox tenCheck, slCheck, dvCheck, giaCheck;
+    @FXML
+    Label nhapmakho1, nhapdiachikho1, infoStorage, danhsachhanghoa, errorLabel, idLabel, soLuongKQ;;
+    @FXML
+    TextField nhapmakho, nhapdiachikho, nameField, quantityField, unitField, priceField, searchField;
+    @FXML
+    Button suathongtinkho;
+    @FXML
+    private TableView<Item> table;
+    @FXML
+    private TableColumn<Item, Integer> idColumn, priceColumn;
+    @FXML
+    private TableColumn<Item, String> nameColumn, unitColumn, dateColumn;
+    @FXML
+    private TableColumn<Item, Double> quantityColumn;
+    @FXML
+    private DatePicker datePicker;
+
     boolean fileOpened = false;
+    ThongBao thongBao = new ThongBao();
     FileChooser fileChooser = new FileChooser();
     File selectedFile;
+
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy");
+    Storage kho = new Storage("", "");
+
     private ObservableList<Item> storage = FXCollections.observableArrayList();
+    private ObservableList<Item> dataList = FXCollections.observableArrayList();
+    private int ID = 1000000000;
+
+    public void hideSuaThongTinKho(){
+        suathongtinkho.setText("Sửa thông tin kho");
+        nhapmakho.setVisible(false);
+        nhapmakho1.setVisible(false);
+        nhapdiachikho.setVisible(false);
+        nhapdiachikho1.setVisible(false);
+        danhsachhanghoa.setVisible(true);
+    }
+    public void unhideSuaThongTinKho(){
+        suathongtinkho.setText("Xác Nhận");
+        nhapmakho.setVisible(true);
+        nhapmakho1.setVisible(true);
+        nhapmakho.setText(kho.getMaKho());
+        nhapdiachikho.setVisible(true);
+        nhapdiachikho.setText(kho.getDiaChiKho());
+        nhapdiachikho1.setVisible(true);
+        danhsachhanghoa.setVisible(false);
+    }
+    public void suaThongTinKho(){
+        if(!fileOpened) {
+            thongBao.chuaChonKho();
+            return;
+        }
+        if(nhapmakho.isVisible()){
+            hideSuaThongTinKho();
+            kho.setMaKho(nhapmakho.getText());
+            kho.setDiaChiKho(nhapdiachikho.getText());
+            thongBao.thongTinKho(kho);
+        }
+        else{
+            unhideSuaThongTinKho();
+        }
+    }
+    public void xemThongTinKho(){
+        if(!fileOpened) {
+            thongBao.chuaChonKho();
+            return;
+        }
+        thongBao.thongTinKho(kho);
+    }
+
     public void newStorageClick(){
+        hideSuaThongTinKho();
         fileChooser.setTitle("Chọn nơi tạo mới File Dữ Liệu (*.csv)");
         fileChooser.setInitialFileName("NewStorage.csv");
         selectedFile = fileChooser.showSaveDialog(new Stage());
@@ -36,13 +103,16 @@ public class ui implements Initializable {
             try {
                 FileWriter fileWriter = new FileWriter(selectedFile);
                 BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-                bufferedWriter.write("id,name,quantity,unit,price,date\n");
+                bufferedWriter.write("id,name,quantity,unit,price,date\n.....\n.....");
+                kho.setMaKho("");
+                kho.setDiaChiKho("");
                 bufferedWriter.close();
                 fileOpened = true;
                 infoStorage.setText(selectedFile.getAbsolutePath());
             } catch (IOException e) {
                 e.printStackTrace();
                 infoStorage.setText("Tạo file thất bại");
+
                 fileOpened = false;
             }
         }
@@ -50,11 +120,18 @@ public class ui implements Initializable {
             infoStorage.setText("Tạo file thất bại");
             fileOpened = false;
         }
+        if(fileOpened == false){
+            thongBao.taoKhoThatBai();
+        }
+        else{
+            thongBao.taoKhoThanhCong();
+        }
         storage.clear();
         table.setItems(storage);
 
     }
     public void importStorageClick(){
+        hideSuaThongTinKho();
         fileChooser.setTitle("Chọn nơi chứa File Dữ Liệu có sẵn (.*csv)");
         selectedFile = fileChooser.showOpenDialog(new Stage());
         boolean readfileok = true;
@@ -71,13 +148,19 @@ public class ui implements Initializable {
                     if(i==1){
                         if(!line.equalsIgnoreCase( "id,name,quantity,unit,price,date")){
                             readfileok = false;
-                            System.out.println("thatbairoi");
+                            infoStorage.setText("Đọc File thất bại");
                             break;
                         }
                     }
+                    else if(i==2){
+                        kho.setMaKho(line);
+                    }
+                    else if(i==3){
+                        kho.setDiaChiKho(line);
+                    }
                     else{
                         String[] fields = line.split(",");
-                        storage.add(new Item(fields[1], Integer.parseInt(fields[0]), Double.parseDouble(fields[4]), Double.parseDouble(fields[2]), fields[3], LocalDate.parse(fields[5], formatter)));
+                        storage.add(new Item(fields[1], Integer.parseInt(fields[0]), (int)Double.parseDouble(fields[4]), Double.parseDouble(fields[2]), fields[3], LocalDate.parse(fields[5], formatter)));
                         if(ID < Integer.parseInt(fields[0])) ID=Integer.parseInt(fields[0]);
                     }
                 }
@@ -96,12 +179,18 @@ public class ui implements Initializable {
             infoStorage.setText("Đọc File thất bại");
             fileOpened = false;
         }
-
+        if(fileOpened == false){
+            thongBao.nhapDuLieuThatBai();
+        }
+        else{
+            thongBao.nhapDuLieuThanhCong(kho);
+        }
         table.setItems(storage);
     }
     public void saveStorageClick(){
-        if(!fileOpened){
-            infoStorage.setText("Chưa chọn kho!");
+        hideSuaThongTinKho();
+        if(!fileOpened) {
+            thongBao.chuaChonKho();
             return;
         }
         if(selectedFile != null){
@@ -109,6 +198,8 @@ public class ui implements Initializable {
                 FileWriter fileWriter = new FileWriter(selectedFile);
                 BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
                 bufferedWriter.write("id,name,quantity,unit,price,date\n");
+                bufferedWriter.write(kho.getMaKho()+"\n");
+                bufferedWriter.write(kho.getDiaChiKho()+"\n");
                 for(int i = 0;i<storage.size();++i){
                     bufferedWriter.write(storage.get(i).getId()+","+storage.get(i).getName()+","+storage.get(i).getQuantity()+","+storage.get(i).getUnit()+","+storage.get(i).getPrice()+","+storage.get(i).getDateString()+"\n");
                 }
@@ -122,67 +213,34 @@ public class ui implements Initializable {
         else{
             infoStorage.setText("Lưu thất bại!");
         }
+        if(infoStorage.getText().equalsIgnoreCase("Lưu thất bại!")){
+            thongBao.luuDuLieuThatBai();
+        }
+        else{
+            thongBao.luuDuLieuThanhCong();
+        }
     }
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy");
-    @FXML
-    private TableView<Item> table;
-
-    @FXML
-    private TableColumn<Item, Integer> idColumn;
-
-    @FXML
-    private TableColumn<Item, String> nameColumn;
-
-    @FXML
-    private TableColumn<Item, Double> quantityColumn;
-
-    @FXML
-    private TableColumn<Item, String> unitColumn;
-
-    @FXML
-    private TableColumn<Item, Integer> priceColumn;
-
-    @FXML
-    private TableColumn<Item, String> dateColumn;
-    @FXML
-    private TextField nameField;
-    @FXML
-    private TextField quantityField;
-    @FXML
-    private TextField unitField;
-    @FXML
-    private TextField priceField;
-
-    @FXML
-    private TextField dateField;
-
-    @FXML
-    private Label errorLabel;
-    @FXML
-    private Label idLabel;
-
-    @FXML
-    private TextField searchField;
-
-
-    private int ID = 1000000000;
-
-    private ObservableList<Item> dataList;
     public void onSearchResetButtonClicked(){
-        if(!fileOpened) return;
+        if(!fileOpened) {
+            thongBao.chuaChonKho();
+            return;
+        }
         searchField.setText("");
         table.setItems(storage);
         tenCheckClick();
-        soLuongKQ.setText("Có "+storage.size()+" kết quả!");
+        //soLuongKQ.setText("Có "+storage.size()+" kết quả!");
     }
     public void search(){
-        if(!fileOpened) return;
+        if(!fileOpened) {
+            thongBao.chuaChonKho();
+            return;
+        }
         dataList = FXCollections.observableArrayList();
         String searchText = searchField.getText();
         int m = searchText.length();
         if(m==0){
             table.setItems(storage);
-            soLuongKQ.setText("Có "+storage.size()+" kết quả!");
+            //soLuongKQ.setText("Có "+storage.size()+" kết quả!");
             return;
         }
 
@@ -192,7 +250,7 @@ public class ui implements Initializable {
         unitField.setText(subData);
         priceField.setText(subData);
         quantityField.setText(subData);
-        dateField.setText(subData);
+        datePicker.setValue(null);
         int n = storage.size();
         for(int i = 0; i < n; ++i){
             if(tenCheck.isSelected())   subData = storage.get(i).getName();
@@ -212,7 +270,10 @@ public class ui implements Initializable {
     }
 
     public void onSearchButtonClicked(KeyEvent e){
-        if(!fileOpened) return;
+        if(!fileOpened) {
+            thongBao.chuaChonKho();
+            return;
+        }
 
         dataList = FXCollections.observableArrayList();
 
@@ -227,7 +288,7 @@ public class ui implements Initializable {
         int m = searchText.length();
         if(m==0){
             table.setItems(storage);
-            soLuongKQ.setText("Có "+storage.size()+" kết quả!");
+            //soLuongKQ.setText("Có "+storage.size()+" kết quả!");
             return;
         }
         String subData = "";
@@ -236,7 +297,7 @@ public class ui implements Initializable {
         unitField.setText(subData);
         priceField.setText(subData);
         quantityField.setText(subData);
-        dateField.setText(subData);
+        datePicker.setValue(null);
         int n = storage.size();
         for(int i = 0; i < n; ++i){
             if(tenCheck.isSelected())   subData = storage.get(i).getName();
@@ -257,6 +318,7 @@ public class ui implements Initializable {
     }
     @Override
     public void initialize(URL location, ResourceBundle rcs){
+        hideSuaThongTinKho();
         storage = FXCollections.observableArrayList();
         idColumn.setCellValueFactory(new PropertyValueFactory<Item, Integer>("id"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<Item, String>("name"));
@@ -264,20 +326,25 @@ public class ui implements Initializable {
         unitColumn.setCellValueFactory(new PropertyValueFactory<Item, String>("unit"));
         priceColumn.setCellValueFactory(new PropertyValueFactory<Item, Integer>("price"));
         dateColumn.setCellValueFactory(new PropertyValueFactory<Item, String>("dateString"));
+
         table.setItems(storage);
         table.setEditable(true);
         tenCheck.setSelected(true);
+        importStorageClick();
     }
     public void printError(String s){
         errorLabel.setText(s);
     }
     //them
     public void onAddButtonClicked(){
-        if(!fileOpened) return;
+        if(!fileOpened) {
+            thongBao.chuaChonKho();
+            return;
+        }
         printError("");
         String name = nameField.getText();
         String unit = unitField.getText();
-        double price = 0;
+        int price = 0;
         double quantity = 0;
         LocalDate date = LocalDate.of(2000, 1, 1);
         boolean kt = true;
@@ -289,13 +356,13 @@ public class ui implements Initializable {
             printError("Đơn vị không hợp lệ!");
             kt = false;
         }
-        if(dateField.getText().isEmpty()){
+        if(datePicker.getValue() == null){
             printError("Ngày không hợp lệ!");
             kt = false;
         }
         if(!priceField.getText().isEmpty()) {
             try {
-                price = Double.parseDouble(priceField.getText());
+                price = Integer.parseInt(priceField.getText());
 
             } catch (Exception e){
                 printError("Giá không hợp lệ!");
@@ -310,9 +377,9 @@ public class ui implements Initializable {
                 kt = false;
             }
         }
-        if(!dateField.getText().isEmpty()){
+        if(datePicker.getValue() != null){
             try {
-                date = LocalDate.parse(dateField.getText(), formatter);
+                date = datePicker.getValue();
             } catch (Exception e){
                 printError("Ngày không hợp lệ!");
                 kt = false;
@@ -331,18 +398,21 @@ public class ui implements Initializable {
             idLabel.setText("ID:" + Integer.toString(selected.getId()));
             nameField.setText(selected.getName());
             unitField.setText(selected.getUnit());
-            priceField.setText(Double.toString(selected.getPrice()));
+            priceField.setText(Integer.toString(selected.getPrice()));
             quantityField.setText(Double.toString(selected.getQuantity()));
-            dateField.setText(selected.getDateString());
+            datePicker.setValue(selected.getDate());
         }
     }
     //sua
     public void onEditButtonClicked(){
-        if(!fileOpened) return;
+        if(!fileOpened) {
+            thongBao.chuaChonKho();
+            return;
+        }
         printError("");
         String name = nameField.getText();
         String unit = unitField.getText();
-        double price = 0;
+        int price = 0;
         double quantity = 0;
 
         boolean kt = true;
@@ -354,9 +424,13 @@ public class ui implements Initializable {
             printError("Đơn vị không hợp lệ!");
             kt = false;
         }
+        if(datePicker.getValue() == null){
+            printError("Ngày không hợp lệ!");
+            kt = false;
+        }
         if(!priceField.getText().isEmpty()) {
             try {
-                price = Double.parseDouble(priceField.getText());
+                price = Integer.parseInt(priceField.getText());
 
             } catch (Exception e){
                 printError("Giá không hợp lệ!");
@@ -378,6 +452,7 @@ public class ui implements Initializable {
                 selected.setName(name);
                 selected.setQuantity(quantity);
                 selected.setUnit(unit);
+                selected.setDate(datePicker.getValue());
                 table.refresh();
                 printError("Sửa thành công ID:" + selected.getId());
                 search();
@@ -388,7 +463,10 @@ public class ui implements Initializable {
         }
     }
     public void onRemoveButtonClicked(){
-        if(!fileOpened) return;
+        if(!fileOpened) {
+            thongBao.chuaChonKho();
+            return;
+        }
         Item selected = table.getSelectionModel().getSelectedItem();
         try {
             storage.remove(selected);
@@ -398,44 +476,29 @@ public class ui implements Initializable {
             printError(e.getMessage());
         }
     }
-    @FXML
-    Label soLuongKQ;
-    @FXML
-    CheckBox tenCheck;
-    @FXML
-    CheckBox slCheck;
-    @FXML
-    CheckBox dvCheck;
-    @FXML
-    CheckBox giaCheck;
+
     public void anyCheckClick(){
-        if(!fileOpened) return;
         tenCheck.setSelected(false);
         slCheck.setSelected(false);
         dvCheck.setSelected(false);
         giaCheck.setSelected(false);
     }
     public void tenCheckClick(){
-        if(!fileOpened) return;
         anyCheckClick();
         tenCheck.setSelected(true);
         search();
     }
     public void slCheckClick(){
-        if(!fileOpened) return;
         anyCheckClick();
         slCheck.setSelected(true);
         search();
     }
     public void dvCheckClick(){
-        if(!fileOpened) return;
         anyCheckClick();
         dvCheck.setSelected(true);
-
         search();
     }
     public void giaCheckClick(){
-        if(!fileOpened) return;
         anyCheckClick();
         giaCheck.setSelected(true);
 
