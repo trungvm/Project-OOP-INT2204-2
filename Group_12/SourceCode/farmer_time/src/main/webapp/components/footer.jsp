@@ -13,17 +13,17 @@
       </div>
       <div class="col-md">
         <ul class="list-unstyled nav-links">
-          <li><a href="home.php">Home</a></li>
-          <li><a href="player.php">Player</a></li>
-          <li><a href="clubs.php">Clubs</a></li>
-          <li><a href="competitions.php">Competitions</a></li>
-          <li><a href="https://www.facebook.com/">Contact</a></li>
+          <li><a href="project.jsp">Home</a></li>
+          <li><a href="todoList.jsp">Tasks List</a></li>
+          <li><a href="getCalendar">Calendar</a></li>
+          <li><a href="timeTable.jsp">Time Table</a></li>
+          <li><a href="getData">Weather</a></li>
         </ul>
       </div>
       <div class="col-md">
         <ul class="list-unstyled nav-links">
-          <li><a href="#">Clients</a></li>
-          <li><a href="#">Team</a></li>
+          <li><a href="#">Time Management</a></li>
+          <li><a href="#">Team Work</a></li>
           <li><a href="#">Career</a></li>
           <li><a href="#">Profile</a></li>
           <li><a href="#">Journal</a></li>

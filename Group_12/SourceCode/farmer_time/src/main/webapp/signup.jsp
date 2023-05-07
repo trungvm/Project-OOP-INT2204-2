@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <title>Sign up</title>
 
@@ -13,16 +13,15 @@
       integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
       crossorigin="anonymous"
     />
-    <link href="css/style.css" type="text/css" rel="stylesheet">
+    <link href="css/style.css" type="text/css" rel="stylesheet" />
 
     <link
       href="https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap"
-      rel="stylesheet">
-
+      rel="stylesheet"
+    />
   </head>
   <body>
     <div class="app d-flex flex-column vh-100 justify-content-between">
-      <jsp:include page="components/header.jsp" />
       <div class="container-fluid">
         <section
           class="align-items-center padding"
@@ -107,15 +106,11 @@
                         <div
                           class="form-check d-flex justify-content-center mb-5"
                         >
-                          <input
-                            class="form-check-input me-2"
-                            type="checkbox"
-                            value=""
-                            id="form2Example3c"
-                          />
-                          <label class="form-check-label" for="form2Example3">
-                            I agree all statements in
-                            <a href="#">Terms of service</a>
+                          <label class="form-check-label fw-bold">
+                            Have already an account?
+                            <a href="login.jsp">
+                              <u>Login</u>
+                            </a>
                           </label>
                         </div>
 
@@ -132,7 +127,7 @@
                       class="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2"
                     >
                       <img
-                        src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-registration/draw1.webp"
+                        src="https://images.careerbuilder.vn/content/images/linh-moi-de-hoa-hop-voi-moi-truong-moi-careerbuilder.png"
                         class="img-fluid"
                         alt="Sample image"
                       />

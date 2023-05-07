@@ -23,8 +23,6 @@
   </head>
   <body>
     <div class="app d-flex flex-column vh-100 justify-content-between">
-      <jsp:include page="components/header.jsp" />
-
       <div class="container" style="padding-top: 10%">
         <section class="vh-100 align-items-center">
           <div class="container-fluid h-custom">
@@ -33,7 +31,7 @@
             >
               <div class="col-md-9 col-lg-6 col-xl-5">
                 <img
-                  src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
+                  src="https://nghenghiep.vieclam24h.vn/wp-content/uploads/2022/06/da3-768x432.jpg"
                   class="img-fluid"
                   alt="Sample image"
                 />

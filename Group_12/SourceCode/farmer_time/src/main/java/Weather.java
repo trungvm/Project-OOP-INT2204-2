@@ -7,11 +7,20 @@ public class Weather {
 
     private long humidity;
 
-    public Weather(String city, double temperature, String description, Long humidity) {
+    private double windSpeed;
+
+    private double feelsLike;
+
+    private String iconImage;
+
+    public Weather(String city, double temperature, String description, Long humidity, double windSpeed, double fellsLike, String iconImage) {
         this.city = city;
         this.temperature = temperature;
         this.description = description;
         this.humidity = humidity;
+        this.windSpeed = windSpeed;
+        this.feelsLike = fellsLike;
+        this.iconImage = iconImage;
     }
 
     public String getCity() {
@@ -28,5 +37,17 @@ public class Weather {
 
     public long getHumidity() {
         return this.humidity;
+    }
+
+    public double getWindSpeed() {
+        return this.windSpeed;
+    }
+    
+    public double getFellsLike() {
+        return this.feelsLike;
+    }
+
+    public String getIconImage() {
+        return this.iconImage;
     }
 }

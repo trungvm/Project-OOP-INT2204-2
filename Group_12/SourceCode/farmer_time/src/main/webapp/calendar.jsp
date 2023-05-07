@@ -40,11 +40,15 @@ pageEncoding="UTF-8"%>
   </head>
 
   <body class="bg-gray-200">
+    <header>
+      <jsp:include page="components/header.jsp" />
+    </header>
+
     <% String monthString = (String) request.getAttribute("monthString"); 
     int year = (int) request.getAttribute("year"); 
     int month = (int) request.getAttribute("month"); 
     ArrayList<Integer> days = getDays(year, month); %>
-    <div class="container mx-auto mt-10">
+    <div class="container mx-auto mt-10 mb-4">
       <div class="wrapper bg-white rounded shadow">
         <div class="header flex justify-between border-b p-2">
           <span class="text-lg font-bold"> <%= monthString %> <%= year %> </span>
@@ -248,5 +252,8 @@ pageEncoding="UTF-8"%>
         </div>
       </div>
     </div>
+
+    <jsp:include page="components/footer.jsp" />
+
   </body>
 </html>

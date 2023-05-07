@@ -1,8 +1,18 @@
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+
 import org.json.simple.*;
+import com.google.maps.GeoApiContext;
+import com.google.maps.GeocodingApi;
+import com.google.maps.model.AddressComponent;
+import com.google.maps.model.GeocodingResult;
+import java.util.Arrays;
+import java.util.List;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -24,15 +34,32 @@ public class WeatherServlet extends HttpServlet {
     private static final String API_URL = "http://api.openweathermap.org/data/2.5/weather?q=%s&appid=%s&units=metric";
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         // Lấy thông tin về thành phố từ request parameter
         String city = request.getParameter("city");
 
         if (city == null || city.isEmpty()) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            response.sendRedirect("/farmer_time/weather.jsp");
-            return;
+            // response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            // response.sendRedirect("/farmer_time/weather.jsp");
+            // return;
+            city = "Ha Noi";
+        }
+
+        GeoApiContext context = new GeoApiContext.Builder()
+                .apiKey("AIzaSyDQ0oIeBKADZTxl-TbBljeY_Hq7KwltpFk")
+                .build();
+        try {
+            GeocodingResult[] results = GeocodingApi.geocode(context, "your-latitude, your-longitude").await();
+            List<AddressComponent> components = Arrays.asList(results[0].addressComponents);
+            for (AddressComponent component : components) {
+                if (component.types[0].toString().equals("administrative_area_level_1")) {
+                    System.out.println("Current province is: " + component.longName);
+                    break;
+                }
+            }
+        } catch (Exception e) {
+            System.err.println("Cannot determine current province: " + e.getMessage());
         }
 
         // Gửi yêu cầu tới API và lấy thông tin thời tiết
@@ -68,6 +95,20 @@ public class WeatherServlet extends HttpServlet {
             temperature = (Double) main.get("temp");
         }
 
+
+        double fellsLike = 10.5;
+        if (main.get("feels_like") instanceof Long) {
+            long t = (Long) main.get("feels_like");
+            fellsLike = (double) t;
+        } else if (main.get("temp") instanceof Double) {
+            fellsLike = (Double) main.get("feels_like");
+        }
+
+        JSONObject wind = (JSONObject) jsonObject.get("wind");
+
+        double windSpeed = (Double) wind.get("speed");
+        windSpeed = (double) Math.round(windSpeed * 3.6 * 10) / 10;
+
         long humidity = (Long) main.get("humidity");
 
         JSONArray weatherArray = (JSONArray) jsonObject.get("weather");
@@ -75,9 +116,34 @@ public class WeatherServlet extends HttpServlet {
         JSONObject firstWeather = (JSONObject) weatherArray.get(0);
         String des = (String) firstWeather.get("description");
 
+        String icon = (String) firstWeather.get("icon");
+
+        String iconImage = "https://thumbs.dreamstime.com/z/sun-cloud-line-icon-sun-cloud-line-icon-partly-cloudy-weather-symbol-vector-illustration-155290413.jpg";
+
+        try {
+            Connection conn = ConnectMySQL.getConnection(ConnectMySQL.DB_URL, ConnectMySQL.USER_NAME,
+                    ConnectMySQL.PASSWORD);
+
+            String sql = "SELECT iconImage FROM weather WHERE iconName = ?";
+            // crate statement
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setString(1, icon);
+            
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                iconImage = rs.getString(1);
+            }
+            
+            stmt.close();
+            conn.close();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
         if (httpEntity != null) {
             // Lưu thông tin thời tiết vào request attribute và forward sang JSP
-            Weather w = new Weather(city, temperature, des, humidity);
+            Weather w = new Weather(city, temperature, des, humidity, windSpeed, fellsLike, iconImage);
             response.setContentType("application/json");
             request.setAttribute("weather", w);
             request.getRequestDispatcher("/weather.jsp").forward(request, response);
@@ -87,4 +153,10 @@ public class WeatherServlet extends HttpServlet {
             response.sendRedirect("/farmer_time/weather.jsp");
         }
     }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+                doGet(request, response);
+            }
 }

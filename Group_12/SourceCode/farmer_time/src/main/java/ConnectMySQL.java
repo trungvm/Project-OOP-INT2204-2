@@ -3,9 +3,9 @@ import java.sql.DriverManager;
 
 public class ConnectMySQL {
 
-    static String DB_URL = "jdbc:mysql://localhost:3306/classicmodels";
+    static String DB_URL = "jdbc:mysql://localhost:3308/farmer";
     static String USER_NAME = "root";
-    static String PASSWORD = "ToshibaAcer1107@";
+    static String PASSWORD = "";
 
     public static Connection getConnection(String dbURL, String userName, String password) {
         Connection conn = null;

@@ -25,14 +25,34 @@
   <body>
     <header>
       <jsp:include page="components/header.jsp" />
+      <div class="container-fluid">
+        <img
+          src="https://scr.vn/wp-content/uploads/2020/08/H%C3%ACnh-phong-c%E1%BA%A3nh-l%C3%A0ng-qu%C3%AA.jpg"
+          class="img-fluid w-100 rounded"
+          alt="Your Image"
+        />
+      </div>
     </header>
 
     <div>
-      <form class="d-flex justify-content-center align-items-center mx-5 mt-4 mb-2">
+      <form
+        class="d-flex justify-content-center align-items-center mx-5 mt-4 mb-2"
+      >
         <div class="form-outline flex-fill">
-          <input type="text" id="form2" class="form-control" placeholder="New task..."/>
+          <input
+            type="text"
+            id="form2"
+            class="form-control"
+            placeholder="New task..."
+          />
         </div>
-        <button type="submit" class="btn btn-info ms-2 text-white" style="background-color:rgb(48, 185, 59)">Add</button>
+        <button
+          type="submit"
+          class="btn btn-info ms-2 text-white"
+          style="background-color: rgb(48, 185, 59)"
+        >
+          Add
+        </button>
       </form>
     </div>
 

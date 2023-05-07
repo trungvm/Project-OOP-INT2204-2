@@ -18,9 +18,6 @@
       <jsp:include page="components/header.jsp" />
     </header>
     <div class="container">
-      <div class="timetable-img text-center">
-        <img src="images/bg.jpg" alt="img not found" />
-      </div>
       <div class="table-responsive pt-4">
         <table class="table table-bordered text-center">
           <thead>
