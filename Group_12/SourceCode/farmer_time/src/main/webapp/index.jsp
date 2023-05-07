@@ -14,6 +14,8 @@ pageEncoding="UTF-8" %>
     <br />
     <a href="timeTable.jsp">Time Table</a>
     <br />
+    <a href="getCalendar">Calendar</a>
+    <br />
     <a href="signup.jsp">Signup</a>
     <br />
     <a href="login.jsp">Login</a>

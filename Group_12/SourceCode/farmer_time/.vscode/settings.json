@@ -4,5 +4,5 @@
         "Servlet"
     ],
     "java.configuration.updateBuildConfiguration": "automatic",
-    "files.autoSaveDelay": 100000
+    "files.autoSaveDelay": 1000
 }

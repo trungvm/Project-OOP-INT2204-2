@@ -21,10 +21,10 @@
       <div class="timetable-img text-center">
         <img src="images/bg.jpg" alt="img not found" />
       </div>
-      <div class="table-responsive">
+      <div class="table-responsive pt-4">
         <table class="table table-bordered text-center">
           <thead>
-            <tr class="bg-light-gray">
+            <tr class="bg-info bg-gradient text-white">
               <th class="text-uppercase">Time</th>
               <th class="text-uppercase">Monday</th>
               <th class="text-uppercase">Tuesday</th>

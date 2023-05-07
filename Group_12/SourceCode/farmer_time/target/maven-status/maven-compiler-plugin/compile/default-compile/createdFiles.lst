@@ -2,6 +2,8 @@ ConnectMySQL.class
 CssServlet.class
 Weather.class
 WeatherServlet.class
+CalendarServlet.class
+DateMonth.class
 NotFoundServlet.class
 HelloServlet.class
 ImageServlet.class
