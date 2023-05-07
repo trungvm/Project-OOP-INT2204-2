@@ -122,9 +122,9 @@ public class SavedPropertyAdapter extends RecyclerView.Adapter<SavedPropertyAdap
 
     public String getPropertyPriceText(double dirhamPrice, String purpose){
 
-        @SuppressLint("DefaultLocale") String resultingString = String.format("%.0f",(dirhamPrice * 0.24)) + "€";
+        @SuppressLint("DefaultLocale") String resultingString = String.format("%,.0f",(dirhamPrice * 6385)) + "€";
         if(purpose.equals("for-rent")){
-            resultingString += " / month";
+            resultingString += "/month";
         }
 
         return resultingString;
