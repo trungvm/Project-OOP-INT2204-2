@@ -1,24 +1,41 @@
 package oop.bufihofa.classes;
 
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 public class Item {
     private String name = "?";
     private double price = 1;
     private double quantity = 1;
     private int id = 1000000000;
     private String unit = "?";
+    private String dateString = "?";
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy");
 
+    LocalDate ldate = LocalDate.of(2000, 1, 1);
     //constructor
     public Item(){}
     public Item(String s){
 
     }
-    public Item(String name, int id, double price, double quantity, String unit) {
+    public Item(String name, int id, double price, double quantity, String unit, String date) {
         this.name = name;
         this.id = id;
         this.price = price;
         this.quantity = quantity;
         this.unit = unit;
+        this.dateString = date;
+        this.ldate = LocalDate.parse(date, formatter);
+    }
+    public Item(String name, int id, double price, double quantity, String unit, LocalDate date) {
+        this.name = name;
+        this.id = id;
+        this.price = price;
+        this.quantity = quantity;
+        this.unit = unit;
+        this.ldate = date;
+        this.dateString = date.format(formatter);
     }
 
     // getter and setter
@@ -64,4 +81,13 @@ public class Item {
         this.unit = unit;
     }
 
+    public LocalDate getDate() {
+        return ldate;
+    }
+    public String getDateString(){
+        return dateString;
+    }
+    public void setDate(LocalDate date) {
+        this.ldate = date;
+    }
 }
