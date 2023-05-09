@@ -1,3 +1,4 @@
+package information;
 public class Weather {
     private String city;
 

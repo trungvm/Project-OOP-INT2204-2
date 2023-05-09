@@ -11,6 +11,9 @@ import com.google.maps.GeoApiContext;
 import com.google.maps.GeocodingApi;
 import com.google.maps.model.AddressComponent;
 import com.google.maps.model.GeocodingResult;
+
+import information.Weather;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -40,9 +43,6 @@ public class WeatherServlet extends HttpServlet {
         String city = request.getParameter("city");
 
         if (city == null || city.isEmpty()) {
-            // response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            // response.sendRedirect("/farmer_time/weather.jsp");
-            // return;
             city = "Ha Noi";
         }
 
@@ -150,7 +150,7 @@ public class WeatherServlet extends HttpServlet {
         } else {
             EntityUtils.consume(httpEntity);
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
-            response.sendRedirect("/farmer_time/weather.jsp");
+            response.sendRedirect("/farmer_time/getData");
         }
     }
 

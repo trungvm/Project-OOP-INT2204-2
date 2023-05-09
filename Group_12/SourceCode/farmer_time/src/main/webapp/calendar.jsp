@@ -41,7 +41,7 @@ pageEncoding="UTF-8"%>
 
   <body class="bg-gray-200">
     <header>
-      <jsp:include page="components/header.jsp" />
+      <%@ include file="components/header.jsp" %>
     </header>
 
     <% String monthString = (String) request.getAttribute("monthString"); 

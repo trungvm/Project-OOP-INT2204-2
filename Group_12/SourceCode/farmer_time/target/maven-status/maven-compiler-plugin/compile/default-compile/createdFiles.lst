@@ -1,8 +1,11 @@
 ConnectMySQL.class
+AddProjectServlet.class
 CssServlet.class
-Weather.class
+information\Weather.class
 WeatherServlet.class
 CalendarServlet.class
+information\ProjectInfo.class
 NotFoundServlet.class
 HelloServlet.class
 ImageServlet.class
+ShowProjectServlet.class

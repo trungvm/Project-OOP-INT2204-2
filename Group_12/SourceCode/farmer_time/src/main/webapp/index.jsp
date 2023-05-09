@@ -20,7 +20,7 @@ pageEncoding="UTF-8" %>
     <br />
     <a href="login.jsp">Login</a>
     <br />
-    <a href="project.jsp">Project</a>
+    <a href="showProject">Project</a>
     <br />
     <a href="getData">Weather App</a>
   </body>
