@@ -25,7 +25,7 @@ public class ShowProjectServlet extends HttpServlet {
             Connection conn = ConnectMySQL.getConnection(ConnectMySQL.DB_URL, ConnectMySQL.USER_NAME,
                     ConnectMySQL.PASSWORD);
 
-            String sql = "SELECT project_name, description, img, priority, status, start_date, finish_date FROM project LIMIT 20";
+            String sql = "SELECT project_name, description, img, priority, status, start_date, finish_date, project_id FROM project LIMIT 20";
 
             // create statement
             PreparedStatement stmt = conn.prepareStatement(sql);
@@ -40,6 +40,7 @@ public class ShowProjectServlet extends HttpServlet {
                 String status = rs.getString(5);
                 String startTime = rs.getString(6);
                 String finishTime = rs.getString(7);
+                int projectId = rs.getInt(8);
                 if (finishTime != null) {
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                     Date endDate = sdf.parse(finishTime);
@@ -47,7 +48,7 @@ public class ShowProjectServlet extends HttpServlet {
                     finishTime = dateFormat.format(endDate);
                 }
                 ProjectInfo projectInfo = new ProjectInfo(projectName, description, img, priority, status, startTime,
-                        finishTime);
+                        finishTime, projectId);
                 arrayListProject.add(projectInfo);
             }
 

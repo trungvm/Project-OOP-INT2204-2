@@ -74,6 +74,10 @@
             -webkit-box-orient: vertical;
             overflow: auto;
           }
+
+          .cursor-pointer {
+            cursor: pointer;
+          }
         </style>
       </head>
 
@@ -86,10 +90,10 @@
             </div>
         </header>
 
-        <% Date currentDate=new Date(); SimpleDateFormat dateFormat=new SimpleDateFormat("dd-MM-yyyy HH:mm"); 
-           String formattedDate=dateFormat.format(currentDate);
-           ArrayList<ProjectInfo> arr = (ArrayList<ProjectInfo>) request.getAttribute("arrayListProject");
-        %>
+        <% Date currentDate=new Date(); SimpleDateFormat dateFormat=new SimpleDateFormat("dd-MM-yyyy HH:mm"); String
+          formattedDate=dateFormat.format(currentDate); ArrayList<ProjectInfo> arr = (ArrayList<ProjectInfo>)
+            request.getAttribute("arrayListProject");
+            %>
 
             <div class="container py-5">
               <div class="d-flex align-items-center justify-content-between">
@@ -107,8 +111,12 @@
               <div class="row pb-5 mb-4">
 
                 <% for(ProjectInfo element : arr) { %>
+                  <form id="<%= element.projectId %>" action="showTask" method="post" hidden>
+                    <input type="text" value="<%= element.projectId %>" name="projectId" />
+                    <button type="submit"></button>
+                  </form>
                   <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
-                    <a class="cursor-pointer" href="#">
+                    <a class="cursor-pointer" onclick="document.getElementById('<%= element.projectId %>').submit();">
                       <div class="card rounded shadow-sm border-0 mb-4">
                         <div class="card-body p-4">
                           <img src="<%= element.img %>" alt="" class="img-fluid d-block mx-auto mb-3" />

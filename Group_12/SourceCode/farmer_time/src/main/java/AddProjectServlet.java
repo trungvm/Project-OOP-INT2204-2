@@ -18,6 +18,8 @@ public class AddProjectServlet extends HttpServlet {
         if(projectName == "") projectName = "No title";
 
         String des = (String) request.getParameter("des");
+        des = des.replaceAll("\n", "<br>");
+        
         String img = (String) request.getParameter("img");
         String priority = (String) request.getParameter("priority");
         String status = (String) request.getParameter("status");

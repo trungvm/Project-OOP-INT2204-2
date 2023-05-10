@@ -1,4 +1,5 @@
 ConnectMySQL.class
+PlantsListServlet.class
 AddProjectServlet.class
 CssServlet.class
 information\Weather.class
@@ -6,6 +7,11 @@ WeatherServlet.class
 CalendarServlet.class
 information\ProjectInfo.class
 NotFoundServlet.class
-HelloServlet.class
-ImageServlet.class
 ShowProjectServlet.class
+ShowTaskServlet.class
+DeleteTaskServlet.class
+information\TaskInfo.class
+information\Plants.class
+HelloServlet.class
+AddTaskServlet.class
+ImageServlet.class

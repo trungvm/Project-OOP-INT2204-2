@@ -30,8 +30,11 @@
                         <form action="addProject" method="post" class="card-body">
                             <div class="mb-3">
                                 <label class="form-label">Project Name</label>
-                                <input type="text" onkeypress="return event.keyCode != 13;" class="form-control"
-                                    name="projectName" />
+                                <input type="text" onkeypress="return event.keyCode != 13;"
+                                    class="form-control" name="projectName" />
+                                <div class="invalid-feedback">
+                                    Please provide a title project.
+                                </div>
                             </div>
 
 

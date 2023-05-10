@@ -8,9 +8,10 @@ public class ProjectInfo {
     public String status;
     public String startTime;
     public String finishTime;
+    public int projectId;
 
     public ProjectInfo(String projectName, String description, String img, String priority, String status, String startTime,
-            String finishTime) {
+            String finishTime, int projectId) {
         this.projectName = projectName;
         this.description = description;
         this.img = img;
@@ -18,5 +19,6 @@ public class ProjectInfo {
         this.status = status;
         this.startTime = startTime;
         this.finishTime = finishTime;
+        this.projectId = projectId;
     }
 }
