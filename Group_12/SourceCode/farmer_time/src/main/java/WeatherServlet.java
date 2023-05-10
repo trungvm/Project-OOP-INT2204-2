@@ -96,7 +96,7 @@ public class WeatherServlet extends HttpServlet {
         }
 
 
-        double fellsLike = 10.5;
+        double fellsLike = 29.6;
         if (main.get("feels_like") instanceof Long) {
             long t = (Long) main.get("feels_like");
             fellsLike = (double) t;

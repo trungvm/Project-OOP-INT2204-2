@@ -9,6 +9,9 @@ information\ProjectInfo.class
 NotFoundServlet.class
 ShowProjectServlet.class
 ShowTaskServlet.class
+DeleteProjectServlet.class
+EditProjectServlet.class
+SelectProjectServlet.class
 DeleteTaskServlet.class
 information\TaskInfo.class
 information\Plants.class

@@ -47,6 +47,7 @@ public class ShowProjectServlet extends HttpServlet {
                     SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm");
                     finishTime = dateFormat.format(endDate);
                 }
+                if (description != null) description = description.replaceAll("\n", "<br>");
                 ProjectInfo projectInfo = new ProjectInfo(projectName, description, img, priority, status, startTime,
                         finishTime, projectId);
                 arrayListProject.add(projectInfo);

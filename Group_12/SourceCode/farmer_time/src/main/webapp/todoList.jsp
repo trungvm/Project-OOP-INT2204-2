@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-  <%@ page import="java.util.*, java.io.*, information.TaskInfo,  information.ProjectInfo" %>
+  <%@ page import="java.util.*, java.io.*, information.TaskInfo, information.ProjectInfo" %>
     <%@ page import="java.text.SimpleDateFormat" %>
       <!DOCTYPE html>
       <html lang="en">
@@ -11,8 +11,7 @@
 
         <% ArrayList<TaskInfo> arr = (ArrayList<TaskInfo>) request.getAttribute("arrayListTask");
             int projectId = (int) request.getAttribute("projectId");
-            ProjectInfo projectInfo = (ProjectInfo) request.getAttribute("projectInfo");
-            %>
+            ProjectInfo projectInfo = (ProjectInfo) request.getAttribute("projectInfo"); %>
 
             <title>
               <%= projectInfo.projectName %>
@@ -215,12 +214,20 @@
         <div class="container-todo d-flex justify-content-center py-5">
           <div class="col-md-8">
             <div class="d-flex align-items-center justify-content-between">
-              <a class="btn bg-sky text-white" href="showTask">
-                EDIT PROJECT
-              </a>
-              <a class="btn bg-orange text-white" onclick="confirmDelete(event)" href="showTask">
-                DELETE PROJECT
-              </a>
+              <form action="selectProject" method="post">
+                <input type="text" name="projectId" value="<%= projectId %>" hidden />
+                <button type="submit" class="btn bg-sky text-white">
+                  EDIT PROJECT
+                </button>
+              </form>
+
+              <form action="deleteProject" method="post">
+                <input type="text" name="projectId" value="<%= projectId %>" hidden />
+                <button type="submit" class="btn bg-orange text-white" onclick="confirmDelete(event)">
+                  DELETE PROJECT
+                </button>
+              </form>
+
             </div>
           </div>
         </div>

@@ -62,6 +62,7 @@ public class ShowTaskServlet extends HttpServlet {
                     SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm");
                     finishTime = dateFormat.format(endDate);
                 }
+                if (description != null) description = description.replaceAll("\n", "<br>");
                 TaskInfo taskInfo = new TaskInfo(taskId, taskName, description, priority, status, startTime,
                         finishTime);
                 arrayListTask.add(taskInfo);
@@ -88,6 +89,7 @@ public class ShowTaskServlet extends HttpServlet {
                     SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm");
                     finishTime = dateFormat.format(endDate);
                 }
+                if(description != null)description = description.replaceAll("\n", "<br>");
                 projectInfo = new ProjectInfo(projectName, description, img, priority, status, startTime,
                         finishTime, projectId);
             }
