@@ -81,15 +81,19 @@ public class ui implements Initializable {
     private DatePicker datePicker;
 
     boolean fileOpened = false;
+    boolean tempFileOpened = false;
     ThongBao thongBao = new ThongBao();
     FileChooser fileChooser = new FileChooser();
     File selectedFile;
+    File tempSelectedFile;
 
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy");
     Storage kho = new Storage("", "");
+    Storage tempKho = new Storage("", "");
 
     private ObservableList<Item> storage = FXCollections.observableArrayList();
     private ObservableList<Item> dataList = FXCollections.observableArrayList();
+    private ObservableList<Item> tempStorage = FXCollections.observableArrayList();
     private int ID = 1000000000;
 
     public void hideSuaThongTinKho(){
@@ -137,48 +141,52 @@ public class ui implements Initializable {
         hideSuaThongTinKho();
         fileChooser.setTitle("Chọn nơi tạo mới File Dữ Liệu (*.csv)");
         fileChooser.setInitialFileName("NewStorage.csv");
-        selectedFile = fileChooser.showSaveDialog(new Stage());
-        if(selectedFile != null && selectedFile.getName().endsWith(".csv")){
+        tempSelectedFile = fileChooser.showSaveDialog(new Stage());
+        if(tempSelectedFile != null && tempSelectedFile.getName().endsWith(".csv")){
             try {
-                FileWriter fileWriter = new FileWriter(selectedFile);
+                FileWriter fileWriter = new FileWriter(tempSelectedFile);
                 BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
                 bufferedWriter.write("id,name,quantity,unit,price,date\n.....\n.....");
-                kho.setMaKho("");
-                kho.setDiaChiKho("");
+                tempKho.setMaKho("");
+                tempKho.setDiaChiKho("");
                 bufferedWriter.close();
-                fileOpened = true;
-                infoStorage.setText(selectedFile.getAbsolutePath());
+                tempFileOpened = true;
+                infoStorage.setText(tempSelectedFile.getAbsolutePath());
             } catch (IOException e) {
                 e.printStackTrace();
                 infoStorage.setText("Tạo file thất bại");
 
-                fileOpened = false;
+                tempFileOpened = false;
             }
         }
         else{
             infoStorage.setText("Tạo file thất bại");
-            fileOpened = false;
+            tempFileOpened = false;
         }
-        if(fileOpened == false){
+        if(tempFileOpened == false){
             thongBao.taoKhoThatBai();
         }
         else{
             thongBao.taoKhoThanhCong();
+            kho.setDiaChiKho(tempKho.getDiaChiKho());
+            kho.setMaKho(tempKho.getMaKho());
+            selectedFile = tempSelectedFile;
+            fileOpened = true;
+            storage.clear();
+            table.setItems(storage);
         }
-        storage.clear();
-        table.setItems(storage);
+
 
     }
     public void importStorageClick(){
         hideSuaThongTinKho();
         fileChooser.setTitle("Chọn nơi chứa File Dữ Liệu có sẵn (.*csv)");
-        selectedFile = fileChooser.showOpenDialog(new Stage());
+        tempSelectedFile = fileChooser.showOpenDialog(new Stage());
         boolean readfileok = true;
-        storage.clear();
-        table.setItems(storage);
-        if(selectedFile != null && selectedFile.getName().endsWith(".csv")){
+        tempStorage.clear();
+        if(tempSelectedFile != null && tempSelectedFile.getName().endsWith(".csv")){
             try {
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(selectedFile.getAbsolutePath()), "UTF8"));
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(tempSelectedFile.getAbsolutePath()), "UTF8"));
 
                 String line;
                 int i = 0;
@@ -192,39 +200,47 @@ public class ui implements Initializable {
                         }
                     }
                     else if(i==2){
-                        kho.setMaKho(line);
+                        tempKho.setMaKho(line);
                     }
                     else if(i==3){
-                        kho.setDiaChiKho(line);
+                        tempKho.setDiaChiKho(line);
                     }
                     else{
                         String[] fields = line.split(",");
-                        storage.add(new Item(fields[1], Integer.parseInt(fields[0]), (int)Double.parseDouble(fields[4]), Double.parseDouble(fields[2]), fields[3], LocalDate.parse(fields[5], formatter)));
+                        tempStorage.add(new Item(fields[1], Integer.parseInt(fields[0]), (int)Double.parseDouble(fields[4]), Double.parseDouble(fields[2]), fields[3], LocalDate.parse(fields[5], formatter)));
                         if(ID < Integer.parseInt(fields[0])) ID=Integer.parseInt(fields[0]);
                     }
                 }
                 if(readfileok){
-                    fileOpened = true;
-                    infoStorage.setText(selectedFile.getAbsolutePath());
+                    tempFileOpened = true;
+                    infoStorage.setText(tempSelectedFile.getAbsolutePath());
                     ID++;
                 }
             } catch (IOException e) {
                 e.printStackTrace();
                 infoStorage.setText("Đọc File thất bại");
-                fileOpened = false;
+                tempFileOpened = false;
             }
         }
         else{
             infoStorage.setText("Đọc File thất bại");
-            fileOpened = false;
+            tempFileOpened = false;
         }
-        if(fileOpened == false){
+        if(tempFileOpened == false){
             thongBao.nhapDuLieuThatBai();
         }
         else{
+            storage.clear();
+            kho.setDiaChiKho(tempKho.getDiaChiKho());
+            kho.setMaKho(tempKho.getMaKho());
+            fileOpened = true;
+            selectedFile = tempSelectedFile;
             thongBao.nhapDuLieuThanhCong(kho);
+            storage = FXCollections.observableArrayList(tempStorage);
+            table.setItems(storage);
+
         }
-        table.setItems(storage);
+
     }
     public void saveStorageClick(){
         hideSuaThongTinKho();
