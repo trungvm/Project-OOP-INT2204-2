@@ -24,19 +24,57 @@ import oop.bufihofa.classes.*;
 
 public class ui implements Initializable {
     @FXML
-    CheckBox tenCheck, slCheck, dvCheck, giaCheck;
+    CheckBox tenCheck;
     @FXML
-    Label nhapmakho1, nhapdiachikho1, infoStorage, danhsachhanghoa, errorLabel, idLabel, soLuongKQ;;
+    CheckBox slCheck;
     @FXML
-    TextField nhapmakho, nhapdiachikho, nameField, quantityField, unitField, priceField, searchField;
+    CheckBox dvCheck;
+    @FXML
+    CheckBox giaCheck;
+
+    @FXML
+    Label nhapmakho1;
+    @FXML
+    Label nhapdiachikho1;
+    @FXML
+    Label infoStorage;
+    @FXML
+    Label danhsachhanghoa;
+    @FXML
+    Label errorLabel;
+    @FXML
+    Label idLabel;
+    @FXML
+    Label soLuongKQ;
+
+    @FXML
+    TextField nhapmakho;
+    @FXML
+    TextField nhapdiachikho;
+    @FXML
+    TextField nameField;
+    @FXML
+    TextField quantityField;
+    @FXML
+    TextField unitField;
+    @FXML
+    TextField priceField;
+    @FXML
+    TextField searchField;
     @FXML
     Button suathongtinkho;
     @FXML
     private TableView<Item> table;
     @FXML
-    private TableColumn<Item, Integer> idColumn, priceColumn;
+    private TableColumn<Item, Integer> idColumn;
     @FXML
-    private TableColumn<Item, String> nameColumn, unitColumn, dateColumn;
+    private TableColumn<Item, Integer> priceColumn;
+    @FXML
+    private TableColumn<Item, String> nameColumn;
+    @FXML
+    private TableColumn<Item, String> unitColumn;
+    @FXML
+    private TableColumn<Item, String> dateColumn;
     @FXML
     private TableColumn<Item, Double> quantityColumn;
     @FXML
@@ -267,24 +305,17 @@ public class ui implements Initializable {
 
         table.setItems(dataList);
         soLuongKQ.setText("Có "+dataList.size()+" kết quả!");
+
     }
 
-    public void onSearchButtonClicked(KeyEvent e){
+    public void onSearchButtonClicked(){
         if(!fileOpened) {
             thongBao.chuaChonKho();
             return;
         }
-
         dataList = FXCollections.observableArrayList();
-
-
         String searchText = searchField.getText();
-        if (e.getCode().getCode() >= 48 && e.getCode().getCode() <= 57) searchText = searchText + Integer.toString(e.getCode().getCode()-48);
-        if(e.getCode().toString().length()==1) {
-            char a = (e.getCode().toString().charAt(0));
-            if (a >= 'A' && a <= 'Z') searchText = searchText + a;
-            if (a >= 'a' && a <= 'z') searchText = searchText + a;
-        }
+        System.out.println();
         int m = searchText.length();
         if(m==0){
             table.setItems(storage);
