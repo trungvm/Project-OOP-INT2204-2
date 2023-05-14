@@ -16,6 +16,7 @@ import oop.bufihofa.classes.Item;
 
 import java.io.*;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
@@ -195,8 +196,7 @@ public class ui implements Initializable {
         }
         if(selectedFile != null){
             try {
-                FileWriter fileWriter = new FileWriter(selectedFile);
-                BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+                BufferedWriter bufferedWriter = new BufferedWriter (new OutputStreamWriter(new FileOutputStream(selectedFile.getAbsolutePath()), StandardCharsets.UTF_8));
                 bufferedWriter.write("id,name,quantity,unit,price,date\n");
                 bufferedWriter.write(kho.getMaKho()+"\n");
                 bufferedWriter.write(kho.getDiaChiKho()+"\n");
