@@ -96,7 +96,75 @@ public class MainActivity3 extends AppCompatActivity
                     "Cải xoong nước",
                     "Dưa hấu",
             };
-
+    public  static  String[] progNamesEng=
+            {
+                    "Almond",
+                    "Apple",
+                    "Apricot",
+                    "Artichoke",
+                    "Arugula",
+                    "Avocado",
+                    "Banana flower",
+                    "Banana",
+                    "Beet",
+                    "Bell Pepper",
+                    "Bok choy",
+                    "Broccoli",
+                    "Cabbage",
+                    "Carrot",
+                    "Cauliflower",
+                    "Cherry",
+                    "Chili",
+                    "Coconut",
+                    "Corn",
+                    "Cucumber",
+                    "Dragon fruit",
+                    "Durian",
+                    "Eggplant",
+                    "Fig",
+                    "Garlic",
+                    "Ginger",
+                    "Ginkgo",
+                    "Grapes",
+                    "Guava",
+                    "Kale",
+                    "Kiwi",
+                    "Leek",
+                    "Lemon",
+                    "Lettuce",
+                    "Macadamia nut",
+                    "Mache",
+                    "Mango",
+                    "Milk",
+                    "Mushroom",
+                    "Okra",
+                    "Olives",
+                    "Onion",
+                    "Orange",
+                    "Papaya",
+                    "Parsley",
+                    "Passion fruit",
+                    "Peach",
+                    "Peanut",
+                    "Pear",
+                    "Peas",
+                    "Pepper",
+                    "Pineapple",
+                    "Plum",
+                    "Pomegranate",
+                    "Potato",
+                    "Pumpkin",
+                    "Radish",
+                    "Raspberry",
+                    "Spinach",
+                    "Starfruit",
+                    "Strawberry",
+                    "Tomato",
+                    "Turnip",
+                    "Walnut",
+                    "Water cress",
+                    "Watermelon",
+            };
     public  static  Integer[] progImages=
             {
                     R.drawable.almond1,
@@ -228,7 +296,7 @@ public class MainActivity3 extends AppCompatActivity
 
         for(int i = 0 ; i < progNames.length; i++)
         {
-            foodItems.add(new FoodItems(progNames[i],progImages[i]));
+            foodItems.add(new FoodItems(progNames[i],progNamesEng[i],progImages[i]));
         }
 
         adapter=new MyListAdapter(this,foodItems);

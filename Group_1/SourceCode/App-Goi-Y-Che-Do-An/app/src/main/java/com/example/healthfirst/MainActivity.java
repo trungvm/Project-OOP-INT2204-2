@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toolbar;
 
 public class MainActivity extends AppCompatActivity
@@ -17,23 +18,25 @@ public class MainActivity extends AppCompatActivity
     ImageButton i2;
     ImageButton i3;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
 
-        //NO TITLE
-        requestWindowFeature(Window.FEATURE_NO_TITLE); //will hide the title
-        getSupportActionBar().hide(); // hide the title bar
+
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getSupportActionBar().hide();
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN); //enable full screen
         setContentView(R.layout.activity_main);
-        //NO TITLE
+
 
 
         setContentView(R.layout.activity_main);setContentView(R.layout.activity_main);
         i1 = (ImageButton) findViewById(R.id.imageButton);
         i2 = (ImageButton) findViewById(R.id.imageButton2);
         i3 = (ImageButton) findViewById(R.id.imageButton4);
+
 
         i1.setOnClickListener(new View.OnClickListener()
         {
@@ -62,5 +65,10 @@ public class MainActivity extends AppCompatActivity
                 startActivity(x);
             }
         });
+    }
+
+    public void onClick(View view) {
+        Intent x = new Intent(MainActivity.this, BMI.class);
+        startActivity(x);
     }
 }

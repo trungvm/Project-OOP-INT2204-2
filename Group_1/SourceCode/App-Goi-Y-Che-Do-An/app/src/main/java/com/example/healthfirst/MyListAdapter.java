@@ -1,27 +1,22 @@
 package com.example.healthfirst;
 
+
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Vector;
 
 
 public class MyListAdapter extends BaseAdapter implements Filterable
@@ -74,10 +69,19 @@ public class MyListAdapter extends BaseAdapter implements Filterable
         {
             viewHolder=(ViewHolder)r.getTag();
         }
-        //viewHolder.tv2.setText(foodItems.get(position).getFoodName());
+
         viewHolder.ivw.setImageResource(foodItems.get(position).getFoodImageId());
         viewHolder.tv1.setText(foodItems.get(position).getFoodName());
-        //viewHolder.tv2.setText(Desc[position]);
+        r.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, FoodDetails.class);
+                intent.putExtra("key", foodItems.get(position).getFoodNameEng());
+                intent.putExtra("foodvn", foodItems.get(position).getFoodName());
+                context.startActivity(intent);
+            }
+        });
+
         return r;
     }
     class ViewHolder
@@ -115,7 +119,6 @@ public class MyListAdapter extends BaseAdapter implements Filterable
                     if(full.get(i).getFoodName().toLowerCase().startsWith(constraint.toString().toLowerCase()))
                     {
                         resultData.add(full.get(i));
-                        //arr.add(i);
                     }
                 }
                 filterResults.values = resultData;

@@ -82,6 +82,33 @@ public class MainActivity2 extends AppCompatActivity
             "Gà tây",
             "Trứng luộc"
     };
+    public static  String[] progNamesEng=
+            {
+                    "Anchovy fish",
+                    "Carp fish",
+                    "Chicken",
+                    "Clam",
+                    "Cod fish",
+                    "Crab",
+                    "Egg white",
+                    "Flying fish",
+                    "Galjoen fish",
+                    "Lobster",
+                    "Mackerel",
+                    "Marlin fish",
+                    "Mussel",
+                    "Mutton",
+                    "Pork",
+                    "Salmon",
+                    "Sardines",
+                    "Sea urchin",
+                    "Shrimp",
+                    "Squid",
+                    "Trout",
+                    "Tuna",
+                    "Turkey",
+                    "Whole egg"
+            };
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
@@ -143,7 +170,7 @@ public class MainActivity2 extends AppCompatActivity
 
         for(int i = 0 ; i < progNames.length; i++)
         {
-            foodItems.add(new FoodItems(progNames[i],progImages[i]));
+            foodItems.add(new FoodItems(progNames[i],progNamesEng[i],progImages[i]));
         }
 
         adapter=new MyListAdapter(this,foodItems);
