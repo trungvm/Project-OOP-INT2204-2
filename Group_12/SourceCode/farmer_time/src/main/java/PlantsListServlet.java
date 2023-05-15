@@ -39,8 +39,9 @@ public class PlantsListServlet extends HttpServlet {
                 String uses = rs.getString(7);
                 String notes = rs.getString(8);
                 String plantImg = rs.getString(9);
+                String detail = rs.getString(10);
                 Plants plants = new Plants(plantName, cropName, plantingMonth, plantingTime, weatherConditions, uses,
-                        notes, plantImg);
+                        notes, plantImg, detail);
                 arrayListPlants.add(plants);
             }
 

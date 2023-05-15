@@ -9,9 +9,10 @@ public class Plants {
     public String uses;
     public String notes;
     public String plantImg;
+    public String detail;
 
     public Plants(String plantName, String cropName, int plantingMonth, int plantingTime,
-            String weatherConditions, String uses, String notes, String plantImg){
+            String weatherConditions, String uses, String notes, String plantImg, String detail){
                 this.plantName = plantName;
                 this.cropName = cropName;
                 this.plantingMonth = plantingMonth;
@@ -20,6 +21,7 @@ public class Plants {
                 this.uses = uses;
                 this.notes = notes;
                 this.plantImg = plantImg;
+                this.detail = detail;
     }
     
 }

@@ -14,9 +14,6 @@
           <a class="nav-link" href="showTask">Tasks</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="timeTable.jsp">Time Table</a>
-        </li>
-        <li class="nav-item">
           <a class="nav-link" href="plants">Plants</a>
         </li>
         <li class="nav-item">

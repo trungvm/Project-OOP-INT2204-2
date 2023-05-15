@@ -4,10 +4,13 @@ AddProjectServlet.class
 CssServlet.class
 information\Weather.class
 WeatherServlet.class
+information\UserInfo.class
+LoginServlet.class
 CalendarServlet.class
 information\ProjectInfo.class
 NotFoundServlet.class
 ShowProjectServlet.class
+SessionFilter.class
 ShowTaskServlet.class
 DeleteProjectServlet.class
 EditProjectServlet.class
@@ -16,5 +19,6 @@ DeleteTaskServlet.class
 information\TaskInfo.class
 information\Plants.class
 HelloServlet.class
+SignUpServlet.class
 AddTaskServlet.class
 ImageServlet.class

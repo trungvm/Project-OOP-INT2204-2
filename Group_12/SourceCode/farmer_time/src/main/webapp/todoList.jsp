@@ -9,7 +9,10 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-        <% ArrayList<TaskInfo> arr = (ArrayList<TaskInfo>) request.getAttribute("arrayListTask");
+        <% 
+            Date currentDate=new Date(); SimpleDateFormat dateFormat=new SimpleDateFormat("dd-MM-yyyy HH:mm"); String
+            formattedDate=dateFormat.format(currentDate);
+            ArrayList<TaskInfo> arr = (ArrayList<TaskInfo>) request.getAttribute("arrayListTask");
             int projectId = (int) request.getAttribute("projectId");
             ProjectInfo projectInfo = (ProjectInfo) request.getAttribute("projectInfo"); %>
 
@@ -176,11 +179,11 @@
                                   </div>
                                   <div class="widget-content-left">
                                     <div class="widget-heading">
-                                      Make payment to Bluedart
+                                      Example Task
                                     </div>
                                     <div class="widget-subheading">
                                       <div>
-                                        By Johnny
+                                        Finish at: <%= formattedDate %>
                                         <div class="badge badge-pill badge-info ml-2">
                                           NEW
                                         </div>
