@@ -20,7 +20,7 @@ public class LoginServlet extends HttpServlet {
 
         if (isValid) {
             // Lưu thông tin phiên đăng nhập
-            HttpSession session = request.getSession();
+            HttpSession session = request.getSession(true); // tạo session mới nếu chưa có session
             session.setAttribute("email", email);
 
             // Chuyển hướng đến trang showProject

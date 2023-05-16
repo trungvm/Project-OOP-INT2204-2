@@ -9,10 +9,9 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-        <% 
-            Date currentDate=new Date(); SimpleDateFormat dateFormat=new SimpleDateFormat("dd-MM-yyyy HH:mm"); String
-            formattedDate=dateFormat.format(currentDate);
-            ArrayList<TaskInfo> arr = (ArrayList<TaskInfo>) request.getAttribute("arrayListTask");
+        <% Date currentDate=new Date(); SimpleDateFormat dateFormat=new SimpleDateFormat("dd-MM-yyyy HH:mm"); String
+          formattedDate=dateFormat.format(currentDate); ArrayList<TaskInfo> arr = (ArrayList<TaskInfo>)
+            request.getAttribute("arrayListTask");
             int projectId = (int) request.getAttribute("projectId");
             ProjectInfo projectInfo = (ProjectInfo) request.getAttribute("projectInfo"); %>
 
@@ -66,9 +65,13 @@
                       </span>
                       <% } %>
               </p>
-              <a class="btn btn-success" href="taskForm.jsp">
-                Add Task <i class="fas fa-plus"></i>
-              </a>
+              <form action="taskForm" method="post">
+                <input type="text" name="projectId" value="<%= projectId %>" hidden />
+                <button type="submit" class="btn btn-success">
+                  Add Task <i class="fas fa-plus"></i>
+                </button>
+              </form>
+
             </div>
             <p class="text-muted pb-2"><i class="fas fa-paper-plane text-info"></i> &nbsp;Finish at: <%=
                 projectInfo.finishTime %>
@@ -88,7 +91,6 @@
                       <%= projectInfo.status %>
                     </span>
                     <% } %>
-                      </span>
             </p>
 
             <p><i class="fas fa-keyboard text-primary"></i> &nbsp;Description
@@ -109,7 +111,7 @@
                 <form action="addTask" method="post" class="d-flex">
                   <input type="text" name="projectId" value="<%= projectId %>" hidden />
                   <div class="form-outline">
-                    <textarea type="text" name="taskName" style="height: 1.2em; width: 40vw" id="form2"
+                    <textarea type="text" name="taskName" required style="height: 1.2em; width: 40vw" id="form2"
                       class="form-control" placeholder="Quick task..."></textarea>
                   </div>
                   <button class="btn btn-danger ms-2 btn-sm" type="submit">Quick Add</button>
@@ -120,7 +122,6 @@
                   <div style="position: static" class="ps ps--active-y">
                     <div class="ps-content">
                       <ul class="list-group list-group-flush">
-
                         <% for(TaskInfo element : arr) { %>
                           <li class="list-group-item">
                             <div class="todo-indicator bg-warning"></div>
@@ -136,25 +137,43 @@
                                 <div class="widget-content-left">
                                   <div class="widget-heading">
                                     <%= element.taskName %>
-                                      <div class="badge badge-danger ml-2">
-                                        <%= element.priority %>
-                                      </div>
+
+                                      <% if(element.status.equals("INPROGRESS")) { %>
+                                        <span class="badge bg-warning ml-2" style="vertical-align: top">
+                                          <%= element.status %>
+                                        </span>
+                                        <% } if(element.status.equals("STOPPED")) { %>
+                                          <span class="badge bg-lightred ml-2" style="vertical-align: top">
+                                            <%= element.status %>
+                                          </span>
+                                          <% } if(element.status.equals("COMPLETED")) { %>
+                                            <span class="badge bg-success ml-2" style="vertical-align: top">
+                                              <%= element.status %>
+                                            </span>
+                                            <% } %>
+
                                   </div>
                                   <div class="widget-subheading"><i>
-                                      <%= element.finishTime %>
+                                      Finish at: <%= element.finishTime %>
                                     </i></div>
                                 </div>
-                                <div class="widget-content-right">
-                                  <button type="submit" class="border-0 btn-transition btn btn-outline-success">
-                                    <i class="fa fa-check"></i>
-                                  </button>
-                                  <form id="<%= element.taskId %>" action="deleteTask" method="post" hidden>
+                                <form id="formSelectTask<%= element.taskId %>" action="selectTask" method="post" hidden>
                                     <input type="text" value="<%= element.taskId %>" name="taskId" />
                                     <input type="text" name="projectId" value="<%= projectId %>" />
                                     <button type="submit"></button>
                                   </form>
-                                  <button type="submit"
-                                    onclick="document.getElementById('<%= element.taskId %>').submit();"
+
+                                  <form id="formDeleteTask<%= element.taskId %>" action="deleteTask" method="post" hidden>
+                                    <input type="text" value="<%= element.taskId %>" name="taskId" />
+                                    <input type="text" name="projectId" value="<%= projectId %>" />
+                                    <button type="submit"></button>
+                                  </form>
+                                <div class="widget-content-right">
+                                  <button type="submit" onclick="document.getElementById('formSelectTask<%= element.taskId %>').submit();"
+                                    class="border-0 btn-transition btn btn-outline-success">
+                                    <i class="fa fa-check"></i>
+                                  </button>
+                                  <button type="submit" onclick="document.getElementById('formDeleteTask<%= element.taskId %>').submit();"
                                     class="border-0 btn-transition btn btn-outline-danger">
                                     <i class="fa fa-trash"></i>
                                   </button>
@@ -164,44 +183,6 @@
                             </div>
                           </li>
                           <% } %>
-
-
-                            <li class="list-group-item">
-                              <div class="todo-indicator bg-focus"></div>
-                              <div class="widget-content p-0">
-                                <div class="widget-content-wrapper">
-                                  <div class="widget-content-left mr-2">
-                                    <div class="custom-checkbox custom-control">
-                                      <input class="custom-control-input" id="exampleCustomCheckbox1"
-                                        type="checkbox" /><label class="custom-control-label"
-                                        for="exampleCustomCheckbox1">&nbsp;</label>
-                                    </div>
-                                  </div>
-                                  <div class="widget-content-left">
-                                    <div class="widget-heading">
-                                      Example Task
-                                    </div>
-                                    <div class="widget-subheading">
-                                      <div>
-                                        Finish at: <%= formattedDate %>
-                                        <div class="badge badge-pill badge-info ml-2">
-                                          NEW
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div class="widget-content-right">
-                                    <button class="border-0 btn-transition btn btn-outline-success">
-                                      <i class="fa fa-check"></i>
-                                    </button>
-                                    <button class="border-0 btn-transition btn btn-outline-danger">
-                                      <i class="fa fa-trash"></i>
-                                    </button>
-                                  </div>
-                                </div>
-                              </div>
-                            </li>
-
                       </ul>
                     </div>
                   </div>
@@ -234,6 +215,8 @@
             </div>
           </div>
         </div>
+
+
         <jsp:include page="components/footer.jsp" />
       </body>
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"

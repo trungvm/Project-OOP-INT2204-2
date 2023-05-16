@@ -51,9 +51,12 @@ public class ShowTaskServlet extends HttpServlet {
             while (rs.next()) {
                 int taskId = rs.getInt(1);
                 String taskName = rs.getString(3);
-                String description = rs.getString(4);
-                String priority = rs.getString(7);
-                String status = rs.getString(8);
+                String priority = rs.getString(8);
+                if (priority == null)
+                    priority = "";
+                String status = rs.getString(7);
+                if (status == null)
+                    status = "";
                 String startTime = rs.getString(5);
                 String finishTime = rs.getString(6);
                 if (finishTime != null) {
@@ -62,9 +65,9 @@ public class ShowTaskServlet extends HttpServlet {
                     SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm");
                     finishTime = dateFormat.format(endDate);
                 }
-                if (description != null) description = description.replaceAll("\n", "<br>");
-                TaskInfo taskInfo = new TaskInfo(taskId, taskName, description, priority, status, startTime,
-                        finishTime);
+                if (taskName != null)
+                    taskName = taskName.replaceAll("\n", "<br>");
+                TaskInfo taskInfo = new TaskInfo(taskId, taskName, projectId, priority, status, startTime, finishTime);
                 arrayListTask.add(taskInfo);
             }
 
@@ -89,7 +92,8 @@ public class ShowTaskServlet extends HttpServlet {
                     SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm");
                     finishTime = dateFormat.format(endDate);
                 }
-                if(description != null)description = description.replaceAll("\n", "<br>");
+                if (description != null)
+                    description = description.replaceAll("\n", "<br>");
                 projectInfo = new ProjectInfo(projectName, description, img, priority, status, startTime,
                         finishTime, projectId);
             }

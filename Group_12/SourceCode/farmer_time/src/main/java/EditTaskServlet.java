@@ -6,15 +6,15 @@ import jakarta.servlet.annotation.WebServlet;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 
-@WebServlet(name = "task", urlPatterns = "/addTask")
-public class AddTaskServlet extends HttpServlet {
+@WebServlet(name = "editTask", urlPatterns = "/editTask")
+public class EditTaskServlet extends HttpServlet {
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         int projectId = Integer.parseInt(request.getParameter("projectId"));
-
+        int taskId = Integer.parseInt(request.getParameter("taskId"));
         String taskName = (String) request.getParameter("taskName");
         taskName = taskName.trim();
         if (taskName == "")
@@ -24,30 +24,27 @@ public class AddTaskServlet extends HttpServlet {
         String status = (String) request.getParameter("status");
 
         String startTime = (String) request.getParameter("startTime");
-        if (startTime != null) {
-            if (startTime.isEmpty())
-                startTime = null;
-        }
+        if (startTime.isEmpty())
+            startTime = null;
 
         String finishTime = (String) request.getParameter("finishTime");
-        if (finishTime != null) {
-            if (finishTime.isEmpty())
-                finishTime = null;
-        }
+        if (finishTime.isEmpty())
+            finishTime = null;
+
         try {
             Connection conn = ConnectMySQL.getConnection(ConnectMySQL.DB_URL, ConnectMySQL.USER_NAME,
                     ConnectMySQL.PASSWORD);
 
-            String sql = "INSERT INTO task(project_id, task_name, priority, status, start_date, finish_date) VALUES(?, ?, ?, ?, ?, ?)";
+            String sql = "UPDATE task SET task_name = ?, priority = ?, status = ?, start_date = ?, finish_date = ? WHERE task_id = ?";
 
             // create statement
             PreparedStatement stmt = conn.prepareStatement(sql);
-            stmt.setInt(1, projectId);
-            stmt.setString(2, taskName);
-            stmt.setString(3, priority);
-            stmt.setString(4, status);
-            stmt.setString(5, startTime);
-            stmt.setString(6, finishTime);
+            stmt.setString(1, taskName);
+            stmt.setString(2, priority);
+            stmt.setString(3, status);
+            stmt.setString(4, startTime);
+            stmt.setString(5, finishTime);
+            stmt.setInt(6, taskId);
 
             stmt.execute();
 

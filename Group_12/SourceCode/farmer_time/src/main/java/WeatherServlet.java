@@ -46,21 +46,24 @@ public class WeatherServlet extends HttpServlet {
             city = "Ha Noi";
         }
 
-        GeoApiContext context = new GeoApiContext.Builder()
-                .apiKey("AIzaSyDQ0oIeBKADZTxl-TbBljeY_Hq7KwltpFk")
-                .build();
-        try {
-            GeocodingResult[] results = GeocodingApi.geocode(context, "your-latitude, your-longitude").await();
-            List<AddressComponent> components = Arrays.asList(results[0].addressComponents);
-            for (AddressComponent component : components) {
-                if (component.types[0].toString().equals("administrative_area_level_1")) {
-                    System.out.println("Current province is: " + component.longName);
-                    break;
-                }
-            }
-        } catch (Exception e) {
-            System.err.println("Cannot determine current province: " + e.getMessage());
-        }
+        // API Google Map
+        // GeoApiContext context = new GeoApiContext.Builder()
+        // .apiKey("AIzaSyDQ0oIeBKADZTxl-TbBljeY_Hq7KwltpFk")
+        // .build();
+        // try {
+        // GeocodingResult[] results = GeocodingApi.geocode(context, "your-latitude,
+        // your-longitude").await();
+        // List<AddressComponent> components =
+        // Arrays.asList(results[0].addressComponents);
+        // for (AddressComponent component : components) {
+        // if (component.types[0].toString().equals("administrative_area_level_1")) {
+        // System.out.println("Current province is: " + component.longName);
+        // break;
+        // }
+        // }
+        // } catch (Exception e) {
+        // System.err.println("Cannot determine current province: " + e.getMessage());
+        // }
 
         // Gửi yêu cầu tới API và lấy thông tin thời tiết
         HttpClient httpClient = HttpClientBuilder.create().build();
@@ -95,12 +98,11 @@ public class WeatherServlet extends HttpServlet {
             temperature = (Double) main.get("temp");
         }
 
-
         double fellsLike = 29.6;
         if (main.get("feels_like") instanceof Long) {
             long t = (Long) main.get("feels_like");
             fellsLike = (double) t;
-        } else if (main.get("temp") instanceof Double) {
+        } else if (main.get("feels_like") instanceof Double) {
             fellsLike = (Double) main.get("feels_like");
         }
 
@@ -128,13 +130,13 @@ public class WeatherServlet extends HttpServlet {
             // crate statement
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setString(1, icon);
-            
+
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
                 iconImage = rs.getString(1);
             }
-            
+
             stmt.close();
             conn.close();
         } catch (Exception ex) {
@@ -157,6 +159,6 @@ public class WeatherServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-                doGet(request, response);
-            }
+        doGet(request, response);
+    }
 }
