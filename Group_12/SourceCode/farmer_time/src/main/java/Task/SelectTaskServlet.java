@@ -1,3 +1,4 @@
+package Task;
 import java.io.*;
 
 import information.TaskInfo;
@@ -8,6 +9,8 @@ import jakarta.servlet.annotation.WebServlet;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+
+import config.ConnectMySQL;
 
 @WebServlet(name = "selectTask", urlPatterns = "/selectTask")
 public class SelectTaskServlet extends HttpServlet {

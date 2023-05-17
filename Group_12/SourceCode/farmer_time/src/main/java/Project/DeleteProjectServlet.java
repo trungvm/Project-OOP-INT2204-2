@@ -1,3 +1,4 @@
+package Project;
 import java.io.*;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
@@ -5,6 +6,8 @@ import jakarta.servlet.annotation.WebServlet;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+
+import config.ConnectMySQL;
 
 @WebServlet(name = "deleteProject", urlPatterns = "/deleteProject")
 public class DeleteProjectServlet extends HttpServlet {

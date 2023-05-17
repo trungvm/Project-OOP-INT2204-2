@@ -1,3 +1,4 @@
+package util;
 import java.io.*;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
@@ -8,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
+import config.ConnectMySQL;
 import information.Plants;
 
 @WebServlet(name = "showPlants", urlPatterns = "/plants")

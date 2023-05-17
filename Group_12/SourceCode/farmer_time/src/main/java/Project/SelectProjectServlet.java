@@ -1,3 +1,4 @@
+package Project;
 import java.io.*;
 
 import information.ProjectInfo;
@@ -8,6 +9,8 @@ import jakarta.servlet.annotation.WebServlet;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+
+import config.ConnectMySQL;
 
 @WebServlet(name = "selectProject", urlPatterns = "/selectProject")
 public class SelectProjectServlet extends HttpServlet {

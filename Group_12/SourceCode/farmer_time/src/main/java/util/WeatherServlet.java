@@ -1,3 +1,4 @@
+package util;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -12,6 +13,7 @@ import com.google.maps.GeocodingApi;
 import com.google.maps.model.AddressComponent;
 import com.google.maps.model.GeocodingResult;
 
+import config.ConnectMySQL;
 import information.Weather;
 
 import java.util.Arrays;

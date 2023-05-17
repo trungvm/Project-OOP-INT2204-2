@@ -1,3 +1,4 @@
+package Project;
 import java.io.*;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
@@ -10,6 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import config.ConnectMySQL;
 import information.ProjectInfo;
 
 @WebServlet(name = "showProject", urlPatterns = "/showProject")
@@ -28,6 +30,9 @@ public class ShowProjectServlet extends HttpServlet {
             // Nếu chưa đăng nhập thì chuyển hướng đến trang đăng nhập
             response.sendRedirect("login.jsp");
         } else {
+
+            System.out.println(email);
+
             ArrayList<ProjectInfo> arrayListProject = new ArrayList<ProjectInfo>();
 
             try {

@@ -1,11 +1,13 @@
+package config;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 
 public class ConnectMySQL {
 
-    static String DB_URL = "jdbc:mysql://localhost:3308/farmer";
-    static String USER_NAME = "root";
-    static String PASSWORD = "";
+    public static String DB_URL = "jdbc:mysql://localhost:3308/farmer";
+    public static String USER_NAME = "root";
+    public static String PASSWORD = "";
 
     public static Connection getConnection(String dbURL, String userName, String password) {
         Connection conn = null;

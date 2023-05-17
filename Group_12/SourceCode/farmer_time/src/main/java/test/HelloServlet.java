@@ -1,9 +1,12 @@
+package test;
 
 // Import required java libraries
 import java.io.*;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import java.sql.*;
+
+import config.ConnectMySQL;
 
 // Extend HttpServlet class
 public class HelloServlet extends HttpServlet {

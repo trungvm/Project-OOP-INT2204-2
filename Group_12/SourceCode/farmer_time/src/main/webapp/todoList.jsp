@@ -139,7 +139,7 @@
                                     <%= element.taskName %>
 
                                       <% if(element.status.equals("INPROGRESS")) { %>
-                                        <span class="badge bg-warning ml-2" style="vertical-align: top">
+                                        <span class="badge bg-purple ml-2" style="vertical-align: top">
                                           <%= element.status %>
                                         </span>
                                         <% } if(element.status.equals("STOPPED")) { %>
