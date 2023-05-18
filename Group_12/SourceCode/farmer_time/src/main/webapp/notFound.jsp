@@ -19,7 +19,7 @@
           <span class="text-danger">Sorry!</span> Page not found.
         </p>
         <p class="lead">The page you're looking for doesn't exist.</p>
-        <a href="./index.jsp" class="btn btn-danger">Go Home</a>
+        <a href="showProject" class="btn btn-danger">Go Home</a>
       </div>
     </div>
   </body>

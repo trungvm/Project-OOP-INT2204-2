@@ -89,8 +89,8 @@
                                                     <p class="recipe-desc">Một số công dụng: <%= element.uses %>
                                                     </p>
                                                 </div>
-                                                <a href="" class="btn btn-outline-success btn-sm">Read More</a>
-                                                <a href="" class="btn btn-outline-danger btn-sm"><i
+                                                <a href="<%= element.detail %>" class="btn btn-outline-success btn-sm">Read More</a>
+                                                <a href="<%= element.detail %>" class="btn btn-outline-danger btn-sm"><i
                                                         class="far fa-heart"></i></a>
                                             </div>
                                         </div>

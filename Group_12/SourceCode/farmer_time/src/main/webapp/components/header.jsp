@@ -14,9 +14,6 @@
           <a class="nav-link" href="showTask">Tasks</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="timeTable.jsp">Time Table</a>
-        </li>
-        <li class="nav-item">
           <a class="nav-link" href="plants">Plants</a>
         </li>
         <li class="nav-item">
@@ -26,7 +23,7 @@
           <a class="nav-link dropdown-toggle" href="getCalendar"> Calendar </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="login.jsp" onclick="confirmLogout(event)" tabindex="-1" aria-disabled="true">Log
+          <a class="nav-link" href="logout" onclick="confirmLogout(event)" tabindex="-1" aria-disabled="true">Log
             out</a>
         </li>
       </ul>

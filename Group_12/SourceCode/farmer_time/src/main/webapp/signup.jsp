@@ -42,11 +42,7 @@
                         Sign up
                       </p>
 
-                      <form
-                        action="/login/signup"
-                        method="POST"
-                        class="mx-1 mx-md-4"
-                      >
+                      <form action="signup" method="POST" class="mx-1 mx-md-4">
                         <div class="d-flex flex-row align-items-center mb-4">
                           <div class="form-outline flex-fill mb-0">
                             <label class="form-label" for="form3Example1c"
@@ -57,6 +53,7 @@
                               id="form3Example1c"
                               class="form-control"
                               name="name"
+                              required
                             />
                           </div>
                         </div>
@@ -71,6 +68,7 @@
                               id="form3Example3c"
                               class="form-control"
                               name="email"
+                              required
                             />
                           </div>
                         </div>
@@ -85,6 +83,7 @@
                               id="form3Example4c"
                               class="form-control"
                               name="password"
+                              required
                             />
                           </div>
                         </div>
@@ -99,6 +98,7 @@
                               id="form3Example4cd"
                               class="form-control"
                               name="repeat"
+                              required
                             />
                           </div>
                         </div>
